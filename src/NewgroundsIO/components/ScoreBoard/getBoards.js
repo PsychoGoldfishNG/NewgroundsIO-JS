@@ -18,6 +18,11 @@
 	}
 
 	// Move class to namespace
+
+	/**
+	 * NewgroundsIO ScoreBoard Components Namespace
+	 * @namespace
+	 */
 	if (typeof(NewgroundsIO.components.ScoreBoard) === 'undefined') NewgroundsIO.components.ScoreBoard = {};
 	NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 

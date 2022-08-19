@@ -60,6 +60,11 @@
 	}
 
 	// Move class to namespace
+
+	/**
+	 * NewgroundsIO Event Components Namespace
+	 * @namespace
+	 */
 	if (typeof(NewgroundsIO.components.Event) === 'undefined') NewgroundsIO.components.Event = {};
 	NewgroundsIO.components.Event.logEvent = logEvent;
 

@@ -42,6 +42,11 @@
 	}
 
 	// Move class to namespace
+
+	/**
+	 * NewgroundsIO App Components Namespace
+	 * @namespace
+	 */
 	if (typeof(NewgroundsIO.components.App) === 'undefined') NewgroundsIO.components.App = {};
 	NewgroundsIO.components.App.getCurrentVersion = getCurrentVersion;
 

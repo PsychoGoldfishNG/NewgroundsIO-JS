@@ -60,6 +60,11 @@
 	}
 
 	// Move class to namespace
+
+	/**
+	 * NewgroundsIO Loader Components Namespace
+	 * @namespace
+	 */
 	if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
 	NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 

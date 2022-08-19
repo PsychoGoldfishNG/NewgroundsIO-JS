@@ -18,6 +18,11 @@
 	}
 
 	// Move class to namespace
+
+	/**
+	 * NewgroundsIO Gateway Components Namespace
+	 * @namespace
+	 */
 	if (typeof(NewgroundsIO.components.Gateway) === 'undefined') NewgroundsIO.components.Gateway = {};
 	NewgroundsIO.components.Gateway.ping = ping;
 

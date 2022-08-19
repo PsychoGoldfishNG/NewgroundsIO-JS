@@ -19,6 +19,11 @@
 	}
 
 	// Move class to namespace
+
+	/**
+	 * NewgroundsIO CloudSave Components Namespace
+	 * @namespace
+	 */
 	if (typeof(NewgroundsIO.components.CloudSave) === 'undefined') NewgroundsIO.components.CloudSave = {};
 	NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 
