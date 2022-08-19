@@ -1,7 +1,25 @@
-// Namespaces
+/**
+ * NewgroundsIO Namespace
+ * @namespace
+ */
 var NewgroundsIO = NewgroundsIO ? NewgroundsIO : {};
+
+/**
+ * NewgroundsIO Objecs Namespace
+ * @namespace
+ */
 NewgroundsIO.objects = NewgroundsIO.objects ? NewgroundsIO.objects : {};
+
+/**
+ * NewgroundsIO Results Namespace
+ * @namespace
+ */
 NewgroundsIO.results = NewgroundsIO.results ? NewgroundsIO.results : {};
+
+/**
+ * NewgroundsIO Components Namespace
+ * @namespace
+ */
 NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {};
 
 (()=>{
