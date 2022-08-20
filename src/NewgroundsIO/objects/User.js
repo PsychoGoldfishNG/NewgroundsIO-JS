@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.User **/
 
 	/**
  * Contains information about a user.
@@ -97,8 +98,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.User = User;
+/** End Class NewgroundsIO.objects.User **/
+NewgroundsIO.objects.User = User;
 
 })();
 

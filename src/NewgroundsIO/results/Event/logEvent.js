@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Event.logEvent **/
 
 	/**
 	 * Returned when Event.logEvent component is called
@@ -40,9 +41,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Event) === 'undefined') NewgroundsIO.results.Event = {};
-	NewgroundsIO.results.Event.logEvent = logEvent;
+/** End Class NewgroundsIO.results.Event.logEvent **/
+if (typeof(NewgroundsIO.results.Event) === 'undefined') NewgroundsIO.results.Event = {};
+NewgroundsIO.results.Event.logEvent = logEvent;
 
 })();
 

@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Debug **/
 
 	/**
  * Contains extra debugging information.
@@ -61,8 +62,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Debug = Debug;
+/** End Class NewgroundsIO.objects.Debug **/
+NewgroundsIO.objects.Debug = Debug;
 
 })();
 

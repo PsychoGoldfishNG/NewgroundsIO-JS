@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.App.getCurrentVersion **/
 
 	/**
 	 * Returned when App.getCurrentVersion component is called
@@ -58,9 +59,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.App) === 'undefined') NewgroundsIO.results.App = {};
-	NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
+/** End Class NewgroundsIO.results.App.getCurrentVersion **/
+if (typeof(NewgroundsIO.results.App) === 'undefined') NewgroundsIO.results.App = {};
+NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 
 })();
 

@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Loader.loadReferral **/
 
 	/**
 	 * Used to call the Loader.loadReferral component.
@@ -76,14 +77,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Loader Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
-	NewgroundsIO.components.Loader.loadReferral = loadReferral;
+/** End Class NewgroundsIO.components.Loader.loadReferral **/
+if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
+NewgroundsIO.components.Loader.loadReferral = loadReferral;
 
 })();
 

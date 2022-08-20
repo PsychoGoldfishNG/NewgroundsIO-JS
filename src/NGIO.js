@@ -1,10 +1,12 @@
+/** Start Class NGIO **/
+
 /**
  * NGIO singleton wrapper for NewgroundsIO Library.
  */
 class NGIO
 {
 
-	/** ================================ Constants ================================= **/
+	/* ================================ Constants ================================= */
 
 	// preloading statuses
 
@@ -127,7 +129,7 @@ class NGIO
 	static get PERIODS() { return [NGIO.PERIOD_TODAY, NGIO.PERIOD_CURRENT_WEEK, NGIO.PERIOD_CURRENT_MONTH, NGIO.PERIOD_CURRENT_YEAR, NGIO.PERIOD_ALL_TIME]; }
 
 
-	/** ============================= Public Properties ============================ **/
+	/* ============================= Public Properties ============================ */
 
 	/**
 	 * A reference to the NewgroundsIO.Core instance created in Init().
@@ -339,7 +341,7 @@ class NGIO
 	static get debugMode() { return this.#debugMode; }
 	static #debugMode = false;
 
-	/** ============================= Private Properties ============================ **/
+	/* ============================= Private Properties ============================ */
 
 	// Preloading flags
 	static #checkHostLicense = false;
@@ -353,7 +355,7 @@ class NGIO
 	static #skipLogin = false;
 	static #checkingConnectionStatus = false;
 
-	/** ============================= Misc Public Methods ============================ **/
+	/* ============================= Misc Public Methods ============================ */
 
 	/**
 	 * Initializes the NGIO wrapper. You must call this BEFORE using any other methods!
@@ -404,7 +406,7 @@ class NGIO
 		}
 	}
 
-	/** ======================== Public Login/Session Methods ======================== **/
+	/* ======================== Public Login/Session Methods ======================== */
 
 	/**
 	 * Call this if you want to skip logging the user in.
@@ -456,7 +458,7 @@ class NGIO
 	}
 
 
-	/** ============================ Public Loader Methods =========================== **/
+	/* ============================ Public Loader Methods =========================== */
 
 	/**
 	 * Loads "Your Website URL", as defined on your App Settings page, in a new browser tab.
@@ -500,7 +502,7 @@ class NGIO
 	}
 
 
-	/** ============================ Public Medal Methods ============================ **/
+	/* ============================ Public Medal Methods ============================ */
 
 	/**
 	 * Gets a preloaded Medal object.
@@ -551,7 +553,7 @@ class NGIO
 		
 	}
 
-	/** ======================== Public getScoreBoard Methods ======================== **/
+	/* ======================== Public getScoreBoard Methods ======================== */
 
 	/**
 	 * Gets a preloaded ScoreBoard object.
@@ -709,7 +711,7 @@ class NGIO
 	}
 
 
-	/** ======================== Public getSaveSlot Methods ======================== **/
+	/* ======================== Public getSaveSlot Methods ======================== */
 
 	/**
 	 * Gets a preloaded SaveSlot object. (Use getSaveSlotData to get actual save file)
@@ -794,7 +796,7 @@ class NGIO
 		}, this);
 	}
 
-	/** =========================== Public Event Methods ========================== **/
+	/* =========================== Public Event Methods ========================== */
 
 	/**
 	 * @callback logEventCallback
@@ -814,7 +816,7 @@ class NGIO
 		}, this);
 	}
 
-	/** ========================== Public Gateway Methods ========================= **/
+	/* ========================== Public Gateway Methods ========================= */
 
 	/**
 	 * @callback getDateTimeCallback
@@ -834,7 +836,7 @@ class NGIO
 		}, this);
 	}
 
-	/** ========================= Public KeepAlive Methods ========================= **/
+	/* ========================= Public KeepAlive Methods ========================= */
 
 	/**
 	 * Keeps your ssessions from expiring. Is called automatically.
@@ -851,7 +853,7 @@ class NGIO
 		}
 	}
 
-	/** ======================= Public Login/Preload Methods ====================== **/
+	/* ======================= Public Login/Preload Methods ====================== */
 
 	/**
 	 * @callback getConnectionStatusCallback
@@ -919,7 +921,7 @@ class NGIO
 	}
 
 
-	/** ===================== Private Login/Preloader Methods ==================== **/
+	/* ===================== Private Login/Preloader Methods ==================== */
 
 
 	static #updateSessionHandler(callback,thisArg)
@@ -992,7 +994,7 @@ class NGIO
 		}
 	}
 
-	/** =============================== Private Methods ============================== **/
+	/* =============================== Private Methods ============================== */
 
 	// Resets the connection state, typically after a user logs out or cances a login.
 	static #resetConnectionStatus()
@@ -1075,7 +1077,7 @@ class NGIO
 
 		switch(result.__object) {
 
-			/** ============================== App Info ============================== **/
+			/* ============================== App Info ============================== */
 
 			case "App.getCurrentVersion":
 
@@ -1110,7 +1112,7 @@ class NGIO
 				
 				break;
 
-			/** ============================ Cloud Saves ============================= **/
+			/* ============================ Cloud Saves ============================= */
 
 			case "CloudSave.loadSlots":
 
@@ -1152,7 +1154,7 @@ class NGIO
 				break;
 
 
-			/** ============================== Events ================================ **/
+			/* ============================== Events ================================ */
 			
 			case "Event.logEvent":
 
@@ -1165,7 +1167,7 @@ class NGIO
 
 				break;
 
-			/** ============================== Gateway ================================ **/
+			/* ============================== Gateway ================================ */
 			
 			case "Gateway.getDatetime":
 
@@ -1197,7 +1199,7 @@ class NGIO
 
 				break;
 
-			/** ============================== Medals ================================ **/
+			/* ============================== Medals ================================ */
 			
 			case "Medal.getList":
 
@@ -1241,7 +1243,7 @@ class NGIO
 
 				break;
 
-			/** ============================= ScoreBoards ============================ **/
+			/* ============================= ScoreBoards ============================ */
 
 			case "ScoreBoard.getBoards":
 				if (!result.success) return;
@@ -1282,3 +1284,4 @@ class NGIO
 	}
 	
 }
+/** End Class NGIO **/

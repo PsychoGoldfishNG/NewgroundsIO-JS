@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Gateway.ping **/
 
 	/**
 	 * Returned when Gateway.ping component is called
@@ -41,9 +42,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Gateway) === 'undefined') NewgroundsIO.results.Gateway = {};
-	NewgroundsIO.results.Gateway.ping = ping;
+/** End Class NewgroundsIO.results.Gateway.ping **/
+if (typeof(NewgroundsIO.results.Gateway) === 'undefined') NewgroundsIO.results.Gateway = {};
+NewgroundsIO.results.Gateway.ping = ping;
 
 })();
 

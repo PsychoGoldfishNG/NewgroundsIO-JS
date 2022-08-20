@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.UserIcons **/
 
 	/**
  * Contains any icons associated with this user.
@@ -77,8 +78,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.UserIcons = UserIcons;
+/** End Class NewgroundsIO.objects.UserIcons **/
+NewgroundsIO.objects.UserIcons = UserIcons;
 
 })();
 

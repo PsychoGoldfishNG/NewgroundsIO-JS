@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.ScoreBoard.postScore **/
 
 	/**
 	 * Returned when ScoreBoard.postScore component is called
@@ -66,9 +67,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.ScoreBoard) === 'undefined') NewgroundsIO.results.ScoreBoard = {};
-	NewgroundsIO.results.ScoreBoard.postScore = postScore;
+/** End Class NewgroundsIO.results.ScoreBoard.postScore **/
+if (typeof(NewgroundsIO.results.ScoreBoard) === 'undefined') NewgroundsIO.results.ScoreBoard = {};
+NewgroundsIO.results.ScoreBoard.postScore = postScore;
 
 })();
 

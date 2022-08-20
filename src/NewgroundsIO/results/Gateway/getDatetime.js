@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Gateway.getDatetime **/
 
 	/**
 	 * Returned when Gateway.getDatetime component is called
@@ -60,9 +61,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Gateway) === 'undefined') NewgroundsIO.results.Gateway = {};
-	NewgroundsIO.results.Gateway.getDatetime = getDatetime;
+/** End Class NewgroundsIO.results.Gateway.getDatetime **/
+if (typeof(NewgroundsIO.results.Gateway) === 'undefined') NewgroundsIO.results.Gateway = {};
+NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 
 })();
 

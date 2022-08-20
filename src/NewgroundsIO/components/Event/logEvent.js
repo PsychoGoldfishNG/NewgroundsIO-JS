@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Event.logEvent **/
 
 	/**
 	 * Used to call the Event.logEvent component.
@@ -59,14 +60,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Event Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Event) === 'undefined') NewgroundsIO.components.Event = {};
-	NewgroundsIO.components.Event.logEvent = logEvent;
+/** End Class NewgroundsIO.components.Event.logEvent **/
+if (typeof(NewgroundsIO.components.Event) === 'undefined') NewgroundsIO.components.Event = {};
+NewgroundsIO.components.Event.logEvent = logEvent;
 
 })();
 

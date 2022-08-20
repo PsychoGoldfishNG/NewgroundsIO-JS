@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Loader.loadMoreGames **/
 
 	/**
 	 * Used to call the Loader.loadMoreGames component.
@@ -59,14 +60,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Loader Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
-	NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
+/** End Class NewgroundsIO.components.Loader.loadMoreGames **/
+if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
+NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 
 })();
 

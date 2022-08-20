@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Medal.getList **/
 
 	/**
 	 * Used to call the Medal.getList component.
@@ -17,14 +18,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Medal Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Medal) === 'undefined') NewgroundsIO.components.Medal = {};
-	NewgroundsIO.components.Medal.getList = getList;
+/** End Class NewgroundsIO.components.Medal.getList **/
+if (typeof(NewgroundsIO.components.Medal) === 'undefined') NewgroundsIO.components.Medal = {};
+NewgroundsIO.components.Medal.getList = getList;
 
 })();
 

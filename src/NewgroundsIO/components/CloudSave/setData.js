@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.CloudSave.setData **/
 
 	/**
 	 * Used to call the CloudSave.setData component.
@@ -62,14 +63,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO CloudSave Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.CloudSave) === 'undefined') NewgroundsIO.components.CloudSave = {};
-	NewgroundsIO.components.CloudSave.setData = setData;
+/** End Class NewgroundsIO.components.CloudSave.setData **/
+if (typeof(NewgroundsIO.components.CloudSave) === 'undefined') NewgroundsIO.components.CloudSave = {};
+NewgroundsIO.components.CloudSave.setData = setData;
 
 })();
 

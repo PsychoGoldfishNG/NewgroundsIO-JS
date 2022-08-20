@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Loader.loadAuthorUrl **/
 
 	/**
 	 * Used to call the Loader.loadAuthorUrl component.
@@ -59,14 +60,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Loader Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
-	NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
+/** End Class NewgroundsIO.components.Loader.loadAuthorUrl **/
+if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
+NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 
 })();
 

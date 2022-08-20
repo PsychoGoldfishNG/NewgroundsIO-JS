@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Medal.unlock **/
 
 	/**
 	 * Used to call the Medal.unlock component.
@@ -46,14 +47,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Medal Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Medal) === 'undefined') NewgroundsIO.components.Medal = {};
-	NewgroundsIO.components.Medal.unlock = unlock;
+/** End Class NewgroundsIO.components.Medal.unlock **/
+if (typeof(NewgroundsIO.components.Medal) === 'undefined') NewgroundsIO.components.Medal = {};
+NewgroundsIO.components.Medal.unlock = unlock;
 
 })();
 

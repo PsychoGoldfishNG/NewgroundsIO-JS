@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Score **/
 
 	/**
  * Contains information about a score posted to a scoreboard.
@@ -97,8 +98,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Score = Score;
+/** End Class NewgroundsIO.objects.Score **/
+NewgroundsIO.objects.Score = Score;
 
 })();
 

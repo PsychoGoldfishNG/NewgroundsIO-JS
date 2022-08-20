@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Response **/
 
 	/**
  * Contains all return output from an API request.
@@ -173,8 +174,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Response = Response;
+/** End Class NewgroundsIO.objects.Response **/
+NewgroundsIO.objects.Response = Response;
 
 })();
 

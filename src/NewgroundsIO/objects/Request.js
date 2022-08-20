@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Request **/
 
 	/**
  * A top-level wrapper containing any information needed to authenticate the application/user and any component calls being made.
@@ -108,8 +109,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Request = Request;
+/** End Class NewgroundsIO.objects.Request **/
+NewgroundsIO.objects.Request = Request;
 
 })();
 

@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.CloudSave.setData **/
 
 	/**
 	 * Returned when CloudSave.setData component is called
@@ -44,9 +45,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.CloudSave) === 'undefined') NewgroundsIO.results.CloudSave = {};
-	NewgroundsIO.results.CloudSave.setData = setData;
+/** End Class NewgroundsIO.results.CloudSave.setData **/
+if (typeof(NewgroundsIO.results.CloudSave) === 'undefined') NewgroundsIO.results.CloudSave = {};
+NewgroundsIO.results.CloudSave.setData = setData;
 
 })();
 

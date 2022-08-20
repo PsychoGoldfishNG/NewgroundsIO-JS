@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Loader.loadReferral **/
 
 	/**
 	 * Returned when Loader.loadReferral component is called
@@ -40,9 +41,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Loader) === 'undefined') NewgroundsIO.results.Loader = {};
-	NewgroundsIO.results.Loader.loadReferral = loadReferral;
+/** End Class NewgroundsIO.results.Loader.loadReferral **/
+if (typeof(NewgroundsIO.results.Loader) === 'undefined') NewgroundsIO.results.Loader = {};
+NewgroundsIO.results.Loader.loadReferral = loadReferral;
 
 })();
 

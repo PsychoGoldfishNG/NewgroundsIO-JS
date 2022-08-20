@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Error **/
 
 	/**
 	 */
@@ -61,8 +62,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Error = Error;
+/** End Class NewgroundsIO.objects.Error **/
+NewgroundsIO.objects.Error = Error;
 
 })();
 

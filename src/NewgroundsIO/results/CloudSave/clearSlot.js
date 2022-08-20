@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.CloudSave.clearSlot **/
 
 	/**
 	 * Returned when CloudSave.clearSlot component is called
@@ -45,9 +46,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.CloudSave) === 'undefined') NewgroundsIO.results.CloudSave = {};
-	NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
+/** End Class NewgroundsIO.results.CloudSave.clearSlot **/
+if (typeof(NewgroundsIO.results.CloudSave) === 'undefined') NewgroundsIO.results.CloudSave = {};
+NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 
 })();
 

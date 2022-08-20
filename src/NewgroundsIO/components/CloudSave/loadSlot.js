@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.CloudSave.loadSlot **/
 
 	/**
 	 * Used to call the CloudSave.loadSlot component.
@@ -45,14 +46,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO CloudSave Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.CloudSave) === 'undefined') NewgroundsIO.components.CloudSave = {};
-	NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
+/** End Class NewgroundsIO.components.CloudSave.loadSlot **/
+if (typeof(NewgroundsIO.components.CloudSave) === 'undefined') NewgroundsIO.components.CloudSave = {};
+NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
 
 })();
 

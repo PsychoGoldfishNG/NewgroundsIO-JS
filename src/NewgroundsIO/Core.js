@@ -23,6 +23,7 @@ NewgroundsIO.results = NewgroundsIO.results ? NewgroundsIO.results : {};
 NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {};
 
 (()=>{
+/** Start Class NewgroundsIO.Core **/
 
 	/** Class for communicating with the Newgrounds.io API **/
 	class Core extends EventTarget {
@@ -405,11 +406,13 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		}
 	}
 
-	NewgroundsIO.Core = Core;
+/** End Class NewgroundsIO.Core **/
+NewgroundsIO.Core = Core;
 })();
 
 
 (()=>{
+/** Start Class NewgroundsIO.BaseObject **/
 
 	/** The base object all models will use **/
 	class BaseObject {
@@ -541,6 +544,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 
 	}
 
+/** End Class NewgroundsIO.BaseObject **/
+NewgroundsIO.BaseObject = BaseObject;
+
+/** Start Class NewgroundsIO.BaseComponent **/
+
 	/** The base object all models will use **/
 	class BaseComponent extends BaseObject {
 
@@ -579,6 +587,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 			this.echo = ""+value;
 		}
 	}
+
+/** End Class NewgroundsIO.BaseComponent **/
+NewgroundsIO.BaseComponent = BaseComponent;
+
+/** Start Class NewgroundsIO.BaseResult **/
 
 	/** The base object all models will use **/
 	class BaseResult extends BaseObject {
@@ -642,11 +655,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 
 	}
 
-	NewgroundsIO.BaseObject = BaseObject;
-	NewgroundsIO.BaseComponent = BaseComponent;
-	NewgroundsIO.BaseResult = BaseResult;
+/** End Class NewgroundsIO.BaseResult **/
+NewgroundsIO.BaseResult = BaseResult;
 })();
 
+/** Start Class NewgroundsIO.SessionState **/
 /**
  * Contains a bunch of constants representing the different states a user session can be in.
  * This is used by the NewgroundsIO.objects.Session object
@@ -673,3 +686,4 @@ NewgroundsIO.SessionState.SESSION_WAITING = [
 	NewgroundsIO.SessionState.LOGIN_CANCELLED,
 	NewgroundsIO.SessionStateLOGIN_FAILED
 ];
+/** End Class NewgroundsIO.SessionState **/

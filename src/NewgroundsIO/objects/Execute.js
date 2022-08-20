@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Execute **/
 
 	/**
  * Contains all the information needed to execute an API component.
@@ -163,8 +164,8 @@
 
 	}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Execute = Execute;
+/** End Class NewgroundsIO.objects.Execute **/
+NewgroundsIO.objects.Execute = Execute;
 
 })();
 

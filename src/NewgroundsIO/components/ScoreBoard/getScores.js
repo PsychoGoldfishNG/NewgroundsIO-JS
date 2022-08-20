@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.ScoreBoard.getScores **/
 
 	/**
 	 * Used to call the ScoreBoard.getScores component.
@@ -149,14 +150,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO ScoreBoard Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.ScoreBoard) === 'undefined') NewgroundsIO.components.ScoreBoard = {};
-	NewgroundsIO.components.ScoreBoard.getScores = getScores;
+/** End Class NewgroundsIO.components.ScoreBoard.getScores **/
+if (typeof(NewgroundsIO.components.ScoreBoard) === 'undefined') NewgroundsIO.components.ScoreBoard = {};
+NewgroundsIO.components.ScoreBoard.getScores = getScores;
 
 })();
 

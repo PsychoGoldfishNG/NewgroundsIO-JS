@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.SaveSlot **/
 
 	/**
  * Contains information about a CloudSave slot.
@@ -163,8 +164,8 @@
 		}
 			}
 
-	// Move class to namespace
-	NewgroundsIO.objects.SaveSlot = SaveSlot;
+/** End Class NewgroundsIO.objects.SaveSlot **/
+NewgroundsIO.objects.SaveSlot = SaveSlot;
 
 })();
 

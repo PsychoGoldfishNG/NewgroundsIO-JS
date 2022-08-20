@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Loader.loadOfficialUrl **/
 
 	/**
 	 * Returned when Loader.loadOfficialUrl component is called
@@ -40,9 +41,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Loader) === 'undefined') NewgroundsIO.results.Loader = {};
-	NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
+/** End Class NewgroundsIO.results.Loader.loadOfficialUrl **/
+if (typeof(NewgroundsIO.results.Loader) === 'undefined') NewgroundsIO.results.Loader = {};
+NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 
 })();
 

@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Medal.getMedalScore **/
 
 	/**
 	 * Returned when Medal.getMedalScore component is called
@@ -43,9 +44,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Medal) === 'undefined') NewgroundsIO.results.Medal = {};
-	NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
+/** End Class NewgroundsIO.results.Medal.getMedalScore **/
+if (typeof(NewgroundsIO.results.Medal) === 'undefined') NewgroundsIO.results.Medal = {};
+NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 
 })();
 

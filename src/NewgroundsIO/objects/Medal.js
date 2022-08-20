@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Medal **/
 
 	/**
  * Contains information about a medal.
@@ -183,8 +184,8 @@
 		}
 			}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Medal = Medal;
+/** End Class NewgroundsIO.objects.Medal **/
+NewgroundsIO.objects.Medal = Medal;
 
 })();
 

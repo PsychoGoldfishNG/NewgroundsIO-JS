@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Medal.getList **/
 
 	/**
 	 * Returned when Medal.getList component is called
@@ -38,9 +39,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Medal) === 'undefined') NewgroundsIO.results.Medal = {};
-	NewgroundsIO.results.Medal.getList = getList;
+/** End Class NewgroundsIO.results.Medal.getList **/
+if (typeof(NewgroundsIO.results.Medal) === 'undefined') NewgroundsIO.results.Medal = {};
+NewgroundsIO.results.Medal.getList = getList;
 
 })();
 

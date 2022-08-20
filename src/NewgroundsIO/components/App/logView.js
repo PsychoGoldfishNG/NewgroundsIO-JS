@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.App.logView **/
 
 	/**
 	 * Used to call the App.logView component.
@@ -42,14 +43,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO App Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.App) === 'undefined') NewgroundsIO.components.App = {};
-	NewgroundsIO.components.App.logView = logView;
+/** End Class NewgroundsIO.components.App.logView **/
+if (typeof(NewgroundsIO.components.App) === 'undefined') NewgroundsIO.components.App = {};
+NewgroundsIO.components.App.logView = logView;
 
 })();
 

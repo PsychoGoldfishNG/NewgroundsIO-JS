@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.ScoreBoard.getScores **/
 
 	/**
 	 * Returned when ScoreBoard.getScores component is called
@@ -133,9 +134,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.ScoreBoard) === 'undefined') NewgroundsIO.results.ScoreBoard = {};
-	NewgroundsIO.results.ScoreBoard.getScores = getScores;
+/** End Class NewgroundsIO.results.ScoreBoard.getScores **/
+if (typeof(NewgroundsIO.results.ScoreBoard) === 'undefined') NewgroundsIO.results.ScoreBoard = {};
+NewgroundsIO.results.ScoreBoard.getScores = getScores;
 
 })();
 

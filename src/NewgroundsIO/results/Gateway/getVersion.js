@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.Gateway.getVersion **/
 
 	/**
 	 * Returned when Gateway.getVersion component is called
@@ -41,9 +42,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.Gateway) === 'undefined') NewgroundsIO.results.Gateway = {};
-	NewgroundsIO.results.Gateway.getVersion = getVersion;
+/** End Class NewgroundsIO.results.Gateway.getVersion **/
+if (typeof(NewgroundsIO.results.Gateway) === 'undefined') NewgroundsIO.results.Gateway = {};
+NewgroundsIO.results.Gateway.getVersion = getVersion;
 
 })();
 

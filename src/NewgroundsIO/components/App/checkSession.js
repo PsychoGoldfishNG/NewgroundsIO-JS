@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.App.checkSession **/
 
 	/**
 	 * Used to call the App.checkSession component.
@@ -18,14 +19,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO App Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.App) === 'undefined') NewgroundsIO.components.App = {};
-	NewgroundsIO.components.App.checkSession = checkSession;
+/** End Class NewgroundsIO.components.App.checkSession **/
+if (typeof(NewgroundsIO.components.App) === 'undefined') NewgroundsIO.components.App = {};
+NewgroundsIO.components.App.checkSession = checkSession;
 
 })();
 

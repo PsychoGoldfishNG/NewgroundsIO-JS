@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.App.getHostLicense **/
 
 	/**
 	 * Returned when App.getHostLicense component is called
@@ -40,9 +41,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.App) === 'undefined') NewgroundsIO.results.App = {};
-	NewgroundsIO.results.App.getHostLicense = getHostLicense;
+/** End Class NewgroundsIO.results.App.getHostLicense **/
+if (typeof(NewgroundsIO.results.App) === 'undefined') NewgroundsIO.results.App = {};
+NewgroundsIO.results.App.getHostLicense = getHostLicense;
 
 })();
 

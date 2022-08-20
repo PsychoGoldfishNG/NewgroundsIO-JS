@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.results.App.checkSession **/
 
 	/**
 	 * Returned when App.checkSession component is called
@@ -44,9 +45,9 @@
 
 	}
 
-	// Move class to namespace
-	if (typeof(NewgroundsIO.results.App) === 'undefined') NewgroundsIO.results.App = {};
-	NewgroundsIO.results.App.checkSession = checkSession;
+/** End Class NewgroundsIO.results.App.checkSession **/
+if (typeof(NewgroundsIO.results.App) === 'undefined') NewgroundsIO.results.App = {};
+NewgroundsIO.results.App.checkSession = checkSession;
 
 })();
 

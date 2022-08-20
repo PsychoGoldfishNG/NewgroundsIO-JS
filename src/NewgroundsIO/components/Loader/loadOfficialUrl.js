@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.components.Loader.loadOfficialUrl **/
 
 	/**
 	 * Used to call the Loader.loadOfficialUrl component.
@@ -59,14 +60,9 @@
 
 	}
 
-	// Move class to namespace
-
-	/**
-	 * NewgroundsIO Loader Components Namespace
-	 * @namespace
-	 */
-	if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
-	NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
+/** End Class NewgroundsIO.components.Loader.loadOfficialUrl **/
+if (typeof(NewgroundsIO.components.Loader) === 'undefined') NewgroundsIO.components.Loader = {};
+NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 
 })();
 

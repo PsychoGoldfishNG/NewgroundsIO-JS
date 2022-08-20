@@ -1,4 +1,5 @@
 (()=>{
+/** Start Class NewgroundsIO.objects.Session **/
 
 	/**
  * Contains information about the current user session.
@@ -516,8 +517,8 @@
 
 			}
 
-	// Move class to namespace
-	NewgroundsIO.objects.Session = Session;
+/** End Class NewgroundsIO.objects.Session **/
+NewgroundsIO.objects.Session = Session;
 
 })();
 
