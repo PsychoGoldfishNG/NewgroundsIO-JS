@@ -1951,7 +1951,7 @@ NewgroundsIO.BaseObject = BaseObject;
 
 		/**
 		 * Many components need to pass the hosting website (or indicator this is a standalone app).
-		 * type {string}
+		 * @type {string}
 		 */
 		get host() {
 			return this.__ngioCore ? this.__ngioCore.host : null;
@@ -1959,7 +1959,7 @@ NewgroundsIO.BaseObject = BaseObject;
 
 		/**
 		 * All components have an optional echo property that will return the same value in a server response.
-		 * type {string}
+		 * @type {string}
 		 */
 		get echo() {
 			return this._echo;
@@ -1999,7 +1999,7 @@ NewgroundsIO.BaseComponent = BaseComponent;
 		 * The name of the component that was called to yield this result.
 		 * @type {string}
 		 */
-		component() {
+		get component() {
 			return this.__object;
 		}
 
