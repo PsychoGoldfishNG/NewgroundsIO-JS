@@ -1,31 +1,303 @@
 <!DOCTYPE html>
-<html>
+<html style="width: 100%; height: 100%">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Newgrounds.io Unit Test</title>
-	<script src="NewgroundsIO.js"></script>
+	<title>test</title>
+
+	<style>
+		body {
+			color: white;
+			background-color: #4554bd;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		a {
+			color: #ffe000;
+		}
+
+		#main-menu button {
+			font-size: 1.25em;
+			font-weight: bold;
+			min-width:  200px;
+			margin: 4px;
+		}
+
+		div.loadbar.disabled {
+			background-color: rgba(0,0,0,0.15);
+			color: rgba(255,255,255,0.75);
+		}
+
+		div.loadbar.disabled button {
+			display: none;
+		}
+
+		div.loadbar button {
+			cursor: pointer;
+			font-weight: bold;
+			padding: 4px 8px;
+			border-radius: 5px;
+			margin-left: 4px;
+		}
+
+		#log-in-overlay, #illegal-version-overlay {
+			display: flex;
+			align-items: center;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.75);
+			z-index: 10; 
+		}
+
+		#illegal-version-overlay {
+			z-index: 11;
+		}
+
+		div.loadbar {
+			width: 400px;
+			margin: 8px;
+			padding: 6px 16px;
+			border-radius: 12px;
+			background-color: rgba(0,0,0,0.25);
+			display: flex;
+			align-items: center;
+		}
+
+		/* original spinner source: ; https://projects.lukehaas.me/css-loaders/ */
+		.loader,
+		.loader:after {
+		  border-radius: 50%;
+		  width: 60px;
+		  height: 60px;
+		}
+		.loader {
+		  margin: 16px auto;
+		  font-size: 10px;
+		  position: relative;
+		  text-indent: -9999em;
+		  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+		  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+		  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+		  border-left: 1.1em solid #ffffff;
+		  -webkit-transform: translateZ(0);
+		  -ms-transform: translateZ(0);
+		  transform: translateZ(0);
+		  -webkit-animation: load8 1.1s infinite linear;
+		  animation: load8 1.1s infinite linear;
+		}
+		@-webkit-keyframes load8 {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@keyframes load8 {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+
+
+		#scoreboard-inner > div:nth-child(even) {
+			background-color: rgba(255,255,255,0.15);
+		}
+
+	</style>
 </head>
-<body>
-	<script>
-		(()=>{
+<body style="margin: 0px; padding: 0px; width: 100%; height: 100%;">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="NewgroundsIO.js"></script>
 
-			var ngio = new NewgroundsIO('39685:NJ1KkPGb', 'qsqKxz5dJouIkUNe3NBppQ==');
-			//var ngio = new NewgroundsIO('18549:W8qyhqys', '/9uLj4WPCwCHNxX4IUxr5g==');
 
-			var component = [
-				new NewgroundsIO.components.Gateway.getDatetime(),
-				new NewgroundsIO.components.App.getHostLicense({host:"<AppView>"})
-			];
+	<!-- START TITLE SCREEN -->
 
-			component = new NewgroundsIO.components.CloudSave.loadSlot({id:1});
-			console.log(JSON.stringify(component));
-			
-			ngio.sendRequest(component, (result)=>{
-				console.log(result);
-			});
-		})();
-	</script>
+	<div style="width: 100%; height: 100%;" id="title-screen">
 
+		<div id="illegal-version-overlay" style="display: none">
+			<div style="flex:1"></div>
+			<div style="text-align: center; background-color: black; border-radius: 12px; padding: 30px">
+				<p><h3>Illegal Copy!</h3></p>
+				<p>This site does not have permission to host this game.</p>
+				<p>
+					<a href="javascript:NGIO.loadOfficialUrl()">Click here for a legal version!</a>
+				</p>
+			</div>
+			<div style="flex:1"></div>
+		</div>
+
+		<div id="log-in-overlay" style="display: none">
+			<div style="flex:1"></div>
+			<div style="text-align: center; background-color: black; border-radius: 12px; padding: 30px">
+				<div id="get-login">
+					<p><h3>You are not logged in</h3></p>
+					<p>This game uses features that will not work unless you are logged in!</p>
+					<p>
+						<button id="log-in-btn2">Log in now!</button>
+						<br/>
+						<a style="font-size: 0.75em; margin-top: 8px; display: inline-block;" href="" id="dont-log-in-btn">No, Thanks</a>
+					</p>
+				</div>
+				<div id="wait-login">
+					<p><h3>Waiting for Login...</h3></p>
+					<p>
+						<button id="cancel-log-in-btn2">Cancel</button>
+					</p>
+				</div>
+			</div>
+			<div style="flex:1"></div>
+		</div>
+
+		<div style="position: absolute; display: inline-block; top: 8px; left: 12px">
+			<div id="new-version" style="display: none;">
+				<button id="new-version-btn">New version available!</button>
+			</div>
+		</div>
+
+		<div style="position: absolute; display: inline-block; top: 8px; right: 12px">
+			<div id="log-in-prompt" style="display: none;">
+				You are not logged in, some features may be unavailable. <button id="log-in-btn">Log In</button>
+			</div>
+			<div id="cancel-log-in-prompt" style="display: none;">
+				Waiting for user login... <button id="cancel-log-in-btn">Cancel</button>
+			</div>
+			<div id="log-out-prompt" style="display: none;">
+				Signed in as <span id="username">Username</span>. <button id="log-out-btn">Log Out</button>
+			</div>
+		</div>
+
+		<div style="display: flex; width: 100%; height: 100%; align-items: center;">
+			<div style="flex:1"></div>
+			<div style="; text-align: center;">
+				<div><h1>My Awesome Game</h1></div>
+				<div style="height: 200px">
+
+					<div id="please-wait">
+						<div class="loader"></div>
+						Please Wait...
+					</div>
+
+					<div id="main-menu" style="display: none;">
+						<div><button id="new-game-btn">New Game</button></div>
+						<div><button id="continue-btn" disabled>Continue</button></div>
+					</div>
+
+					<div id="continue-menu" style="display:none">
+						<div class="loadbar">
+							<div style="flex:1; text-align: left">
+								<h3 style="margin-top: 0px; margin-bottom: 4px;">Slot 1</h3>
+								<em>No data</em>
+							</div>
+							<div>
+								<button action="delete">Delete</button>
+								<button action="load">Load</button>
+							</div>
+						</div>
+					</div>
+
+					<button id="back-btn" style="display:none">&lt; Back</button>
+
+				</div>
+			</div>
+			<div style="flex:1"></div>
+		</div>
+
+		<div style="position: absolute; width: 100%; text-align: center; bottom: 10px">
+			<a href="javascript:NGIO.loadNewgrounds()">Newgrounds</a> | 
+			<a href="javascript:NGIO.loadAuthorUrl()">My Site</a> | 
+			<a href="javascript:NGIO.loadOfficialUrl()">Official/Legal version</a> | 
+			<a href="javascript:NGIO.loadReferral('test referral')">test referral</a>
+		</div>
+	</div>
+
+	<!-- END TITLE SCREEN -->
+
+
+
+	<!-- START TEST SCREEN -->
+
+	<div id="test-screen" style="display:none; padding: 12px">
+		
+
+		<!-- Show loaded cloud save data, and let user replace data in save slotes 1-3 -->
+		<div>
+			<textarea id="gameData" style="width: 320px;"></textarea>
+			<div><strong>Save:</strong> <button save_id="1">Slot 1</button> <button save_id="2">Slot 2</button> <button save_id="3">Slot 3</button></div>
+		</div>
+		
+		<hr/>
+
+		<!-- Log a test event -->
+		<button id="log-event">Log Test Event</button>
+		<button id="log-event2">Log Test Event 2</button>
+
+		<hr/>
+
+		<!-- Show the scoreboard -->
+		<div style="width: 320px; border: 1px solid white">
+			<div style="font-weight: bold; background-color:#293799; display: flex; padding: 4px; border-bottom: 1px solid white">
+				<div style="flex:1">High Scores</div>
+				<div><select id="score-social-select">
+					<option value="0">All Scores</option>
+					<option value="1">Friends Only</option>
+				</select></div>
+				<div><select id="score-period-select">
+					<option value="D">Today</option>
+					<option value="W">This Week</option>
+					<option value="M">This Month</option>
+					<option value="Y">This Year</option>
+					<option value="A">All-Time</option>
+				</select></div>
+			</div>
+			<div style="background-color:#6474e3; min-height: 260px" id="scoreboard-inner">
+
+				<div style="padding: 4px" id="template-message"><em>Loading...</em></div>
+
+				<div style="display: flex; padding: 4px" id="template-score">
+					<div style="width: 34px" property="rank">1:</div>
+					<div style="flex:1" property="name">----</div>
+					<div property="score">--</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Post a new score here -->
+		<div style="display: flex; width: 322px;">
+			<input type="number" id="new-score" placeholder="Enter a new score" style="flex: 1"/><button id="post-score-btn">Post Score</button>
+		</div>
+		<hr/>
+
+
+		<!-- Unlock a medal -->
+		<div id="medals" style="display: inline-flex;">
+			<div style="margin: 4px; padding: 4px; width: 240px; display: flex; align-items: center; border: 1px solid white; background-color: #293799;">
+				<div><img style="width: 50px; height: 50px; margin-right: 6px"/></div>
+				<div>
+					<strong style="display:block">Medal Name</strong>
+					<em style="display:block">xxxx Points</em>
+					<a href="">Click to Unlock</a>
+					<span style="color:green; font-weight: bold;">Unlocked!</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- END TEST SCREEN -->
+
+
+	<!-- Load the JavaScript -->
+	<script src="test.js"></script>
 </body>
 </html>
