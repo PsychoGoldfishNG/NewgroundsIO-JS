@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Execute **/
+/** Start NewgroundsIO.objects.Execute **/
 
-	/**
- * Contains all the information needed to execute an API component.
-	 */
 	class Execute extends NewgroundsIO.BaseObject {
 
 		/**
@@ -16,21 +13,19 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Execute';
-
-				this._component = null;
-				this._parameters = null;
-				this._secure = null;
-				this.__properties = this.__properties.concat(["component","parameters","secure"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
-				}
-
+			this.__object = "Execute";
+			this._component = null;
+			this._parameters = null;
+			this._secure = null;
 			this.__required = ["component","secure"];
+			this.__properties = this.__properties.concat(["component","parameters","secure"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
+				}
+			}
 
 			this.__componentObject = null;
 		}
@@ -109,8 +104,6 @@
 
 		}
 
-		objectMap = {};
-
 		/**
 		 * Set a component object to execute
 		 * @param {NewgroundsIO.BaseComponent} component Any NGIO component object
@@ -171,6 +164,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.Execute **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Execute = Execute;
 
 })();

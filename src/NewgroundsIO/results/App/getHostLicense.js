@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.App.getHostLicense **/
+/** Start NewgroundsIO.results.App.getHostLicense **/
 
-	/**
-	 * Returned when App.getHostLicense component is called
-	 */
 	class getHostLicense extends NewgroundsIO.BaseResult {
 
 		/**
@@ -39,10 +36,6 @@
 			this._host_approved = _host_approved ? true:false;
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadMoreGames **/
+/** Start NewgroundsIO.results.Loader.loadMoreGames **/
 
-	/**
-	 * Returned when Loader.loadMoreGames component is called
-	 */
 	class loadMoreGames extends NewgroundsIO.BaseResult {
 
 		/**
@@ -39,10 +36,6 @@
 			this._url = String(_url);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

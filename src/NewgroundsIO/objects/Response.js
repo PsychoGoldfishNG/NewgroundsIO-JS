@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Response **/
+/** Start NewgroundsIO.objects.Response **/
 
-	/**
- * Contains all return output from an API request.
-	 */
 	class Response extends NewgroundsIO.BaseObject {
 
 		/**
@@ -20,24 +17,22 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Response';
-
-				this._app_id = null;
-				this._success = null;
-				this._debug = null;
-				this._result = null;
-				this._error = null;
-				this._api_version = null;
-				this._help_url = null;
-				this.__properties = this.__properties.concat(["app_id","success","debug","result","error","api_version","help_url"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Response";
+			this._app_id = null;
+			this._success = null;
+			this._debug = null;
+			this._result = null;
+			this._error = null;
+			this._api_version = null;
+			this._help_url = null;
+			this.__properties = this.__properties.concat(["app_id","success","debug","result","error","api_version","help_url"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -83,6 +78,9 @@
 
 		set debug(_debug)
 		{
+			if (!(_debug instanceof NewgroundsIO.objects.Debug) && typeof(_debug) === 'object')
+				_debug = new NewgroundsIO.objects.Debug(_debug);
+
 				if (_debug !== null && !(_debug instanceof NewgroundsIO.objects.Debug))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Debug, got ",_debug);
 
@@ -127,6 +125,9 @@
 
 		set error(_error)
 		{
+			if (!(_error instanceof NewgroundsIO.objects.Error) && typeof(_error) === 'object')
+				_error = new NewgroundsIO.objects.Error(_error);
+
 				if (_error !== null && !(_error instanceof NewgroundsIO.objects.Error))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Error, got ",_error);
 
@@ -185,6 +186,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.Response **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Response = Response;
 
 })();

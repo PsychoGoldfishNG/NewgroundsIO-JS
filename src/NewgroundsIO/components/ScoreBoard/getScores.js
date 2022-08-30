@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.ScoreBoard.getScores **/
+/** Start NewgroundsIO.components.ScoreBoard.getScores **/
 
-	/**
-	 * Used to call the ScoreBoard.getScores component.
-	 */
 	class getScores extends NewgroundsIO.BaseComponent {
 
 		/**

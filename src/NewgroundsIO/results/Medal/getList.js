@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Medal.getList **/
+/** Start NewgroundsIO.results.Medal.getList **/
 
-	/**
-	 * Returned when Medal.getList component is called
-	 */
 	class getList extends NewgroundsIO.BaseResult {
 
 		/**
@@ -49,8 +46,6 @@
 			}
 
 		}
-
-		objectMap = {};
 
 		arrayMap = {"medals":"Medal"};
 

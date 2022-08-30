@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.App.logView **/
+/** Start NewgroundsIO.components.App.logView **/
 
-	/**
-	 * Used to call the App.logView component.
-	 */
 	class logView extends NewgroundsIO.BaseComponent {
 
 		/**

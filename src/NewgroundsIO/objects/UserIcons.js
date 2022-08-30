@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.UserIcons **/
+/** Start NewgroundsIO.objects.UserIcons **/
 
-	/**
- * Contains any icons associated with this user.
-	 */
 	class UserIcons extends NewgroundsIO.BaseObject {
 
 		/**
@@ -15,20 +12,18 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'UserIcons';
-
-				this._small = null;
-				this._medium = null;
-				this._large = null;
-				this.__properties = this.__properties.concat(["small","medium","large"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "UserIcons";
+			this._small = null;
+			this._medium = null;
+			this._large = null;
+			this.__properties = this.__properties.concat(["small","medium","large"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -79,11 +74,10 @@
 
 		}
 
-		objectMap = {};
-
 	}
 
 /** End Class NewgroundsIO.objects.UserIcons **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.UserIcons = UserIcons;
 
 })();

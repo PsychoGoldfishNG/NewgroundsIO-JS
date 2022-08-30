@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadReferral **/
+/** Start NewgroundsIO.components.Loader.loadReferral **/
 
-	/**
-	 * Used to call the Loader.loadReferral component.
-	 */
 	class loadReferral extends NewgroundsIO.BaseComponent {
 
 		/**

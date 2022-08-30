@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Medal **/
+/** Start NewgroundsIO.objects.Medal **/
 
-	/**
- * Contains information about a medal.
-	 */
 	class Medal extends NewgroundsIO.BaseObject {
 
 		/**
@@ -20,25 +17,23 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Medal';
-
-				this._id = null;
-				this._name = null;
-				this._description = null;
-				this._icon = null;
-				this._value = null;
-				this._difficulty = null;
-				this._secret = null;
-				this._unlocked = null;
-				this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Medal";
+			this._id = null;
+			this._name = null;
+			this._description = null;
+			this._icon = null;
+			this._value = null;
+			this._difficulty = null;
+			this._secret = null;
+			this._unlocked = null;
+			this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -174,8 +169,6 @@
 
 		}
 
-		objectMap = {};
-
 	
 		/**
 		 * @callback responseCallback
@@ -200,6 +193,7 @@
 			}
 
 /** End Class NewgroundsIO.objects.Medal **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Medal = Medal;
 
 })();

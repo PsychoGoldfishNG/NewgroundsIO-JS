@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.CloudSave.loadSlots **/
+/** Start NewgroundsIO.results.CloudSave.loadSlots **/
 
-	/**
-	 * Returned when CloudSave.loadSlots component is called
-	 */
 	class loadSlots extends NewgroundsIO.BaseResult {
 
 		/**
@@ -49,8 +46,6 @@
 			}
 
 		}
-
-		objectMap = {};
 
 		arrayMap = {"slots":"SaveSlot"};
 

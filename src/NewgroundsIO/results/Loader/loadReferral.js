@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadReferral **/
+/** Start NewgroundsIO.results.Loader.loadReferral **/
 
-	/**
-	 * Returned when Loader.loadReferral component is called
-	 */
 	class loadReferral extends NewgroundsIO.BaseResult {
 
 		/**
@@ -39,10 +36,6 @@
 			this._url = String(_url);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

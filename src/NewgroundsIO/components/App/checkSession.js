@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.App.checkSession **/
+/** Start NewgroundsIO.components.App.checkSession **/
 
-	/**
-	 * Used to call the App.checkSession component.
-	 */
 	class checkSession extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -14,7 +11,6 @@
 			super();
 
 			this.__object = "App.checkSession";
-			this.__requireSession = true;
 		}
 
 	}

@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadAuthorUrl **/
+/** Start NewgroundsIO.components.Loader.loadAuthorUrl **/
 
-	/**
-	 * Used to call the Loader.loadAuthorUrl component.
-	 */
 	class loadAuthorUrl extends NewgroundsIO.BaseComponent {
 
 		/**

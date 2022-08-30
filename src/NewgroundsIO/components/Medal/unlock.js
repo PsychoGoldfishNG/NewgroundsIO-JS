@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Medal.unlock **/
+/** Start NewgroundsIO.components.Medal.unlock **/
 
-	/**
-	 * Used to call the Medal.unlock component.
-	 */
 	class unlock extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -18,8 +15,6 @@
 			this.__object = "Medal.unlock";
 			this._id = null;
 			this.__required = ["id"];
-			this.__isSecure = true;
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {

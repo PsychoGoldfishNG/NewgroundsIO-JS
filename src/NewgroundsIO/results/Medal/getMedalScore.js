@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Medal.getMedalScore **/
+/** Start NewgroundsIO.results.Medal.getMedalScore **/
 
-	/**
-	 * Returned when Medal.getMedalScore component is called
-	 */
 	class getMedalScore extends NewgroundsIO.BaseResult {
 
 		/**
@@ -42,10 +39,6 @@
 			if (isNaN(this._medal_score)) this._medal_score = null;
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

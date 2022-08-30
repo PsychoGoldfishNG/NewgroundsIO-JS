@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.SaveSlot **/
+/** Start NewgroundsIO.objects.SaveSlot **/
 
-	/**
- * Contains information about a CloudSave slot.
-	 */
 	class SaveSlot extends NewgroundsIO.BaseObject {
 
 		/**
@@ -17,22 +14,20 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'SaveSlot';
-
-				this._id = null;
-				this._size = null;
-				this._datetime = null;
-				this._timestamp = null;
-				this._url = null;
-				this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "SaveSlot";
+			this._id = null;
+			this._size = null;
+			this._datetime = null;
+			this._timestamp = null;
+			this._url = null;
+			this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -121,8 +116,6 @@
 
 		}
 
-		objectMap = {};
-
 	
 		/**
 		 * @callback getDataCallback
@@ -210,6 +203,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.SaveSlot **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.SaveSlot = SaveSlot;
 
 })();

@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadNewgrounds **/
+/** Start NewgroundsIO.results.Loader.loadNewgrounds **/
 
-	/**
-	 * Returned when Loader.loadNewgrounds component is called
-	 */
 	class loadNewgrounds extends NewgroundsIO.BaseResult {
 
 		/**
@@ -39,10 +36,6 @@
 			this._url = String(_url);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadMoreGames **/
+/** Start NewgroundsIO.components.Loader.loadMoreGames **/
 
-	/**
-	 * Used to call the Loader.loadMoreGames component.
-	 */
 	class loadMoreGames extends NewgroundsIO.BaseComponent {
 
 		/**

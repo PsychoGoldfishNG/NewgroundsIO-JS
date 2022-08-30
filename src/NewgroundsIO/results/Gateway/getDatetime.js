@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Gateway.getDatetime **/
+/** Start NewgroundsIO.results.Gateway.getDatetime **/
 
-	/**
-	 * Returned when Gateway.getDatetime component is called
-	 */
 	class getDatetime extends NewgroundsIO.BaseResult {
 
 		/**
@@ -60,10 +57,6 @@
 			if (isNaN(this._timestamp)) this._timestamp = null;
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.App.startSession **/
+/** Start NewgroundsIO.components.App.startSession **/
 
-	/**
-	 * Used to call the App.startSession component.
-	 */
 	class startSession extends NewgroundsIO.BaseComponent {
 
 		/**

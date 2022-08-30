@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Debug **/
+/** Start NewgroundsIO.objects.Debug **/
 
-	/**
- * Contains extra debugging information.
-	 */
 	class Debug extends NewgroundsIO.BaseObject {
 
 		/**
@@ -14,19 +11,17 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Debug';
-
-				this._exec_time = null;
-				this._request = null;
-				this.__properties = this.__properties.concat(["exec_time","request"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Debug";
+			this._exec_time = null;
+			this._request = null;
+			this.__properties = this.__properties.concat(["exec_time","request"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -56,6 +51,9 @@
 
 		set request(_request)
 		{
+			if (!(_request instanceof NewgroundsIO.objects.Request) && typeof(_request) === 'object')
+				_request = new NewgroundsIO.objects.Request(_request);
+
 				if (_request !== null && !(_request instanceof NewgroundsIO.objects.Request))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Request, got ",_request);
 
@@ -67,6 +65,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.Debug **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Debug = Debug;
 
 })();

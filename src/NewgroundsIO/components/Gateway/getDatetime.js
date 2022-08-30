@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Gateway.getDatetime **/
+/** Start NewgroundsIO.components.Gateway.getDatetime **/
 
-	/**
-	 * Used to call the Gateway.getDatetime component.
-	 */
 	class getDatetime extends NewgroundsIO.BaseComponent {
 
 		/**

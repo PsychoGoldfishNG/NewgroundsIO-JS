@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.ScoreBoard **/
+/** Start NewgroundsIO.objects.ScoreBoard **/
 
-	/**
- * Contains information about a scoreboard.
-	 */
 	class ScoreBoard extends NewgroundsIO.BaseObject {
 
 		/**
@@ -14,19 +11,17 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'ScoreBoard';
-
-				this._id = null;
-				this._name = null;
-				this.__properties = this.__properties.concat(["id","name"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "ScoreBoard";
+			this._id = null;
+			this._name = null;
+			this.__properties = this.__properties.concat(["id","name"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -62,8 +57,6 @@
 			this._name = String(_name);
 
 		}
-
-		objectMap = {};
 
  
 		/**
@@ -130,6 +123,7 @@
 			}
 
 /** End Class NewgroundsIO.objects.ScoreBoard **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 })();

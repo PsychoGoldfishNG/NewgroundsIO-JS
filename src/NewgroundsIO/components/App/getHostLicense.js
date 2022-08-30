@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.App.getHostLicense **/
+/** Start NewgroundsIO.components.App.getHostLicense **/
 
-	/**
-	 * Used to call the App.getHostLicense component.
-	 */
 	class getHostLicense extends NewgroundsIO.BaseComponent {
 
 		/**

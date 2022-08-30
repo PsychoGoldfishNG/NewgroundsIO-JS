@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Score **/
+/** Start NewgroundsIO.objects.Score **/
 
-	/**
- * Contains information about a score posted to a scoreboard.
-	 */
 	class Score extends NewgroundsIO.BaseObject {
 
 		/**
@@ -16,21 +13,19 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Score';
-
-				this._user = null;
-				this._value = null;
-				this._formatted_value = null;
-				this._tag = null;
-				this.__properties = this.__properties.concat(["user","value","formatted_value","tag"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Score";
+			this._user = null;
+			this._value = null;
+			this._formatted_value = null;
+			this._tag = null;
+			this.__properties = this.__properties.concat(["user","value","formatted_value","tag"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -44,6 +39,9 @@
 
 		set user(_user)
 		{
+			if (!(_user instanceof NewgroundsIO.objects.User) && typeof(_user) === 'object')
+				_user = new NewgroundsIO.objects.User(_user);
+
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
@@ -105,6 +103,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.Score **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Score = Score;
 
 })();

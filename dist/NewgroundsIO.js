@@ -2080,11 +2080,8 @@ NewgroundsIO.SessionState.SESSION_WAITING = [
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/App/checkSession.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.App.checkSession **/
+/** Start NewgroundsIO.components.App.checkSession **/
 
-	/**
-	 * Used to call the App.checkSession component.
-	 */
 	class checkSession extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2095,7 +2092,6 @@ NewgroundsIO.SessionState.SESSION_WAITING = [
 			super();
 
 			this.__object = "App.checkSession";
-			this.__requireSession = true;
 		}
 
 	}
@@ -2111,11 +2107,8 @@ NewgroundsIO.components.App.checkSession = checkSession;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/App/endSession.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.App.endSession **/
+/** Start NewgroundsIO.components.App.endSession **/
 
-	/**
-	 * Used to call the App.endSession component.
-	 */
 	class endSession extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2126,7 +2119,6 @@ NewgroundsIO.components.App.checkSession = checkSession;
 			super();
 
 			this.__object = "App.endSession";
-			this.__requireSession = true;
 		}
 
 	}
@@ -2142,11 +2134,8 @@ NewgroundsIO.components.App.endSession = endSession;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/App/getCurrentVersion.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.App.getCurrentVersion **/
+/** Start NewgroundsIO.components.App.getCurrentVersion **/
 
-	/**
-	 * Used to call the App.getCurrentVersion component.
-	 */
 	class getCurrentVersion extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2197,11 +2186,8 @@ NewgroundsIO.components.App.getCurrentVersion = getCurrentVersion;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/App/getHostLicense.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.App.getHostLicense **/
+/** Start NewgroundsIO.components.App.getHostLicense **/
 
-	/**
-	 * Used to call the App.getHostLicense component.
-	 */
 	class getHostLicense extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2252,11 +2238,8 @@ NewgroundsIO.components.App.getHostLicense = getHostLicense;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/App/logView.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.App.logView **/
+/** Start NewgroundsIO.components.App.logView **/
 
-	/**
-	 * Used to call the App.logView component.
-	 */
 	class logView extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2308,11 +2291,8 @@ NewgroundsIO.components.App.logView = logView;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/App/startSession.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.App.startSession **/
+/** Start NewgroundsIO.components.App.startSession **/
 
-	/**
-	 * Used to call the App.startSession component.
-	 */
 	class startSession extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2365,11 +2345,8 @@ NewgroundsIO.components.App.startSession = startSession;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/CloudSave/clearSlot.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.CloudSave.clearSlot **/
+/** Start NewgroundsIO.components.CloudSave.clearSlot **/
 
-	/**
-	 * Used to call the CloudSave.clearSlot component.
-	 */
 	class clearSlot extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2384,7 +2361,6 @@ NewgroundsIO.components.App.startSession = startSession;
 			this.__object = "CloudSave.clearSlot";
 			this._id = null;
 			this.__required = ["id"];
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
@@ -2424,11 +2400,8 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/CloudSave/loadSlot.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.CloudSave.loadSlot **/
+/** Start NewgroundsIO.components.CloudSave.loadSlot **/
 
-	/**
-	 * Used to call the CloudSave.loadSlot component.
-	 */
 	class loadSlot extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2443,7 +2416,6 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 			this.__object = "CloudSave.loadSlot";
 			this._id = null;
 			this.__required = ["id"];
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
@@ -2483,11 +2455,8 @@ NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/CloudSave/loadSlots.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.CloudSave.loadSlots **/
+/** Start NewgroundsIO.components.CloudSave.loadSlots **/
 
-	/**
-	 * Used to call the CloudSave.loadSlots component.
-	 */
 	class loadSlots extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2498,7 +2467,6 @@ NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
 			super();
 
 			this.__object = "CloudSave.loadSlots";
-			this.__requireSession = true;
 		}
 
 	}
@@ -2514,11 +2482,8 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/CloudSave/setData.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.CloudSave.setData **/
+/** Start NewgroundsIO.components.CloudSave.setData **/
 
-	/**
-	 * Used to call the CloudSave.setData component.
-	 */
 	class setData extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2535,7 +2500,6 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 			this._id = null;
 			this._data = null;
 			this.__required = ["id","data"];
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id","data"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
@@ -2591,11 +2555,8 @@ NewgroundsIO.components.CloudSave.setData = setData;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Event/logEvent.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Event.logEvent **/
+/** Start NewgroundsIO.components.Event.logEvent **/
 
-	/**
-	 * Used to call the Event.logEvent component.
-	 */
 	class logEvent extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2665,11 +2626,8 @@ NewgroundsIO.components.Event.logEvent = logEvent;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Gateway/getDatetime.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Gateway.getDatetime **/
+/** Start NewgroundsIO.components.Gateway.getDatetime **/
 
-	/**
-	 * Used to call the Gateway.getDatetime component.
-	 */
 	class getDatetime extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2695,11 +2653,8 @@ NewgroundsIO.components.Gateway.getDatetime = getDatetime;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Gateway/getVersion.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Gateway.getVersion **/
+/** Start NewgroundsIO.components.Gateway.getVersion **/
 
-	/**
-	 * Used to call the Gateway.getVersion component.
-	 */
 	class getVersion extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2725,11 +2680,8 @@ NewgroundsIO.components.Gateway.getVersion = getVersion;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Gateway/ping.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Gateway.ping **/
+/** Start NewgroundsIO.components.Gateway.ping **/
 
-	/**
-	 * Used to call the Gateway.ping component.
-	 */
 	class ping extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2755,11 +2707,8 @@ NewgroundsIO.components.Gateway.ping = ping;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Loader/loadAuthorUrl.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadAuthorUrl **/
+/** Start NewgroundsIO.components.Loader.loadAuthorUrl **/
 
-	/**
-	 * Used to call the Loader.loadAuthorUrl component.
-	 */
 	class loadAuthorUrl extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2830,11 +2779,8 @@ NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Loader/loadMoreGames.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadMoreGames **/
+/** Start NewgroundsIO.components.Loader.loadMoreGames **/
 
-	/**
-	 * Used to call the Loader.loadMoreGames component.
-	 */
 	class loadMoreGames extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2905,11 +2851,8 @@ NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Loader/loadNewgrounds.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadNewgrounds **/
+/** Start NewgroundsIO.components.Loader.loadNewgrounds **/
 
-	/**
-	 * Used to call the Loader.loadNewgrounds component.
-	 */
 	class loadNewgrounds extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -2980,11 +2923,8 @@ NewgroundsIO.components.Loader.loadNewgrounds = loadNewgrounds;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Loader/loadOfficialUrl.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadOfficialUrl **/
+/** Start NewgroundsIO.components.Loader.loadOfficialUrl **/
 
-	/**
-	 * Used to call the Loader.loadOfficialUrl component.
-	 */
 	class loadOfficialUrl extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3055,11 +2995,8 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Loader/loadReferral.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadReferral **/
+/** Start NewgroundsIO.components.Loader.loadReferral **/
 
-	/**
-	 * Used to call the Loader.loadReferral component.
-	 */
 	class loadReferral extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3148,11 +3085,8 @@ NewgroundsIO.components.Loader.loadReferral = loadReferral;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Medal/getList.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Medal.getList **/
+/** Start NewgroundsIO.components.Medal.getList **/
 
-	/**
-	 * Used to call the Medal.getList component.
-	 */
 	class getList extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3178,11 +3112,8 @@ NewgroundsIO.components.Medal.getList = getList;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Medal/getMedalScore.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Medal.getMedalScore **/
+/** Start NewgroundsIO.components.Medal.getMedalScore **/
 
-	/**
-	 * Used to call the Medal.getMedalScore component.
-	 */
 	class getMedalScore extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3193,7 +3124,6 @@ NewgroundsIO.components.Medal.getList = getList;
 			super();
 
 			this.__object = "Medal.getMedalScore";
-			this.__requireSession = true;
 		}
 
 	}
@@ -3209,11 +3139,8 @@ NewgroundsIO.components.Medal.getMedalScore = getMedalScore;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/Medal/unlock.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.Medal.unlock **/
+/** Start NewgroundsIO.components.Medal.unlock **/
 
-	/**
-	 * Used to call the Medal.unlock component.
-	 */
 	class unlock extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3228,8 +3155,6 @@ NewgroundsIO.components.Medal.getMedalScore = getMedalScore;
 			this.__object = "Medal.unlock";
 			this._id = null;
 			this.__required = ["id"];
-			this.__isSecure = true;
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
@@ -3269,11 +3194,8 @@ NewgroundsIO.components.Medal.unlock = unlock;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/ScoreBoard/getBoards.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.ScoreBoard.getBoards **/
+/** Start NewgroundsIO.components.ScoreBoard.getBoards **/
 
-	/**
-	 * Used to call the ScoreBoard.getBoards component.
-	 */
 	class getBoards extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3299,11 +3221,8 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/ScoreBoard/getScores.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.ScoreBoard.getScores **/
+/** Start NewgroundsIO.components.ScoreBoard.getScores **/
 
-	/**
-	 * Used to call the ScoreBoard.getScores component.
-	 */
 	class getScores extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3468,11 +3387,8 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/components/ScoreBoard/postScore.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.components.ScoreBoard.postScore **/
+/** Start NewgroundsIO.components.ScoreBoard.postScore **/
 
-	/**
-	 * Used to call the ScoreBoard.postScore component.
-	 */
 	class postScore extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -3491,8 +3407,6 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 			this._value = null;
 			this._tag = null;
 			this.__required = ["id","value"];
-			this.__isSecure = true;
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id","value","tag"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
@@ -3566,11 +3480,8 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Debug.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Debug **/
+/** Start NewgroundsIO.objects.Debug **/
 
-	/**
- * Contains extra debugging information.
-	 */
 	class Debug extends NewgroundsIO.BaseObject {
 
 		/**
@@ -3581,19 +3492,17 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Debug';
-
-				this._exec_time = null;
-				this._request = null;
-				this.__properties = this.__properties.concat(["exec_time","request"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Debug";
+			this._exec_time = null;
+			this._request = null;
+			this.__properties = this.__properties.concat(["exec_time","request"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -3623,6 +3532,9 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 
 		set request(_request)
 		{
+			if (!(_request instanceof NewgroundsIO.objects.Request) && typeof(_request) === 'object')
+				_request = new NewgroundsIO.objects.Request(_request);
+
 				if (_request !== null && !(_request instanceof NewgroundsIO.objects.Request))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Request, got ",_request);
 
@@ -3634,6 +3546,7 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 	}
 
 /** End Class NewgroundsIO.objects.Debug **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Debug = Debug;
 
 })();
@@ -3643,10 +3556,8 @@ NewgroundsIO.objects.Debug = Debug;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Error.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Error **/
+/** Start NewgroundsIO.objects.Error **/
 
-	/**
-	 */
 	class Error extends NewgroundsIO.BaseObject {
 
 		/**
@@ -3657,19 +3568,17 @@ NewgroundsIO.objects.Debug = Debug;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Error';
-
-				this._message = null;
-				this._code = null;
-				this.__properties = this.__properties.concat(["message","code"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Error";
+			this._message = null;
+			this._code = null;
+			this.__properties = this.__properties.concat(["message","code"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -3706,11 +3615,10 @@ NewgroundsIO.objects.Debug = Debug;
 
 		}
 
-		objectMap = {};
-
 	}
 
 /** End Class NewgroundsIO.objects.Error **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Error = Error;
 
 })();
@@ -3720,11 +3628,8 @@ NewgroundsIO.objects.Error = Error;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Execute.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Execute **/
+/** Start NewgroundsIO.objects.Execute **/
 
-	/**
- * Contains all the information needed to execute an API component.
-	 */
 	class Execute extends NewgroundsIO.BaseObject {
 
 		/**
@@ -3737,21 +3642,19 @@ NewgroundsIO.objects.Error = Error;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Execute';
-
-				this._component = null;
-				this._parameters = null;
-				this._secure = null;
-				this.__properties = this.__properties.concat(["component","parameters","secure"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
-				}
-
+			this.__object = "Execute";
+			this._component = null;
+			this._parameters = null;
+			this._secure = null;
 			this.__required = ["component","secure"];
+			this.__properties = this.__properties.concat(["component","parameters","secure"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
+				}
+			}
 
 			this.__componentObject = null;
 		}
@@ -3830,8 +3733,6 @@ NewgroundsIO.objects.Error = Error;
 
 		}
 
-		objectMap = {};
-
 		/**
 		 * Set a component object to execute
 		 * @param {NewgroundsIO.BaseComponent} component Any NGIO component object
@@ -3892,6 +3793,7 @@ NewgroundsIO.objects.Error = Error;
 	}
 
 /** End Class NewgroundsIO.objects.Execute **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Execute = Execute;
 
 })();
@@ -3901,11 +3803,8 @@ NewgroundsIO.objects.Execute = Execute;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Medal.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Medal **/
+/** Start NewgroundsIO.objects.Medal **/
 
-	/**
- * Contains information about a medal.
-	 */
 	class Medal extends NewgroundsIO.BaseObject {
 
 		/**
@@ -3922,25 +3821,23 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Medal';
-
-				this._id = null;
-				this._name = null;
-				this._description = null;
-				this._icon = null;
-				this._value = null;
-				this._difficulty = null;
-				this._secret = null;
-				this._unlocked = null;
-				this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Medal";
+			this._id = null;
+			this._name = null;
+			this._description = null;
+			this._icon = null;
+			this._value = null;
+			this._difficulty = null;
+			this._secret = null;
+			this._unlocked = null;
+			this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -4076,8 +3973,6 @@ NewgroundsIO.objects.Execute = Execute;
 
 		}
 
-		objectMap = {};
-
 	
 		/**
 		 * @callback responseCallback
@@ -4102,6 +3997,7 @@ NewgroundsIO.objects.Execute = Execute;
 			}
 
 /** End Class NewgroundsIO.objects.Medal **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Medal = Medal;
 
 })();
@@ -4111,11 +4007,8 @@ NewgroundsIO.objects.Medal = Medal;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Request.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Request **/
+/** Start NewgroundsIO.objects.Request **/
 
-	/**
- * A top-level wrapper containing any information needed to authenticate the application/user and any component calls being made.
-	 */
 	class Request extends NewgroundsIO.BaseObject {
 
 		/**
@@ -4129,20 +4022,18 @@ NewgroundsIO.objects.Medal = Medal;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Request';
-
-				this._execute = null;
-				this._debug = null;
-				this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Request";
+			this._execute = null;
+			this._debug = null;
+			this.__required = ["app_id","execute"];
+			this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
-			this.__required = ["execute"];
+			}
 
 		}
 
@@ -4157,6 +4048,9 @@ NewgroundsIO.objects.Medal = Medal;
 
 		set execute(_execute)
 		{
+			if (!(_execute instanceof NewgroundsIO.objects.Execute) && typeof(_execute) === 'object')
+				_execute = new NewgroundsIO.objects.Execute(_execute);
+
 			if (Array.isArray(_execute)) {
 				let newArr = [];
 				_execute.forEach(function(val,index) {
@@ -4208,6 +4102,8 @@ NewgroundsIO.objects.Medal = Medal;
 
 		objectMap = {"execute":"Execute"};
 
+		arrayMap = {"execute":"Execute"};
+
 		/**
 		 * Gets the appID from a core object
 		 * @returns {string}
@@ -4229,6 +4125,7 @@ NewgroundsIO.objects.Medal = Medal;
 	}
 
 /** End Class NewgroundsIO.objects.Request **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Request = Request;
 
 })();
@@ -4238,11 +4135,8 @@ NewgroundsIO.objects.Request = Request;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Response.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Response **/
+/** Start NewgroundsIO.objects.Response **/
 
-	/**
- * Contains all return output from an API request.
-	 */
 	class Response extends NewgroundsIO.BaseObject {
 
 		/**
@@ -4259,24 +4153,22 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Response';
-
-				this._app_id = null;
-				this._success = null;
-				this._debug = null;
-				this._result = null;
-				this._error = null;
-				this._api_version = null;
-				this._help_url = null;
-				this.__properties = this.__properties.concat(["app_id","success","debug","result","error","api_version","help_url"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Response";
+			this._app_id = null;
+			this._success = null;
+			this._debug = null;
+			this._result = null;
+			this._error = null;
+			this._api_version = null;
+			this._help_url = null;
+			this.__properties = this.__properties.concat(["app_id","success","debug","result","error","api_version","help_url"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -4322,6 +4214,9 @@ NewgroundsIO.objects.Request = Request;
 
 		set debug(_debug)
 		{
+			if (!(_debug instanceof NewgroundsIO.objects.Debug) && typeof(_debug) === 'object')
+				_debug = new NewgroundsIO.objects.Debug(_debug);
+
 				if (_debug !== null && !(_debug instanceof NewgroundsIO.objects.Debug))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Debug, got ",_debug);
 
@@ -4366,6 +4261,9 @@ NewgroundsIO.objects.Request = Request;
 
 		set error(_error)
 		{
+			if (!(_error instanceof NewgroundsIO.objects.Error) && typeof(_error) === 'object')
+				_error = new NewgroundsIO.objects.Error(_error);
+
 				if (_error !== null && !(_error instanceof NewgroundsIO.objects.Error))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Error, got ",_error);
 
@@ -4424,6 +4322,7 @@ NewgroundsIO.objects.Request = Request;
 	}
 
 /** End Class NewgroundsIO.objects.Response **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Response = Response;
 
 })();
@@ -4433,11 +4332,8 @@ NewgroundsIO.objects.Response = Response;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/SaveSlot.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.SaveSlot **/
+/** Start NewgroundsIO.objects.SaveSlot **/
 
-	/**
- * Contains information about a CloudSave slot.
-	 */
 	class SaveSlot extends NewgroundsIO.BaseObject {
 
 		/**
@@ -4451,22 +4347,20 @@ NewgroundsIO.objects.Response = Response;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'SaveSlot';
-
-				this._id = null;
-				this._size = null;
-				this._datetime = null;
-				this._timestamp = null;
-				this._url = null;
-				this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "SaveSlot";
+			this._id = null;
+			this._size = null;
+			this._datetime = null;
+			this._timestamp = null;
+			this._url = null;
+			this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -4555,8 +4449,6 @@ NewgroundsIO.objects.Response = Response;
 
 		}
 
-		objectMap = {};
-
 	
 		/**
 		 * @callback getDataCallback
@@ -4644,6 +4536,7 @@ NewgroundsIO.objects.Response = Response;
 	}
 
 /** End Class NewgroundsIO.objects.SaveSlot **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.SaveSlot = SaveSlot;
 
 })();
@@ -4653,11 +4546,8 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Score.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Score **/
+/** Start NewgroundsIO.objects.Score **/
 
-	/**
- * Contains information about a score posted to a scoreboard.
-	 */
 	class Score extends NewgroundsIO.BaseObject {
 
 		/**
@@ -4670,21 +4560,19 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Score';
-
-				this._user = null;
-				this._value = null;
-				this._formatted_value = null;
-				this._tag = null;
-				this.__properties = this.__properties.concat(["user","value","formatted_value","tag"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Score";
+			this._user = null;
+			this._value = null;
+			this._formatted_value = null;
+			this._tag = null;
+			this.__properties = this.__properties.concat(["user","value","formatted_value","tag"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -4698,6 +4586,9 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 
 		set user(_user)
 		{
+			if (!(_user instanceof NewgroundsIO.objects.User) && typeof(_user) === 'object')
+				_user = new NewgroundsIO.objects.User(_user);
+
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
@@ -4759,6 +4650,7 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 	}
 
 /** End Class NewgroundsIO.objects.Score **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Score = Score;
 
 })();
@@ -4768,11 +4660,8 @@ NewgroundsIO.objects.Score = Score;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/ScoreBoard.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.ScoreBoard **/
+/** Start NewgroundsIO.objects.ScoreBoard **/
 
-	/**
- * Contains information about a scoreboard.
-	 */
 	class ScoreBoard extends NewgroundsIO.BaseObject {
 
 		/**
@@ -4783,19 +4672,17 @@ NewgroundsIO.objects.Score = Score;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'ScoreBoard';
-
-				this._id = null;
-				this._name = null;
-				this.__properties = this.__properties.concat(["id","name"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "ScoreBoard";
+			this._id = null;
+			this._name = null;
+			this.__properties = this.__properties.concat(["id","name"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -4831,8 +4718,6 @@ NewgroundsIO.objects.Score = Score;
 			this._name = String(_name);
 
 		}
-
-		objectMap = {};
 
  
 		/**
@@ -4899,6 +4784,7 @@ NewgroundsIO.objects.Score = Score;
 			}
 
 /** End Class NewgroundsIO.objects.ScoreBoard **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 })();
@@ -4908,11 +4794,8 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/Session.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.Session **/
+/** Start NewgroundsIO.objects.Session **/
 
-	/**
- * Contains information about the current user session.
-	 */
 	class Session extends NewgroundsIO.BaseObject {
 
 		/**
@@ -4926,22 +4809,20 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Session';
-
-				this._id = null;
-				this._user = null;
-				this._expired = null;
-				this._remember = null;
-				this._passport_url = null;
-				this.__properties = this.__properties.concat(["id","user","expired","remember","passport_url"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Session";
+			this._id = null;
+			this._user = null;
+			this._expired = null;
+			this._remember = null;
+			this._passport_url = null;
+			this.__properties = this.__properties.concat(["id","user","expired","remember","passport_url"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 
 			/**
 			 * The current state of this session.
@@ -5032,6 +4913,9 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 		set user(_user)
 		{
+			if (!(_user instanceof NewgroundsIO.objects.User) && typeof(_user) === 'object')
+				_user = new NewgroundsIO.objects.User(_user);
+
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
@@ -5483,6 +5367,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			}
 
 /** End Class NewgroundsIO.objects.Session **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Session = Session;
 
 })();
@@ -5492,11 +5377,8 @@ NewgroundsIO.objects.Session = Session;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/User.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.User **/
+/** Start NewgroundsIO.objects.User **/
 
-	/**
- * Contains information about a user.
-	 */
 	class User extends NewgroundsIO.BaseObject {
 
 		/**
@@ -5509,21 +5391,19 @@ NewgroundsIO.objects.Session = Session;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'User';
-
-				this._id = null;
-				this._name = null;
-				this._icons = null;
-				this._supporter = null;
-				this.__properties = this.__properties.concat(["id","name","icons","supporter"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "User";
+			this._id = null;
+			this._name = null;
+			this._icons = null;
+			this._supporter = null;
+			this.__properties = this.__properties.concat(["id","name","icons","supporter"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -5571,6 +5451,9 @@ NewgroundsIO.objects.Session = Session;
 
 		set icons(_icons)
 		{
+			if (!(_icons instanceof NewgroundsIO.objects.UserIcons) && typeof(_icons) === 'object')
+				_icons = new NewgroundsIO.objects.UserIcons(_icons);
+
 				if (_icons !== null && !(_icons instanceof NewgroundsIO.objects.UserIcons))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.UserIcons, got ",_icons);
 
@@ -5598,6 +5481,7 @@ NewgroundsIO.objects.Session = Session;
 	}
 
 /** End Class NewgroundsIO.objects.User **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.User = User;
 
 })();
@@ -5607,11 +5491,8 @@ NewgroundsIO.objects.User = User;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/objects/UserIcons.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.objects.UserIcons **/
+/** Start NewgroundsIO.objects.UserIcons **/
 
-	/**
- * Contains any icons associated with this user.
-	 */
 	class UserIcons extends NewgroundsIO.BaseObject {
 
 		/**
@@ -5623,20 +5504,18 @@ NewgroundsIO.objects.User = User;
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'UserIcons';
-
-				this._small = null;
-				this._medium = null;
-				this._large = null;
-				this.__properties = this.__properties.concat(["small","medium","large"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "UserIcons";
+			this._small = null;
+			this._medium = null;
+			this._large = null;
+			this.__properties = this.__properties.concat(["small","medium","large"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -5687,11 +5566,10 @@ NewgroundsIO.objects.User = User;
 
 		}
 
-		objectMap = {};
-
 	}
 
 /** End Class NewgroundsIO.objects.UserIcons **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.UserIcons = UserIcons;
 
 })();
@@ -5701,11 +5579,8 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/App/checkSession.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.App.checkSession **/
+/** Start NewgroundsIO.results.App.checkSession **/
 
-	/**
-	 * Returned when App.checkSession component is called
-	 */
 	class checkSession extends NewgroundsIO.BaseResult {
 
 		/**
@@ -5748,8 +5623,6 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 
 		objectMap = {"session":"Session"};
 
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.App.checkSession **/
@@ -5763,11 +5636,8 @@ NewgroundsIO.results.App.checkSession = checkSession;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/App/getCurrentVersion.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.App.getCurrentVersion **/
+/** Start NewgroundsIO.results.App.getCurrentVersion **/
 
-	/**
-	 * Returned when App.getCurrentVersion component is called
-	 */
 	class getCurrentVersion extends NewgroundsIO.BaseResult {
 
 		/**
@@ -5823,10 +5693,6 @@ NewgroundsIO.results.App.checkSession = checkSession;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.App.getCurrentVersion **/
@@ -5840,11 +5706,8 @@ NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/App/getHostLicense.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.App.getHostLicense **/
+/** Start NewgroundsIO.results.App.getHostLicense **/
 
-	/**
-	 * Returned when App.getHostLicense component is called
-	 */
 	class getHostLicense extends NewgroundsIO.BaseResult {
 
 		/**
@@ -5881,10 +5744,6 @@ NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.App.getHostLicense **/
@@ -5898,11 +5757,8 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/App/startSession.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.App.startSession **/
+/** Start NewgroundsIO.results.App.startSession **/
 
-	/**
-	 * Returned when App.startSession component is called
-	 */
 	class startSession extends NewgroundsIO.BaseResult {
 
 		/**
@@ -5945,8 +5801,6 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 
 		objectMap = {"session":"Session"};
 
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.App.startSession **/
@@ -5960,11 +5814,8 @@ NewgroundsIO.results.App.startSession = startSession;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/CloudSave/clearSlot.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.CloudSave.clearSlot **/
+/** Start NewgroundsIO.results.CloudSave.clearSlot **/
 
-	/**
-	 * Returned when CloudSave.clearSlot component is called
-	 */
 	class clearSlot extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6008,8 +5859,6 @@ NewgroundsIO.results.App.startSession = startSession;
 
 		objectMap = {"slot":"SaveSlot"};
 
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.CloudSave.clearSlot **/
@@ -6023,11 +5872,8 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/CloudSave/loadSlot.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.CloudSave.loadSlot **/
+/** Start NewgroundsIO.results.CloudSave.loadSlot **/
 
-	/**
-	 * Returned when CloudSave.loadSlot component is called
-	 */
 	class loadSlot extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6071,8 +5917,6 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 
 		objectMap = {"slot":"SaveSlot"};
 
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.CloudSave.loadSlot **/
@@ -6086,11 +5930,8 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/CloudSave/loadSlots.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.CloudSave.loadSlots **/
+/** Start NewgroundsIO.results.CloudSave.loadSlots **/
 
-	/**
-	 * Returned when CloudSave.loadSlots component is called
-	 */
 	class loadSlots extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6137,8 +5978,6 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 
 		}
 
-		objectMap = {};
-
 		arrayMap = {"slots":"SaveSlot"};
 
 	}
@@ -6154,11 +5993,8 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/CloudSave/setData.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.CloudSave.setData **/
+/** Start NewgroundsIO.results.CloudSave.setData **/
 
-	/**
-	 * Returned when CloudSave.setData component is called
-	 */
 	class setData extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6201,8 +6037,6 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 
 		objectMap = {"slot":"SaveSlot"};
 
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.CloudSave.setData **/
@@ -6216,11 +6050,8 @@ NewgroundsIO.results.CloudSave.setData = setData;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Event/logEvent.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Event.logEvent **/
+/** Start NewgroundsIO.results.Event.logEvent **/
 
-	/**
-	 * Returned when Event.logEvent component is called
-	 */
 	class logEvent extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6257,10 +6088,6 @@ NewgroundsIO.results.CloudSave.setData = setData;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Event.logEvent **/
@@ -6274,11 +6101,8 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Gateway/getDatetime.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Gateway.getDatetime **/
+/** Start NewgroundsIO.results.Gateway.getDatetime **/
 
-	/**
-	 * Returned when Gateway.getDatetime component is called
-	 */
 	class getDatetime extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6336,10 +6160,6 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Gateway.getDatetime **/
@@ -6353,11 +6173,8 @@ NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Gateway/getVersion.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Gateway.getVersion **/
+/** Start NewgroundsIO.results.Gateway.getVersion **/
 
-	/**
-	 * Returned when Gateway.getVersion component is called
-	 */
 	class getVersion extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6395,10 +6212,6 @@ NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Gateway.getVersion **/
@@ -6412,11 +6225,8 @@ NewgroundsIO.results.Gateway.getVersion = getVersion;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Gateway/ping.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Gateway.ping **/
+/** Start NewgroundsIO.results.Gateway.ping **/
 
-	/**
-	 * Returned when Gateway.ping component is called
-	 */
 	class ping extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6454,10 +6264,6 @@ NewgroundsIO.results.Gateway.getVersion = getVersion;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Gateway.ping **/
@@ -6471,11 +6277,8 @@ NewgroundsIO.results.Gateway.ping = ping;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Loader/loadAuthorUrl.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadAuthorUrl **/
+/** Start NewgroundsIO.results.Loader.loadAuthorUrl **/
 
-	/**
-	 * Returned when Loader.loadAuthorUrl component is called
-	 */
 	class loadAuthorUrl extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6512,10 +6315,6 @@ NewgroundsIO.results.Gateway.ping = ping;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Loader.loadAuthorUrl **/
@@ -6529,11 +6328,8 @@ NewgroundsIO.results.Loader.loadAuthorUrl = loadAuthorUrl;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Loader/loadMoreGames.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadMoreGames **/
+/** Start NewgroundsIO.results.Loader.loadMoreGames **/
 
-	/**
-	 * Returned when Loader.loadMoreGames component is called
-	 */
 	class loadMoreGames extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6570,10 +6366,6 @@ NewgroundsIO.results.Loader.loadAuthorUrl = loadAuthorUrl;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Loader.loadMoreGames **/
@@ -6587,11 +6379,8 @@ NewgroundsIO.results.Loader.loadMoreGames = loadMoreGames;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Loader/loadNewgrounds.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadNewgrounds **/
+/** Start NewgroundsIO.results.Loader.loadNewgrounds **/
 
-	/**
-	 * Returned when Loader.loadNewgrounds component is called
-	 */
 	class loadNewgrounds extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6628,10 +6417,6 @@ NewgroundsIO.results.Loader.loadMoreGames = loadMoreGames;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Loader.loadNewgrounds **/
@@ -6645,11 +6430,8 @@ NewgroundsIO.results.Loader.loadNewgrounds = loadNewgrounds;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Loader/loadOfficialUrl.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadOfficialUrl **/
+/** Start NewgroundsIO.results.Loader.loadOfficialUrl **/
 
-	/**
-	 * Returned when Loader.loadOfficialUrl component is called
-	 */
 	class loadOfficialUrl extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6686,10 +6468,6 @@ NewgroundsIO.results.Loader.loadNewgrounds = loadNewgrounds;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Loader.loadOfficialUrl **/
@@ -6703,11 +6481,8 @@ NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Loader/loadReferral.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadReferral **/
+/** Start NewgroundsIO.results.Loader.loadReferral **/
 
-	/**
-	 * Returned when Loader.loadReferral component is called
-	 */
 	class loadReferral extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6744,10 +6519,6 @@ NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Loader.loadReferral **/
@@ -6761,11 +6532,8 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Medal/getList.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Medal.getList **/
+/** Start NewgroundsIO.results.Medal.getList **/
 
-	/**
-	 * Returned when Medal.getList component is called
-	 */
 	class getList extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6812,8 +6580,6 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 
 		}
 
-		objectMap = {};
-
 		arrayMap = {"medals":"Medal"};
 
 	}
@@ -6829,11 +6595,8 @@ NewgroundsIO.results.Medal.getList = getList;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Medal/getMedalScore.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Medal.getMedalScore **/
+/** Start NewgroundsIO.results.Medal.getMedalScore **/
 
-	/**
-	 * Returned when Medal.getMedalScore component is called
-	 */
 	class getMedalScore extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6873,10 +6636,6 @@ NewgroundsIO.results.Medal.getList = getList;
 
 		}
 
-		objectMap = {};
-
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Medal.getMedalScore **/
@@ -6890,11 +6649,8 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/Medal/unlock.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.Medal.unlock **/
+/** Start NewgroundsIO.results.Medal.unlock **/
 
-	/**
-	 * Returned when Medal.unlock component is called
-	 */
 	class unlock extends NewgroundsIO.BaseResult {
 
 		/**
@@ -6958,8 +6714,6 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 
 		objectMap = {"medal":"Medal"};
 
-		arrayMap = {};
-
 	}
 
 /** End Class NewgroundsIO.results.Medal.unlock **/
@@ -6973,11 +6727,8 @@ NewgroundsIO.results.Medal.unlock = unlock;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/ScoreBoard/getBoards.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.ScoreBoard.getBoards **/
+/** Start NewgroundsIO.results.ScoreBoard.getBoards **/
 
-	/**
-	 * Returned when ScoreBoard.getBoards component is called
-	 */
 	class getBoards extends NewgroundsIO.BaseResult {
 
 		/**
@@ -7024,8 +6775,6 @@ NewgroundsIO.results.Medal.unlock = unlock;
 
 		}
 
-		objectMap = {};
-
 		arrayMap = {"scoreboards":"ScoreBoard"};
 
 	}
@@ -7041,11 +6790,8 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/ScoreBoard/getScores.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.ScoreBoard.getScores **/
+/** Start NewgroundsIO.results.ScoreBoard.getScores **/
 
-	/**
-	 * Returned when ScoreBoard.getScores component is called
-	 */
 	class getScores extends NewgroundsIO.BaseResult {
 
 		/**
@@ -7209,11 +6955,8 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 /* ====================== ./NewgroundsIO-JS/src/NewgroundsIO/results/ScoreBoard/postScore.js ====================== */
 
 (()=>{
-/** Start Class NewgroundsIO.results.ScoreBoard.postScore **/
+/** Start NewgroundsIO.results.ScoreBoard.postScore **/
 
-	/**
-	 * Returned when ScoreBoard.postScore component is called
-	 */
 	class postScore extends NewgroundsIO.BaseResult {
 
 		/**
@@ -7278,8 +7021,6 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","score":"Score"};
-
-		arrayMap = {};
 
 	}
 

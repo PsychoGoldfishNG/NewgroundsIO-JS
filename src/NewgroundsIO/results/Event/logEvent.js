@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Event.logEvent **/
+/** Start NewgroundsIO.results.Event.logEvent **/
 
-	/**
-	 * Returned when Event.logEvent component is called
-	 */
 	class logEvent extends NewgroundsIO.BaseResult {
 
 		/**
@@ -39,10 +36,6 @@
 			this._event_name = String(_event_name);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

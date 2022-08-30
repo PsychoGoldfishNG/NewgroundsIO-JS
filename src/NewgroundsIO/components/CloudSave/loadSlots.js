@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.CloudSave.loadSlots **/
+/** Start NewgroundsIO.components.CloudSave.loadSlots **/
 
-	/**
-	 * Used to call the CloudSave.loadSlots component.
-	 */
 	class loadSlots extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -14,7 +11,6 @@
 			super();
 
 			this.__object = "CloudSave.loadSlots";
-			this.__requireSession = true;
 		}
 
 	}

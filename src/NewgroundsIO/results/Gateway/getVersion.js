@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Gateway.getVersion **/
+/** Start NewgroundsIO.results.Gateway.getVersion **/
 
-	/**
-	 * Returned when Gateway.getVersion component is called
-	 */
 	class getVersion extends NewgroundsIO.BaseResult {
 
 		/**
@@ -40,10 +37,6 @@
 			this._version = String(_version);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

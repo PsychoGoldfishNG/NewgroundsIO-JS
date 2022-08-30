@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Gateway.ping **/
+/** Start NewgroundsIO.results.Gateway.ping **/
 
-	/**
-	 * Returned when Gateway.ping component is called
-	 */
 	class ping extends NewgroundsIO.BaseResult {
 
 		/**
@@ -40,10 +37,6 @@
 			this._pong = String(_pong);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

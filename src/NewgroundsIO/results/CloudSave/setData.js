@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.CloudSave.setData **/
+/** Start NewgroundsIO.results.CloudSave.setData **/
 
-	/**
-	 * Returned when CloudSave.setData component is called
-	 */
 	class setData extends NewgroundsIO.BaseResult {
 
 		/**
@@ -45,8 +42,6 @@
 		}
 
 		objectMap = {"slot":"SaveSlot"};
-
-		arrayMap = {};
 
 	}
 

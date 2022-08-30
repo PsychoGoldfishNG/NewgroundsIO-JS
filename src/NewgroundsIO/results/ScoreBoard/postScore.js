@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.ScoreBoard.postScore **/
+/** Start NewgroundsIO.results.ScoreBoard.postScore **/
 
-	/**
-	 * Returned when ScoreBoard.postScore component is called
-	 */
 	class postScore extends NewgroundsIO.BaseResult {
 
 		/**
@@ -68,8 +65,6 @@
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","score":"Score"};
-
-		arrayMap = {};
 
 	}
 

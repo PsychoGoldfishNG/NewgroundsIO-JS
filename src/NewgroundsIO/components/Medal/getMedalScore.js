@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Medal.getMedalScore **/
+/** Start NewgroundsIO.components.Medal.getMedalScore **/
 
-	/**
-	 * Used to call the Medal.getMedalScore component.
-	 */
 	class getMedalScore extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -14,7 +11,6 @@
 			super();
 
 			this.__object = "Medal.getMedalScore";
-			this.__requireSession = true;
 		}
 
 	}

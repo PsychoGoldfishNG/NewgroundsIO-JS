@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Gateway.ping **/
+/** Start NewgroundsIO.components.Gateway.ping **/
 
-	/**
-	 * Used to call the Gateway.ping component.
-	 */
 	class ping extends NewgroundsIO.BaseComponent {
 
 		/**

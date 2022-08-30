@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.App.startSession **/
+/** Start NewgroundsIO.results.App.startSession **/
 
-	/**
-	 * Returned when App.startSession component is called
-	 */
 	class startSession extends NewgroundsIO.BaseResult {
 
 		/**
@@ -45,8 +42,6 @@
 		}
 
 		objectMap = {"session":"Session"};
-
-		arrayMap = {};
 
 	}
 

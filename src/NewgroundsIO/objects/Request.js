@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Request **/
+/** Start NewgroundsIO.objects.Request **/
 
-	/**
- * A top-level wrapper containing any information needed to authenticate the application/user and any component calls being made.
-	 */
 	class Request extends NewgroundsIO.BaseObject {
 
 		/**
@@ -17,20 +14,18 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Request';
-
-				this._execute = null;
-				this._debug = null;
-				this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Request";
+			this._execute = null;
+			this._debug = null;
+			this.__required = ["app_id","execute"];
+			this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
-			this.__required = ["execute"];
+			}
 
 		}
 
@@ -45,6 +40,9 @@
 
 		set execute(_execute)
 		{
+			if (!(_execute instanceof NewgroundsIO.objects.Execute) && typeof(_execute) === 'object')
+				_execute = new NewgroundsIO.objects.Execute(_execute);
+
 			if (Array.isArray(_execute)) {
 				let newArr = [];
 				_execute.forEach(function(val,index) {
@@ -96,6 +94,8 @@
 
 		objectMap = {"execute":"Execute"};
 
+		arrayMap = {"execute":"Execute"};
+
 		/**
 		 * Gets the appID from a core object
 		 * @returns {string}
@@ -117,6 +117,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.Request **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Request = Request;
 
 })();

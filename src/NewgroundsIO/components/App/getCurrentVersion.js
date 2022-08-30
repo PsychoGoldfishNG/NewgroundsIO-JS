@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.App.getCurrentVersion **/
+/** Start NewgroundsIO.components.App.getCurrentVersion **/
 
-	/**
-	 * Used to call the App.getCurrentVersion component.
-	 */
 	class getCurrentVersion extends NewgroundsIO.BaseComponent {
 
 		/**

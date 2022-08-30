@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.App.getCurrentVersion **/
+/** Start NewgroundsIO.results.App.getCurrentVersion **/
 
-	/**
-	 * Returned when App.getCurrentVersion component is called
-	 */
 	class getCurrentVersion extends NewgroundsIO.BaseResult {
 
 		/**
@@ -58,10 +55,6 @@
 			this._client_deprecated = _client_deprecated ? true:false;
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

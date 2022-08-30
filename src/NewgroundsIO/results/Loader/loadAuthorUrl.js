@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Loader.loadAuthorUrl **/
+/** Start NewgroundsIO.results.Loader.loadAuthorUrl **/
 
-	/**
-	 * Returned when Loader.loadAuthorUrl component is called
-	 */
 	class loadAuthorUrl extends NewgroundsIO.BaseResult {
 
 		/**
@@ -39,10 +36,6 @@
 			this._url = String(_url);
 
 		}
-
-		objectMap = {};
-
-		arrayMap = {};
 
 	}
 

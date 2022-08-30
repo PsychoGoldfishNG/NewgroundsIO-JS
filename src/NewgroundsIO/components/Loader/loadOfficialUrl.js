@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Loader.loadOfficialUrl **/
+/** Start NewgroundsIO.components.Loader.loadOfficialUrl **/
 
-	/**
-	 * Used to call the Loader.loadOfficialUrl component.
-	 */
 	class loadOfficialUrl extends NewgroundsIO.BaseComponent {
 
 		/**

@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.User **/
+/** Start NewgroundsIO.objects.User **/
 
-	/**
- * Contains information about a user.
-	 */
 	class User extends NewgroundsIO.BaseObject {
 
 		/**
@@ -16,21 +13,19 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'User';
-
-				this._id = null;
-				this._name = null;
-				this._icons = null;
-				this._supporter = null;
-				this.__properties = this.__properties.concat(["id","name","icons","supporter"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "User";
+			this._id = null;
+			this._name = null;
+			this._icons = null;
+			this._supporter = null;
+			this.__properties = this.__properties.concat(["id","name","icons","supporter"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 		}
 
 		/**
@@ -78,6 +73,9 @@
 
 		set icons(_icons)
 		{
+			if (!(_icons instanceof NewgroundsIO.objects.UserIcons) && typeof(_icons) === 'object')
+				_icons = new NewgroundsIO.objects.UserIcons(_icons);
+
 				if (_icons !== null && !(_icons instanceof NewgroundsIO.objects.UserIcons))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.UserIcons, got ",_icons);
 
@@ -105,6 +103,7 @@
 	}
 
 /** End Class NewgroundsIO.objects.User **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.User = User;
 
 })();

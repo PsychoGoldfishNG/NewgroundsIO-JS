@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.App.endSession **/
+/** Start NewgroundsIO.components.App.endSession **/
 
-	/**
-	 * Used to call the App.endSession component.
-	 */
 	class endSession extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -14,7 +11,6 @@
 			super();
 
 			this.__object = "App.endSession";
-			this.__requireSession = true;
 		}
 
 	}

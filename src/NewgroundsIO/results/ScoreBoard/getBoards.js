@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.ScoreBoard.getBoards **/
+/** Start NewgroundsIO.results.ScoreBoard.getBoards **/
 
-	/**
-	 * Returned when ScoreBoard.getBoards component is called
-	 */
 	class getBoards extends NewgroundsIO.BaseResult {
 
 		/**
@@ -49,8 +46,6 @@
 			}
 
 		}
-
-		objectMap = {};
 
 		arrayMap = {"scoreboards":"ScoreBoard"};
 

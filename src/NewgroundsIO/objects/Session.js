@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.objects.Session **/
+/** Start NewgroundsIO.objects.Session **/
 
-	/**
- * Contains information about the current user session.
-	 */
 	class Session extends NewgroundsIO.BaseObject {
 
 		/**
@@ -17,22 +14,20 @@
 		 */
 		constructor(props)
 		{
-				super();
+			super();
 
-				this.__object = 'Session';
-
-				this._id = null;
-				this._user = null;
-				this._expired = null;
-				this._remember = null;
-				this._passport_url = null;
-				this.__properties = this.__properties.concat(["id","user","expired","remember","passport_url"]);
-				if (props && typeof(props) === 'object') {
-					for(var i=0; i<this.__properties.length; i++) {
-						if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
-					}
+			this.__object = "Session";
+			this._id = null;
+			this._user = null;
+			this._expired = null;
+			this._remember = null;
+			this._passport_url = null;
+			this.__properties = this.__properties.concat(["id","user","expired","remember","passport_url"]);
+			if (typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
-
+			}
 
 			/**
 			 * The current state of this session.
@@ -123,6 +118,9 @@
 
 		set user(_user)
 		{
+			if (!(_user instanceof NewgroundsIO.objects.User) && typeof(_user) === 'object')
+				_user = new NewgroundsIO.objects.User(_user);
+
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
@@ -574,6 +572,7 @@
 			}
 
 /** End Class NewgroundsIO.objects.Session **/
+if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
 NewgroundsIO.objects.Session = Session;
 
 })();

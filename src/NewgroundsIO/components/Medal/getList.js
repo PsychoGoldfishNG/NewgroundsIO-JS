@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Medal.getList **/
+/** Start NewgroundsIO.components.Medal.getList **/
 
-	/**
-	 * Used to call the Medal.getList component.
-	 */
 	class getList extends NewgroundsIO.BaseComponent {
 
 		/**

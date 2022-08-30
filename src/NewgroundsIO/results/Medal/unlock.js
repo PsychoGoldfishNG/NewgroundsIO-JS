@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.results.Medal.unlock **/
+/** Start NewgroundsIO.results.Medal.unlock **/
 
-	/**
-	 * Returned when Medal.unlock component is called
-	 */
 	class unlock extends NewgroundsIO.BaseResult {
 
 		/**
@@ -66,8 +63,6 @@
 		}
 
 		objectMap = {"medal":"Medal"};
-
-		arrayMap = {};
 
 	}
 

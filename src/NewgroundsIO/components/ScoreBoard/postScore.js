@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.ScoreBoard.postScore **/
+/** Start NewgroundsIO.components.ScoreBoard.postScore **/
 
-	/**
-	 * Used to call the ScoreBoard.postScore component.
-	 */
 	class postScore extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -22,8 +19,6 @@
 			this._value = null;
 			this._tag = null;
 			this.__required = ["id","value"];
-			this.__isSecure = true;
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id","value","tag"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {

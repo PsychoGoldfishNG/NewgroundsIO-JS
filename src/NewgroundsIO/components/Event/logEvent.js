@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.Event.logEvent **/
+/** Start NewgroundsIO.components.Event.logEvent **/
 
-	/**
-	 * Used to call the Event.logEvent component.
-	 */
 	class logEvent extends NewgroundsIO.BaseComponent {
 
 		/**

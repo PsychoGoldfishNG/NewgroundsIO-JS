@@ -1,9 +1,6 @@
 (()=>{
-/** Start Class NewgroundsIO.components.CloudSave.clearSlot **/
+/** Start NewgroundsIO.components.CloudSave.clearSlot **/
 
-	/**
-	 * Used to call the CloudSave.clearSlot component.
-	 */
 	class clearSlot extends NewgroundsIO.BaseComponent {
 
 		/**
@@ -18,7 +15,6 @@
 			this.__object = "CloudSave.clearSlot";
 			this._id = null;
 			this.__required = ["id"];
-			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
 			if (typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
