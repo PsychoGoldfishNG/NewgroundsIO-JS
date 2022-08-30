@@ -65,7 +65,12 @@
 
 		objectMap = {};
 
-	
+ 
+		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
 		/**
 		 * Unlocks this medal, then fires a callback.
 		 * @param {object} options Options for what scores to look up.
@@ -74,7 +79,7 @@
 		 * @param {boolean} options.social Set to true to only see scores from friends.
 		 * @param {Number} options.skip The number of scores to skip.
 		 * @param {Number} options.limit The total number of scores to load.
-		 * @param {function} callback An optional function to call when the medal is unlocked on the server.
+		 * @param {responseCallback} callback An function to call when the scores have been loaded.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		getScores(options, callback, thisArg)
@@ -98,6 +103,13 @@
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
 
+		/**
+		 * Posts a score to the scoreboard.
+		 * @param {number} value The value to post.
+		 * @param {string} tag An optional tag to filter on.
+		 * @param {responseCallback} callback An optional function to call when the score is posted to the server.
+		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+		 */
 		postScore(value, tag, callback, thisArg)
 		{
 			if (!this.__ngioCore) {

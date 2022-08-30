@@ -178,8 +178,13 @@
 
 	
 		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
+		/**
 		 * Unlocks this medal, then fires a callback.
-		 * @param {function} callback An optional function to call when the medal is unlocked on the server.
+		 * @param {responseCallback} callback An optional function to call when the medal is unlocked on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		unlock(callback, thisArg)

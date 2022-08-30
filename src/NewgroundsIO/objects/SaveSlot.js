@@ -124,6 +124,16 @@
 		objectMap = {};
 
 	
+		/**
+		 * @callback getDataCallback
+		 * @param {string} data The data loaded from the server
+		 */
+
+		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
 
 		/**
 		 * This will be true if this save slot has any saved data.
@@ -134,7 +144,7 @@
 
 		/**
 		 * Loads the save file for this slot then passes its contents to a callback function. 
-		 * @param {function} callback The callback function.
+		 * @param {getDataCallback} callback A function to call when your data is loaded.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		getData(callback, thisArg)
@@ -158,7 +168,7 @@
 		/**
 		 * Unlocks this medal, then fires a callback.
 		 * @param {string} data The data, in a serialized string, you want to save.
-		 * @param {function} callback An optional function to call when the data is saved on the server.
+		 * @param {responseCallback} callback An optional function to call when the data is saved on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		setData(data, callback, thisArg)
@@ -174,7 +184,7 @@
 
 		/**
 		 * Clears all data from this slot, then fires a callback
-		 * @param {function} callback An optional function to call when the data is cleared from the server.
+		 * @param {responseCallback} callback An optional function to call when the data is cleared from the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		clearData(callback, thisArg)

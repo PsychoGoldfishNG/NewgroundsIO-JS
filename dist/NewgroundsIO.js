@@ -4079,8 +4079,13 @@ NewgroundsIO.objects.Execute = Execute;
 
 	
 		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
+		/**
 		 * Unlocks this medal, then fires a callback.
-		 * @param {function} callback An optional function to call when the medal is unlocked on the server.
+		 * @param {responseCallback} callback An optional function to call when the medal is unlocked on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		unlock(callback, thisArg)
@@ -4552,6 +4557,16 @@ NewgroundsIO.objects.Response = Response;
 		objectMap = {};
 
 	
+		/**
+		 * @callback getDataCallback
+		 * @param {string} data The data loaded from the server
+		 */
+
+		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
 
 		/**
 		 * This will be true if this save slot has any saved data.
@@ -4562,7 +4577,7 @@ NewgroundsIO.objects.Response = Response;
 
 		/**
 		 * Loads the save file for this slot then passes its contents to a callback function. 
-		 * @param {function} callback The callback function.
+		 * @param {getDataCallback} callback A function to call when your data is loaded.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		getData(callback, thisArg)
@@ -4586,7 +4601,7 @@ NewgroundsIO.objects.Response = Response;
 		/**
 		 * Unlocks this medal, then fires a callback.
 		 * @param {string} data The data, in a serialized string, you want to save.
-		 * @param {function} callback An optional function to call when the data is saved on the server.
+		 * @param {responseCallback} callback An optional function to call when the data is saved on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		setData(data, callback, thisArg)
@@ -4602,7 +4617,7 @@ NewgroundsIO.objects.Response = Response;
 
 		/**
 		 * Clears all data from this slot, then fires a callback
-		 * @param {function} callback An optional function to call when the data is cleared from the server.
+		 * @param {responseCallback} callback An optional function to call when the data is cleared from the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		clearData(callback, thisArg)
@@ -4818,7 +4833,12 @@ NewgroundsIO.objects.Score = Score;
 
 		objectMap = {};
 
-	
+ 
+		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
 		/**
 		 * Unlocks this medal, then fires a callback.
 		 * @param {object} options Options for what scores to look up.
@@ -4827,7 +4847,7 @@ NewgroundsIO.objects.Score = Score;
 		 * @param {boolean} options.social Set to true to only see scores from friends.
 		 * @param {Number} options.skip The number of scores to skip.
 		 * @param {Number} options.limit The total number of scores to load.
-		 * @param {function} callback An optional function to call when the medal is unlocked on the server.
+		 * @param {responseCallback} callback An function to call when the scores have been loaded.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		getScores(options, callback, thisArg)
@@ -4851,6 +4871,13 @@ NewgroundsIO.objects.Score = Score;
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
 
+		/**
+		 * Posts a score to the scoreboard.
+		 * @param {number} value The value to post.
+		 * @param {string} tag An optional tag to filter on.
+		 * @param {responseCallback} callback An optional function to call when the score is posted to the server.
+		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+		 */
 		postScore(value, tag, callback, thisArg)
 		{
 			if (!this.__ngioCore) {
