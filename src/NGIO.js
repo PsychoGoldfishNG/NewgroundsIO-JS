@@ -147,7 +147,8 @@ class NGIO
 	 * A reference to the NewgroundsIO.Core instance created in Init().
 	 * @type {NewgroundsIO.Core}
 	 */
-	static ngioCore = null;
+	static get ngioCore() { return this.#ngioCore; }
+	static #ngioCore = null;
 
 	/*
 	 * The user's overall Newgrounds medal score
@@ -388,9 +389,9 @@ class NGIO
 	{
 		if (!this.isInitialized) {
 
-			this.ngioCore = new NewgroundsIO.Core(appID, aesKey);
+			this.#ngioCore = new NewgroundsIO.Core(appID, aesKey);
 
-			this.ngioCore.addEventListener("serverResponse", function(e) {
+			this.#ngioCore.addEventListener("serverResponse", function(e) {
 				NGIO.#onServerResponse(e);
 			});
 
@@ -412,7 +413,7 @@ class NGIO
 				}
 			}
 
-			this.ngioCore.debug = this.debugMode;
+			this.#ngioCore.debug = this.debugMode;
 
 			this.#lastConnectionStatus = this.STATUS_INITIALIZED;
 
