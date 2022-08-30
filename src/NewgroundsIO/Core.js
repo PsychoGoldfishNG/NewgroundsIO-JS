@@ -351,8 +351,13 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		_populateResult(result) {
 			let path = result.component.split(".");
 			let _class = NewgroundsIO.results[path[0]][path[1]];
+			if (!_class) return null;
+
 			result.data.component = result.component;
-			return new _class(result.data);
+			let res = new _class();
+			res.fromJSON(result.data, this);
+
+			return res;
 		}
 
 		/**
@@ -466,6 +471,42 @@ NewgroundsIO.Core = Core;
 			this._doSetCore(core,[]);
 		}
 
+		objectMap = {};
+		arrayMap = {};
+
+		fromJSON(obj, core) 
+		{
+			var newobj = {};
+			var i,j;
+
+			this.setCore(core);
+
+			for(i=0; i<this.__properties.length; i++) {
+				let prop = this.__properties[i];
+
+				if (typeof(obj[prop]) !== 'undefined' && obj[prop] !== null) {
+					
+					newobj[prop] = obj[prop];
+
+					if (typeof(this.arrayMap[prop]) !== 'undefined' && Array.isArray(newobj[prop])) {
+						newobj[prop] = [];
+						for(j=0; j<obj[prop].length; j++) {
+							let _class = NewgroundsIO.objects[this.arrayMap[prop]];
+							newobj[prop][j] = new _class();
+							newobj[prop][j].fromJSON(obj[prop][j],core);
+						}
+					} else if (typeof(this.objectMap[prop]) !== 'undefined') {
+
+						let _class = NewgroundsIO.objects[this.objectMap[prop]];
+						newobj[prop] = new _class();
+						newobj[prop].fromJSON(obj[prop],core);
+					}
+
+					this["_"+prop] = newobj[prop];
+				}
+			}
+		}
+
 		/**
 		 * sets the core on all children, and prevents infinite recursion
 		 * @private
@@ -481,7 +522,6 @@ NewgroundsIO.Core = Core;
 				updatedList.push(this);
 
 				this.__properties.forEach(function(prop) {
-
 					if ((this[prop] instanceof NewgroundsIO.BaseObject) && updatedList.indexOf(this[prop]) === -1) {
 							this[prop]._doSetCore(core, updatedList);
 					}
@@ -493,6 +533,7 @@ NewgroundsIO.Core = Core;
 						}, this);
 					}
 
+					if (prop === "host" && !this.host) this.host = core.host;
 				}, this);
 			}
 		}
@@ -530,7 +571,7 @@ NewgroundsIO.Core = Core;
 		 * @returns {string}
 		 */
 		toSecureJSON() {
-			if (!this.__ngioCore || !(this.__ngioCore instanceof NewgroundsIO)) {
+			if (!this.__ngioCore || !(this.__ngioCore instanceof NewgroundsIO.Core)) {
 				console.error("NewgroundsIO Error: Unable to create secure JSON object without calling setCore() first.");
 				return this.__doToJSON();
 			}
@@ -540,6 +581,15 @@ NewgroundsIO.Core = Core;
 
 		toString() {
 			return this.__type;
+		}
+
+		clone(cloneTo) {
+			if (typeof(cloneTo) === "undefined") cloneTo = new this.constructor();
+			this.__properties.forEach(prop => {
+				cloneTo[prop] = this[prop];
+			});
+			cloneTo.__ngioCore = this.__ngioCore;
+			return cloneTo;
 		}
 
 	}
@@ -681,6 +731,7 @@ NewgroundsIO.SessionState = {
  * States in this list are considered "waiting". You don't need to make any API calls during these.
  */
 NewgroundsIO.SessionState.SESSION_WAITING = [
+	NewgroundsIO.SessionState.SESSION_UNINITIALIZED,
 	NewgroundsIO.SessionState.WAITING_FOR_SERVER,
 	NewgroundsIO.SessionState.WAITING_FOR_USER,
 	NewgroundsIO.SessionState.LOGIN_CANCELLED,

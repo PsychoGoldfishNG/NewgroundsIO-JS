@@ -35,7 +35,23 @@
 
 		set scoreboards(_scoreboards)
 		{
+			if (Array.isArray(_scoreboards)) {
+				let newArr = [];
+				_scoreboards.forEach(function(val,index) {
+						if (val !== null && !(val instanceof NewgroundsIO.objects.ScoreBoard))
+						console.warn("Type Mismatch: expecting NewgroundsIO.objects.ScoreBoard, got ",val);
+
+					newArr[index] = val;
+				});
+				this._scoreboards = newArr;
+				return;
+			}
+
 		}
+
+		objectMap = {};
+
+		arrayMap = {"scoreboards":"ScoreBoard"};
 
 	}
 

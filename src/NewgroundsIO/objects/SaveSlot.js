@@ -116,6 +116,8 @@
 
 		}
 
+		objectMap = {};
+
 	
 
 		/**
@@ -139,8 +141,10 @@
 
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
-				if (thisArg) callback.call(thisArg,xhr.responseText);
-				else callback(xhr.responseText);
+				if (xhr.readyState==4) {
+					if (thisArg) callback.call(thisArg,xhr.responseText);
+					else callback(xhr.responseText);
+				}
 			}
 			xhr.open('GET', this.url, true);
 			xhr.send();
@@ -162,7 +166,33 @@
 			var component = this.__ngioCore.getComponent('CloudSave.setData', {id:this.id, data:data});
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
+
+		/**
+		 * Clears all data from this slot, then fires a callback
+		 * @param {function} callback An optional function to call when the data is cleared from the server.
+		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+		 */
+		clearData(callback, thisArg)
+		{
+			if (!this.__ngioCore) {
+				console.error("NewgroundsIO - Can not clear data without attaching a NewgroundsIO.Core instance.");
+				return;
 			}
+			this._url = null;
+			var component = this.__ngioCore.getComponent('CloudSave.clearSlot', {id:this.id});
+			this.__ngioCore.executeComponent(component, callback, thisArg);
+		}
+
+		/**
+		 * Gets the date this slot was last updated.
+		 * @return {Date}
+		 */
+		getDate()
+		{
+			if (this.hasData) return new Date(this.datetime);
+			return null;
+		}
+	}
 
 /** End Class NewgroundsIO.objects.SaveSlot **/
 NewgroundsIO.objects.SaveSlot = SaveSlot;

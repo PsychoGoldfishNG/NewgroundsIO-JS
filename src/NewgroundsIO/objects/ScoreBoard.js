@@ -61,6 +61,8 @@
 
 		}
 
+		objectMap = {};
+
 	
 		/**
 		 * Unlocks this medal, then fires a callback.
@@ -86,6 +88,9 @@
 				callback = options;
 				options = {};
 			}
+
+			if (!options) options = {};
+			options.id = this.id;
 
 			var component = this.__ngioCore.getComponent('ScoreBoard.getScores', options);
 			this.__ngioCore.executeComponent(component, callback, thisArg);

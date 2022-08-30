@@ -69,7 +69,7 @@
 
 		set debug(_debug)
 		{
-			if (typeof(_debug) !== 'boolean' && _debug !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _debug);
+			if (typeof(_debug) !== 'boolean' && typeof(_debug) !== 'number' && _debug !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _debug);
 			this._debug = _debug ? true:false;
 
 		}
@@ -88,6 +88,8 @@
 			this._echo = _echo; // mixed
 
 		}
+
+		objectMap = {"execute":"Execute"};
 
 		/**
 		 * Gets the appID from a core object

@@ -60,6 +60,8 @@
 			this._request = _request;
 		}
 
+		objectMap = {"request":"Request"};
+
 	}
 
 /** End Class NewgroundsIO.objects.Debug **/

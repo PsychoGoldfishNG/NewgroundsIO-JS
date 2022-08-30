@@ -76,6 +76,8 @@
 
 		}
 
+		objectMap = {};
+
 	}
 
 /** End Class NewgroundsIO.objects.UserIcons **/

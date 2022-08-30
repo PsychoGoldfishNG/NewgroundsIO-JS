@@ -34,10 +34,14 @@
 
 		set host_approved(_host_approved)
 		{
-			if (typeof(_host_approved) !== 'boolean' && _host_approved !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _host_approved);
+			if (typeof(_host_approved) !== 'boolean' && typeof(_host_approved) !== 'number' && _host_approved !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _host_approved);
 			this._host_approved = _host_approved ? true:false;
 
 		}
+
+		objectMap = {};
+
+		arrayMap = {};
 
 	}
 

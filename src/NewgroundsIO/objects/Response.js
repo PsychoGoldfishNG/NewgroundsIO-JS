@@ -59,7 +59,7 @@
 
 		set success(_success)
 		{
-			if (typeof(_success) !== 'boolean' && _success !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _success);
+			if (typeof(_success) !== 'boolean' && typeof(_success) !== 'number' && _success !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _success);
 			this._success = _success ? true:false;
 
 		}
@@ -171,6 +171,8 @@
 			this._echo = _echo; // mixed
 
 		}
+
+		objectMap = {"debug":"Debug","error":"Error"};
 
 	}
 

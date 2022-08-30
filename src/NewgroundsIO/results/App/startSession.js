@@ -43,6 +43,10 @@
 			this._session = _session;
 		}
 
+		objectMap = {"session":"Session"};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.App.startSession **/

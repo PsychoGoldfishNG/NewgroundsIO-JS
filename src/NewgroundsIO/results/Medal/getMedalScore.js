@@ -42,6 +42,10 @@
 
 		}
 
+		objectMap = {};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.Medal.getMedalScore **/

@@ -52,10 +52,14 @@
 
 		set client_deprecated(_client_deprecated)
 		{
-			if (typeof(_client_deprecated) !== 'boolean' && _client_deprecated !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _client_deprecated);
+			if (typeof(_client_deprecated) !== 'boolean' && typeof(_client_deprecated) !== 'number' && _client_deprecated !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _client_deprecated);
 			this._client_deprecated = _client_deprecated ? true:false;
 
 		}
+
+		objectMap = {};
+
+		arrayMap = {};
 
 	}
 

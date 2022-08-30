@@ -145,7 +145,7 @@
 
 		set secret(_secret)
 		{
-			if (typeof(_secret) !== 'boolean' && _secret !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _secret);
+			if (typeof(_secret) !== 'boolean' && typeof(_secret) !== 'number' && _secret !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _secret);
 			this._secret = _secret ? true:false;
 
 		}
@@ -161,10 +161,12 @@
 
 		set unlocked(_unlocked)
 		{
-			if (typeof(_unlocked) !== 'boolean' && _unlocked !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _unlocked);
+			if (typeof(_unlocked) !== 'boolean' && typeof(_unlocked) !== 'number' && _unlocked !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _unlocked);
 			this._unlocked = _unlocked ? true:false;
 
 		}
+
+		objectMap = {};
 
 	
 		/**

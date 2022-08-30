@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Newgrounds.io Unit Test</title>
+	<script src="NewgroundsIO.js"></script>
+</head>
+<body>
+	<script>
+		(()=>{
+
+			var ngio = new NewgroundsIO('39685:NJ1KkPGb', 'qsqKxz5dJouIkUNe3NBppQ==');
+			//var ngio = new NewgroundsIO('18549:W8qyhqys', '/9uLj4WPCwCHNxX4IUxr5g==');
+
+			var component = [
+				new NewgroundsIO.components.Gateway.getDatetime(),
+				new NewgroundsIO.components.App.getHostLicense({host:"<AppView>"})
+			];
+
+			component = new NewgroundsIO.components.CloudSave.loadSlot({id:1});
+			console.log(JSON.stringify(component));
+			
+			ngio.sendRequest(component, (result)=>{
+				console.log(result);
+			});
+		})();
+	</script>
+
+</body>
+</html>

@@ -63,6 +63,10 @@
 
 		}
 
+		objectMap = {"medal":"Medal"};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.Medal.unlock **/

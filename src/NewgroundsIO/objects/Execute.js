@@ -105,6 +105,8 @@
 
 		}
 
+		objectMap = {};
+
 		/**
 		 * Set a component object to execute
 		 * @param {NewgroundsIO.BaseComponent} component Any NGIO component object

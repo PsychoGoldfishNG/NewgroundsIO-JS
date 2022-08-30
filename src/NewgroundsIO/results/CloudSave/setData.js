@@ -43,6 +43,10 @@
 			this._slot = _slot;
 		}
 
+		objectMap = {"slot":"SaveSlot"};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.CloudSave.setData **/

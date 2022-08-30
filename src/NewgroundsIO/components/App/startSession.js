@@ -36,7 +36,7 @@
 
 		set force(_force)
 		{
-			if (typeof(_force) !== 'boolean' && _force !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _force);
+			if (typeof(_force) !== 'boolean' && typeof(_force) !== 'number' && _force !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _force);
 			this._force = _force ? true:false;
 
 		}

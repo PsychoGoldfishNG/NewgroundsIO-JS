@@ -40,6 +40,10 @@
 
 		}
 
+		objectMap = {};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.Gateway.getVersion **/

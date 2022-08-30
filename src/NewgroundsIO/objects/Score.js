@@ -96,6 +96,8 @@
 
 		}
 
+		objectMap = {"user":"User"};
+
 	}
 
 /** End Class NewgroundsIO.objects.Score **/

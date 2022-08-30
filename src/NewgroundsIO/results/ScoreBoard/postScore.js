@@ -65,6 +65,10 @@
 			this._score = _score;
 		}
 
+		objectMap = {"scoreboard":"ScoreBoard","score":"Score"};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.ScoreBoard.postScore **/

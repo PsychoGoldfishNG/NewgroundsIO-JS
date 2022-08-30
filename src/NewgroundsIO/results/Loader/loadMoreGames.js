@@ -39,6 +39,10 @@
 
 		}
 
+		objectMap = {};
+
+		arrayMap = {};
+
 	}
 
 /** End Class NewgroundsIO.results.Loader.loadMoreGames **/

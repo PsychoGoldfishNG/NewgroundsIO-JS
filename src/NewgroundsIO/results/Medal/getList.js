@@ -35,7 +35,23 @@
 
 		set medals(_medals)
 		{
+			if (Array.isArray(_medals)) {
+				let newArr = [];
+				_medals.forEach(function(val,index) {
+						if (val !== null && !(val instanceof NewgroundsIO.objects.Medal))
+						console.warn("Type Mismatch: expecting NewgroundsIO.objects.Medal, got ",val);
+
+					newArr[index] = val;
+				});
+				this._medals = newArr;
+				return;
+			}
+
 		}
+
+		objectMap = {};
+
+		arrayMap = {"medals":"Medal"};
 
 	}
 

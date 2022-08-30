@@ -35,7 +35,23 @@
 
 		set slots(_slots)
 		{
+			if (Array.isArray(_slots)) {
+				let newArr = [];
+				_slots.forEach(function(val,index) {
+						if (val !== null && !(val instanceof NewgroundsIO.objects.SaveSlot))
+						console.warn("Type Mismatch: expecting NewgroundsIO.objects.SaveSlot, got ",val);
+
+					newArr[index] = val;
+				});
+				this._slots = newArr;
+				return;
+			}
+
 		}
+
+		objectMap = {};
+
+		arrayMap = {"slots":"SaveSlot"};
 
 	}
 

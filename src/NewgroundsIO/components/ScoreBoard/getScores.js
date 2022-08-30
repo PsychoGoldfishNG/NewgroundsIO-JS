@@ -92,7 +92,7 @@
 
 		set social(_social)
 		{
-			if (typeof(_social) !== 'boolean' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
+			if (typeof(_social) !== 'boolean' && typeof(_social) !== 'number' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
 			this._social = _social ? true:false;
 
 		}

@@ -56,7 +56,7 @@
 
 		set social(_social)
 		{
-			if (typeof(_social) !== 'boolean' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
+			if (typeof(_social) !== 'boolean' && typeof(_social) !== 'number' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
 			this._social = _social ? true:false;
 
 		}
@@ -110,6 +110,18 @@
 
 		set scores(_scores)
 		{
+			if (Array.isArray(_scores)) {
+				let newArr = [];
+				_scores.forEach(function(val,index) {
+						if (val !== null && !(val instanceof NewgroundsIO.objects.Score))
+						console.warn("Type Mismatch: expecting NewgroundsIO.objects.Score, got ",val);
+
+					newArr[index] = val;
+				});
+				this._scores = newArr;
+				return;
+			}
+
 		}
 
 		/**
@@ -131,6 +143,10 @@
 
 			this._user = _user;
 		}
+
+		objectMap = {"scoreboard":"ScoreBoard","user":"User"};
+
+		arrayMap = {"scores":"Score"};
 
 	}
 

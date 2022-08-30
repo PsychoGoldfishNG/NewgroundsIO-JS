@@ -42,6 +42,12 @@
 			this._lastStatus = null;
 
 			/**
+			 * Will be true if the status was changed on an update call.
+			 * @private
+			 */
+			this._statusChanged = false;
+
+			/**
 			 * The last time Update() was called. (Start in the past so Update() will work immediately.)
 			 * @private
 			 */
@@ -129,7 +135,7 @@
 
 		set expired(_expired)
 		{
-			if (typeof(_expired) !== 'boolean' && _expired !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _expired);
+			if (typeof(_expired) !== 'boolean' && typeof(_expired) !== 'number' && _expired !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _expired);
 			this._expired = _expired ? true:false;
 
 		}
@@ -145,7 +151,7 @@
 
 		set remember(_remember)
 		{
-			if (typeof(_remember) !== 'boolean' && _remember !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _remember);
+			if (typeof(_remember) !== 'boolean' && typeof(_remember) !== 'number' && _remember !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _remember);
 			this._remember = _remember ? true:false;
 
 		}
@@ -166,6 +172,8 @@
 
 		}
 
+		objectMap = {"user":"User"};
+
 
 		/**
 		 * The current state of this session.
@@ -182,7 +190,7 @@
 		 */
 		get statusChanged()
 		{
-			return this._lastStatus != this.status;
+			return this._statusChanged;
 		}
 
 		/**
@@ -223,10 +231,14 @@
 		 */
 		openLoginPage()
 		{
-			if (!this.passport_url) return;
+			if (!this.passport_url) {
+				console.warn("Can't open passport without getting a valis session first.");
+				return;
+			}
 
 			this._status = NewgroundsIO.SessionState.WAITING_FOR_USER;
 			this.mode = "check";
+
 			window.open(this.passport_url, "_blank");
 		}
 
@@ -247,6 +259,7 @@
 		 */
 		cancelLogin(newStatus)
 		{
+			this.endSession();
 			if (typeof(newStatus) === "undefined") newStatus = NewgroundsIO.SessionState.LOGIN_CANCELLED;
 
 			// clear the current session data, and set the appropriate cancel status
@@ -270,8 +283,10 @@
 		 */
 		update(callback, thisArg)
 		{
+			this._statusChanged = false;
 
 			if (this._lastStatus != this.status) {
+				this._statusChanged = true;
 				this._lastStatus = this.status;
 				if (typeof(callback) === "function") {
 					if (thisArg) callback.call(thisArg, this);
@@ -318,10 +333,8 @@
 				}
 
 				// If we have an existing session, we'll use "check" mode to varify it, otherwise we'll nequest a "new" one.
-				this.mode = this.id ? "check" : "new";
+				this.mode = this.id && this.id !== "null" ? "check" : "new";
 
-				console.log(this.mode , this.id);
-			
 			}
 
 			// make sure at least 5 seconds pass between each API call so we don't get blocked by DDOS protection.
@@ -383,9 +396,20 @@
 			// The start session request was successful!
 			if (response.success === true) {
 
+				let result = response.result;
+
+				if (Array.isArray(result)) {
+					for(let i=0; i<result.length; i++) {
+						if (result[i] && result[i].__object && result[i].__object == "App.startSession") {
+							result = result[i];
+							break;
+						}
+					}
+				}
+
 				// save the new session data to this session object
-				this.id = response.result.session.id;
-				this.passport_url = response.result.session.passport_url;
+				this.id = result.session.id;
+				this.passport_url = result.session.passport_url;
 
 				// update our session status. This will trigger the callback in our update loop.
 				this._status = NewgroundsIO.SessionState.LOGIN_REQUIRED;
@@ -435,7 +459,6 @@
 					this.cancelLogin(response.result.error.code === 111 ? NewgroundsIO.SessionState.LOGIN_CANCELLED : NewgroundsIO.SessionState.LOGIN_FAILED);
 					
 				} else {
-
 					// The session is expired
 					if (response.result.session.expired) {
 
@@ -490,6 +513,21 @@
 			this._canUpdate = false;
 
 			var endSession = this.__ngioCore.getComponent('App.endSession');
+			var startSession = this.__ngioCore.getComponent('App.startSession');
+
+			this.__ngioCore.queueComponent(endSession);
+			this.__ngioCore.queueComponent(startSession);
+
+			this.__ngioCore.executeQueue(function(response) {
+				this._onEndSession(response);
+				this._onStartSession(response);
+				if (typeof(callback) === "function") {
+					if (thisArg) callback.call(thisArg, this);
+					else callback(this);
+				}
+			}, this);
+
+			/*
 			this.__ngioCore.executeComponent(endSession, function(response) {
 				this._onEndSession(response);
 				if (typeof(callback) === "function") {
@@ -497,6 +535,7 @@
 					else callback(this);
 				}
 			}, this);
+			*/
 		}
 
 		/**
@@ -508,6 +547,8 @@
 			// We'll just clear out the whole session, even if something failed.
 			this.resetSession();
 			this.id = null;
+			this.user = null;
+			this.passport_url = null;
 			this.mode = "new";
 			this._status = NewgroundsIO.SessionState.USER_LOGGED_OUT;
 

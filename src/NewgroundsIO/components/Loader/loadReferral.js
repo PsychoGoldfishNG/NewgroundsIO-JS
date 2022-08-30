@@ -54,7 +54,7 @@
 
 		set redirect(_redirect)
 		{
-			if (typeof(_redirect) !== 'boolean' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
+			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
 			this._redirect = _redirect ? true:false;
 
 		}
@@ -70,7 +70,7 @@
 
 		set log_stat(_log_stat)
 		{
-			if (typeof(_log_stat) !== 'boolean' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
+			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
 			this._log_stat = _log_stat ? true:false;
 
 		}

@@ -60,6 +60,8 @@
 
 		}
 
+		objectMap = {};
+
 	}
 
 /** End Class NewgroundsIO.objects.Error **/

@@ -91,10 +91,12 @@
 
 		set supporter(_supporter)
 		{
-			if (typeof(_supporter) !== 'boolean' && _supporter !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _supporter);
+			if (typeof(_supporter) !== 'boolean' && typeof(_supporter) !== 'number' && _supporter !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _supporter);
 			this._supporter = _supporter ? true:false;
 
 		}
+
+		objectMap = {"icons":"UserIcons"};
 
 	}
 

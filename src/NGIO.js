@@ -94,9 +94,21 @@ class NGIO
 	 */
 	static get STATUS_EXCEEDED_MAX_ATTEMPTS()	{ return NewgroundsIO.SessionState.EXCEEDED_MAX_ATTEMPTS; }
 
+	/**
+	 * Will be true if the current connection status is one requiring a 'please wait' message
+	 * @type {boolean}
+	 */
+	static get isWaitingStatus() {
 
-	// scoreboard periods
+		return NewgroundsIO.SessionState.SESSION_WAITING.indexOf(this.#lastConnectionStatus) >= 0 || [
+			this.STATUS_PRELOADING_ITEMS,
+			this.LOCAL_VERSION_CHECKED,
+			this.STATUS_CHECKING_LOCAL_VERSION
+		].indexOf(this.#lastConnectionStatus) >= 0;
+	}
+
 	
+	// scoreboard periods
 
 	/**
 	 * @type {string}
@@ -212,7 +224,7 @@ class NGIO
 	 * @type {boolean}
 	 */
 	static get loginPageOpen() { return this.#loginPageOpen; }
-	static #loginPageOpen = true;
+	static #loginPageOpen = false;
 
 	/**
 	 * The current version of the Newgrounds.io gateway.
@@ -301,7 +313,7 @@ class NGIO
 	 * Contains all information about the current user session.
 	 * @type {NewgroundsIO.objects.Session}
 	 */
-	static get session() { return this.isInitialized() ? this.ngioCore.session : null; }
+	static get session() { return this.isInitialized ? this.ngioCore.session : null; }
 
 	/**
 	 * Contains user information if the user is logged in. Otherwise null.
@@ -325,7 +337,7 @@ class NGIO
 	 * Will be true if we've finished logging in and preloading data.
 	 * @type {boolean}
 	 */
-	static get isReady() { return this.#lastConnectionStatus === STATUS_READY; }
+	static get isReady() { return this.#lastConnectionStatus === this.STATUS_READY; }
 
 	/**
 	 * The version number passed in Init()'s options
@@ -344,15 +356,17 @@ class NGIO
 	/* ============================= Private Properties ============================ */
 
 	// Preloading flags
-	static #checkHostLicense = false;
-	static #autoLogNewView = false;
-	static #preloadMedals = false;
-	static #preloadScoreBoards = false;
-	static #preloadSaveSlots = false;
+	static #preloadFlags = {
+		autoLogNewView: false,
+		preloadMedals: false,
+		preloadScoreBoards: false,
+		preloadSaveSlots: false,
+	};
 
 	// Connection states
 	static #sessionReady = false;
 	static #skipLogin = false;
+	static #localVersionChecked = false;
 	static #checkingConnectionStatus = false;
 
 	/* ============================= Misc Public Methods ============================ */
@@ -381,8 +395,10 @@ class NGIO
 			});
 
 			if (options && typeof(options) === "object") {
-				let valid = [
-					"version",
+
+				if (typeof(options['version']) === 'string') this.#version = options['version'];
+
+				let preloadFlags = [
 					"debugMode",
 					"checkHostLicense",
 					"autoLogNewView",
@@ -390,8 +406,9 @@ class NGIO
 					"preloadScoreBoards",
 					"preloadSaveSlots"
 				];
-				for(let i=0; i<valid.length; i++) {
-					if (typeof(options[i]) !== 'undefined') this["#"+i] = options[i];
+
+				for(let i=0; i<preloadFlags.length; i++) {
+					if (typeof(options[preloadFlags[i]]) !== 'undefined') this.#preloadFlags[preloadFlags[i]] = options[preloadFlags[i]] ? true:false;
 				}
 			}
 
@@ -421,10 +438,11 @@ class NGIO
 	 */
 	static openLoginPage()
 	{
-		if (!this.loginPageOpen) {
-			this.loginPageOpen = true;
+		if (!this.#loginPageOpen) {
+			this.#skipLogin = false;
+			this.#sessionReady = false;
+			this.#loginPageOpen = true;
 			this.session.openLoginPage();
-
 		} else {
 			console.warn("loginPageOpen is true. Use CancelLogin to reset.");
 		}
@@ -439,8 +457,10 @@ class NGIO
 			console.error("NGIO Error - Can't cancel non-existent session");
 			return;
 		}
+
+		this.session.cancelLogin(NewgroundsIO.SessionState.SESSION_UNINITIALIZED);
 		this.#resetConnectionStatus();
-		this.session.cancelLogin();
+		this.skipLogin();
 	}
 
 	/**
@@ -454,6 +474,7 @@ class NGIO
 		}
 		this.session.logOut(function() {
 			this.#resetConnectionStatus();
+			this.skipLogin();
 		}, this);
 	}
 
@@ -592,9 +613,9 @@ class NGIO
 		if (typeof(tag) === "function") {
 			thisArg = callback;
 			callback = tag;
-			tag = null;
+			tag = '';
 		} else if (typeof(tag) === 'undefined') {
-			tag = null;
+			tag = '';
 		}
 
 		if (this.scoreBoards == null) {
@@ -619,80 +640,35 @@ class NGIO
 	 * @callback getScoresCallback
 	 * @param {NewgroundsIO.objects.ScoreBoard} scoreBoard
 	 * @param {NewgroundsIO.objects.Score} score
-	 * @param {string} period
-	 * @param {string} tag
-	 * @param {boolean} social
+	 * @param {object} options
+	 * @param {string} options.period
+	 * @param {string} options.tag
+	 * @param {boolean} options.social
+	 * @param {Number} options.skip
+	 * @param {Number} options.limit
 	 */
 	
 	/**
 	 * Gets the best scores for a board and returns the board, score list, period, tag and social bool to an optional callback.
 	 * @param {number} boardID The id of the scoreboard you loading from.
-	 * @param {string} period The time period to get scores from. Will match one of the PERIOD_XXXX constants.
-	 * @param {string} tag An optional tag to filter results by (use null for no tag).
-	 * @param {boolean} social Set to true to only get scores from the user's friends.
+	 * @param {object} options Any lookup options you want to use.
+	 * @param {string} options.period The time period to get scores from. Will match one of the PERIOD_XXXX constants.
+	 * @param {string} options.tag An optional tag to filter results by (use null for no tag).
+	 * @param {boolean} options.social Set to true to only get scores from the user's friends.
+	 * @param {Number} options.skip The number of scores to skip.
+	 * @param {Number} options.limit The total number of scores to load.
 	 * @param {getScoresCallback} callback A function to run when the scores have been loaded.
 	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 	 */
-	static getScores(boardID, period, tag, social, callback, thisArg)
+	static getScores(boardID, options, callback, thisArg)
 	{
-		// 2nd param is being used for tag
-		if (typeof(period) === "string" && typeof(tag) !== "string" && this.PERIODS.indexOf(period.toUpperCase) < 0) {
-			thisArg = callback;
-			callback = social;
-			tag = period;
-			period = "D";
-
-		// 2nd param is being used for social
-		} else if (typeof(period) === "boolean") {
-			thisArg = social;
-			callback = tag;
-			social = period;
-			tag = null;
-			period = "D";
-
-		// 2nd param is being used for callback
-		} else if (typeof(period) === "function") {
-			thisArg = tag;
-			callback = period;
-			social = false;
-			tag = null;
-			period = "D";
-		
-		// 3rd param is being used for social
-		} else if (typeof(tag) === "boolean") {
-			thisArg = callback;
-			callback = social;
-			social = tag;
-			tag = null;
-		
-		// 3rd param is being used for callback
-		} else if (typeof(tag) === "boolean") {
-			thisArg = social;
-			callback = tag;
-			social = false;
-			tag = null;
-		
-		// 4th param is being used for callback
-		} else if (typeof(social) === "boolean") {
-			thisArg = callback;
-			callback = social;
-			social = false;
-			tag = null;
-		}
-
-		if (typeof(period) === "undefined") {
-			period = "D";
-		}
-		if (typeof(tag) === "undefined") {
-			tag = null;
-		}
-		if (typeof(social) === "undefined") {
-			social = false;
-		}
+		let period = typeof(options['period']) === "undefined" ? "D" : options.period;
+		let tag = typeof(options['tag']) === "undefined" ? "" : options.tag;
+		let social = typeof(options['social']) === "undefined" ? false : options.social;
 		
 		if (this.scoreBoards == null) {
 			console.error("NGIO Error - getScores called without any preloaded scoreboards.");
-			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, period, tag, social) : callback(null, null, period, tag, social);
+			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, options) : callback(null, null, options);
 			return;
 		}
 
@@ -700,12 +676,12 @@ class NGIO
 
 		if (board == null) {
 			console.error("NGIO Error - ScoreBoard #"+boardID+" does not exist.");
-			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, period, tag, social) : callback(null, null, period, tag, social);
+			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, options) : callback(null, null, options);
 			return;
 		}
 		
-		board.getScores(period, tag, social, function() {
-			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, board, this.lastGetScoresResult.scores, period, tag, social) : callback(board, this.lastGetScoresResult.scores, period, tag, social);
+		board.getScores({period:period, tag:tag, social:social}, function() {
+			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, this.lastGetScoresResult.scores, board, options) : callback(this.lastGetScoresResult.scores, board, options);
 		}, this);
 
 	}
@@ -875,30 +851,29 @@ class NGIO
 	 */
 	static getConnectionStatus(callback, thisArg)
 	{
-
 		let _this = this;
-
-		if (this.#checkingConnectionStatus || (this.#lastConnectionStatus == null) || (this.session == null)) return;
-
+		if (this.#checkingConnectionStatus || (this.#lastConnectionStatus === null) || (this.session == null)) return;
 		this.#checkingConnectionStatus = true;
 
-		if (this.#lastConnectionStatus == this.STATUS_INITIALIZED)
+		if (this.#lastConnectionStatus === this.STATUS_INITIALIZED)
 		{
+
 			this.#lastConnectionStatus = this.STATUS_CHECKING_LOCAL_VERSION;
 			this.#reportConnectionStatus(callback,thisArg);
 
-			this.#CheckLocalVersion(function() {
-				this.#reportConnectionStatus(callback,thisArg);
-			}, this);
+			this.#checkLocalVersion(callback, thisArg);
 
 		} else if (!this.#sessionReady) {
 
-			if (this.#skipLogin) this.#updateSessionHandler(callback,thisArg);
-			else this.session.Update(function() {
+			if (this.#skipLogin) {
 				this.#updateSessionHandler(callback,thisArg);
-			}, this);
+			} else if (this.#lastConnectionStatus !== this.STATUS_CHECKING_LOCAL_VERSION) {
+				this.session.update(function() {
+					this.#updateSessionHandler(callback,thisArg);
+				}, this);
+			}
 
-		} else if (this.#lastConnectionStatus == this.STATUS_LOGIN_SUCCESSFUL) {
+		} else if (this.#lastConnectionStatus === this.STATUS_LOGIN_SUCCESSFUL) {
 
 			this.#lastConnectionStatus = this.STATUS_PRELOADING_ITEMS;
 			this.#reportConnectionStatus(callback,thisArg);
@@ -909,12 +884,14 @@ class NGIO
 			}, this);
 
 
-		} else if (lastConnectionStatus == this.STATUS_ITEMS_PRELOADED) {
+		} else if (this.#lastConnectionStatus === this.STATUS_ITEMS_PRELOADED) {
 			this.#loginPageOpen = false;
 			this.#lastConnectionStatus = this.STATUS_READY;
 			this.#reportConnectionStatus(callback,thisArg);
 
 			this.#skipLogin = false;
+		} else {
+			this.keepSessionAlive();
 		}
 
 		this.#checkingConnectionStatus = false;
@@ -942,32 +919,43 @@ class NGIO
 
 	static #reportConnectionStatus(callback, thisArg)
 	{
-		thisArg ? callback.call(thisArg, lastConnectionStatus) : callback(lastConnectionStatus);
+		thisArg ? callback.call(thisArg, this.#lastConnectionStatus) : callback(this.#lastConnectionStatus);
 	}
 
 
 	// Loads the latest version info, and will get the host license and log a view if those Init() options are enabled.
-	static #CheckLocalVersion() {
+	static #checkLocalVersion(callback, thisArg) {
 		
+		// if a login fails, this may get called again. Catch it and avoid an extra lookup!
+		if (this.#localVersionChecked) {
+			this.#lastConnectionStatus = this.STATUS_LOCAL_VERSION_CHECKED;
+			this.#reportConnectionStatus(callback,thisArg);
+			return;
+		}
+
 		this.ngioCore.queueComponent(this.ngioCore.getComponent('App.getCurrentVersion', {version:this.#version}));
-
 		this.ngioCore.queueComponent(this.ngioCore.getComponent('Gateway.getVersion'));
-		this.ngioCore.queueComponent(this.ngioCore.getComponent('Gateway.getDatetime'));
 
-		if (_autoLogNewView) {
+		if (this.#preloadFlags.autoLogNewView) {
 			this.ngioCore.queueComponent(this.ngioCore.getComponent('App.logView'));
 		}
-		if (_checkHostLicense) {
+		if (this.#preloadFlags.checkHostLicense) {
 			this.ngioCore.queueComponent(this.ngioCore.getComponent('App.getHostLicense'));
 		}
 
 		this.ngioCore.executeQueue(function() {
-			this.lastConnectionStatus = this.STATUS_LOCAL_VERSION_CHECKED;
+			this.#lastConnectionStatus = this.STATUS_LOCAL_VERSION_CHECKED;
+			this.#localVersionChecked = true;
+			this.#reportConnectionStatus(callback,thisArg);
 
+			if (this.#isDeprecated) {
+				console.warn("NGIO - Version mistmatch! Published version is: "+this.#newestVersion+", this version is: "+this.version);
+			}
 			if (!this.#legalHost) {
 				console.warn("NGIO - This host has been blocked fom hosting this game!");
 				this.#sessionReady = true;
-				this.lastConnectionStatus = this.STATUS_ITEMS_PRELOADED;
+				this.#lastConnectionStatus = this.STATUS_ITEMS_PRELOADED;
+				this.#reportConnectionStatus(callback,thisArg);
 			}
 		}, this);
 
@@ -976,14 +964,14 @@ class NGIO
 	// Preloads any items that were set in the Init() options.
 	static #PreloadItems() {
 		
-		if (this.#preloadMedals) {
+		if (this.#preloadFlags.preloadMedals) {
 			this.ngioCore.queueComponent(this.ngioCore.getComponent('Medal.getMedalScore'));
 			this.ngioCore.queueComponent(this.ngioCore.getComponent('Medal.getList'));
 		}
-		if (this.#preloadScoreBoards) {
+		if (this.#preloadFlags.preloadScoreBoards) {
 			this.ngioCore.queueComponent(this.ngioCore.getComponent('ScoreBoard.getBoards'));
 		}
-		if (this.user !== null && this.#preloadSaveSlots) this.ngioCore.queueComponent(this.ngioCore.getComponent('CloudSave.loadSlots'));
+		if (this.user !== null && this.#preloadFlags.preloadSaveSlots) this.ngioCore.queueComponent(this.ngioCore.getComponent('CloudSave.loadSlots'));
 
 		if (this.ngioCore.hasQueue) {
 			this.ngioCore.executeQueue(function() {
@@ -996,7 +984,7 @@ class NGIO
 
 	/* =============================== Private Methods ============================== */
 
-	// Resets the connection state, typically after a user logs out or cances a login.
+	// Resets the connection state, typically after a user logs out or cancels a login.
 	static #resetConnectionStatus()
 	{
 		this.#lastConnectionStatus = this.STATUS_INITIALIZED;
@@ -1070,7 +1058,8 @@ class NGIO
 	// Checks component results from every server response to see if they need any further handling.
 	static #handleNewComponentResult(result)
 	{
-		if (!result.success)
+		// show any errors, but ignore the one about null sessions, that's bound to happen anytime the game is played outside of Newgrounds
+		if (!result.success && result.error.code !== 104 && result.error.code !== 110)
 		{
 			console.error(result.error.message+" \ncode("+result.error.code+")");
 		}
@@ -1107,9 +1096,20 @@ class NGIO
 
 			case "App.checkSession":
 
-				// if something failes with a session check, reset the connection status
-				if (!result.success) this.#resetConnectionStatus();
+				// if something fails with a session check, reset the connection status
+				if (!result.success) {
+					this.#resetConnectionStatus();
+				}
+
+			case "App.startSession":
+
+				// if something fails with a session check, reset the connection status
+				if (!result.success) {
+					this.#resetConnectionStatus();
+					break;
+				}
 				
+				result.session.clone(this.session);
 				break;
 
 			/* ============================ Cloud Saves ============================= */
