@@ -9,6 +9,10 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.User} props.user The user who earned score. If this property is absent, the score belongs to the active user.
+		 * @param {Number} props.value The integer value of the score.
+		 * @param {String} props.formatted_value The score value in the format selected in your scoreboard settings.
+		 * @param {String} props.tag The tag attached to this score (if any).
 		 */
 		constructor(props)
 		{

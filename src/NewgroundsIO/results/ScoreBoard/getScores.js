@@ -9,6 +9,12 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.period The time-frame the scores belong to. See notes for acceptable values.
+		 * @param {Boolean} props.social Will return true if scores were loaded in social context ('social' set to true and a session or 'user' were provided).
+		 * @param {Number} props.limit The query skip that was used.
+		 * @param {NewgroundsIO.objects.ScoreBoard} props.scoreboard The NewgroundsIO.objects.ScoreBoard being queried.
+		 * @param {Array.<NewgroundsIO.objects.Score>} props.scores An array of NewgroundsIO.objects.Score objects.
+		 * @param {NewgroundsIO.objects.User} props.user The NewgroundsIO.objects.User the score list is associated with (either as defined in the 'user' param, or extracted from the current session when 'social' is set to true)
 		 */
 		constructor(props)
 		{

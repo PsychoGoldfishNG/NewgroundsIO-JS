@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.Medal} props.medal The NewgroundsIO.objects.Medal that was unlocked.
+		 * @param {Number} props.medal_score The user's new medal score.
 		 */
 		constructor(props)
 		{

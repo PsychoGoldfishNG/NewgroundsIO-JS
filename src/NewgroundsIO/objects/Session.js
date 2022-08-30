@@ -9,6 +9,11 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.id A unique session identifier
+		 * @param {NewgroundsIO.objects.User} props.user If the user has not signed in, or granted access to your app, this will be null
+		 * @param {Boolean} props.expired If true, the session_id is expired. Use App.startSession to get a new one.
+		 * @param {Boolean} props.remember If true, the user would like you to remember their session id.
+		 * @param {String} props.passport_url If the session has no associated user but is not expired, this property will provide a URL that can be used to sign the user in.
 		 */
 		constructor(props)
 		{
@@ -36,7 +41,7 @@
 			this._status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
 
 			/**
-			 * The status from the last time Update() was called.
+			 * The status from the last time update() was called.
 			 * @private
 			 */
 			this._lastStatus = null;
@@ -48,13 +53,13 @@
 			this._statusChanged = false;
 
 			/**
-			 * The last time Update() was called. (Start in the past so Update() will work immediately.)
+			 * The last time update() was called. (Start in the past so update() will work immediately.)
 			 * @private
 			 */
 			this._lastUpdate = new Date((new Date()).getTime() - 30000);
 
 			/**
-			 * If false, Update() will end immediately when called.
+			 * If false, update() will end immediately when called.
 			 * @private
 			 */
 			this._canUpdate = true;
@@ -185,7 +190,7 @@
 		}
 
 		/**
-		 * The current state of this session.
+		 * Will be true if the session state changed the last time update() was called.
 		 * @type {boolean}
 		 */
 		get statusChanged()
@@ -194,7 +199,7 @@
 		}
 
 		/**
-		 * The current state of this session.
+		 * Will be true if the current state is one where we are waiting for something to happen.
 		 * @type {boolean}
 		 */
 		get waiting()
@@ -203,7 +208,7 @@
 		}
 
 		/**
-		 * The current state of this session.
+		 * The localStorage key used to save a session id.
 		 * @type {boolean}
 		 */
 		get storageKey()

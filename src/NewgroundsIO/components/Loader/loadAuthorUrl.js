@@ -9,6 +9,9 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "www.somesite.com", "localHost"
+		 * @param {Boolean} props.redirect Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
+		 * @param {Boolean} props.log_stat Set this to false to skip logging this as a referral event.
 		 */
 		constructor(props)
 		{

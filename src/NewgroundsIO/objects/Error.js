@@ -8,6 +8,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.message Contains details about the error.
+		 * @param {Number} props.code A code indication the error type.
 		 */
 		constructor(props)
 		{

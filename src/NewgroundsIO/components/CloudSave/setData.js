@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The slot number.
+		 * @param {String} props.data The data you want to save.
 		 */
 		constructor(props)
 		{

@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.Session} props.session 
 		 */
 		constructor(props)
 		{

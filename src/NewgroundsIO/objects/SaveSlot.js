@@ -9,6 +9,11 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The slot number.
+		 * @param {Number} props.size The size of the save data in bytes.
+		 * @param {String} props.datetime A date and time (in ISO 8601 format) representing when this slot was last saved.
+		 * @param {Number} props.timestamp A unix timestamp representing when this slot was last saved.
+		 * @param {String} props.url The URL containing the actual save data for this slot, or null if this slot has no data.
 		 */
 		constructor(props)
 		{

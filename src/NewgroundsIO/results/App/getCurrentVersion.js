@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.current_version The version number of the app as defined in your "Version Control" settings.
+		 * @param {Boolean} props.client_deprecated Notes whether the client-side app is using a lower version number.
 		 */
 		constructor(props)
 		{

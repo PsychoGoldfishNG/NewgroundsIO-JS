@@ -9,6 +9,14 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the medal.
+		 * @param {String} props.name The name of the medal.
+		 * @param {String} props.description A short description of the medal.
+		 * @param {String} props.icon The URL for the medal's icon.
+		 * @param {Number} props.value The medal's point value.
+		 * @param {Number} props.difficulty The difficulty id of the medal.
+		 * @param {Boolean} props.secret 
+		 * @param {Boolean} props.unlocked This will only be set if a valid user session exists.
 		 */
 		constructor(props)
 		{

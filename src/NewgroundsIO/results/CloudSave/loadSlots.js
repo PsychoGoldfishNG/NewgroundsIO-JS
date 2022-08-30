@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Array.<NewgroundsIO.objects.SaveSlot>} props.slots An array of NewgroundsIO.objects.SaveSlot objects.
 		 */
 		constructor(props)
 		{

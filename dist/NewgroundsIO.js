@@ -2146,6 +2146,7 @@ NewgroundsIO.components.App.endSession = endSession;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.version The version number (in "X.Y.Z" format) of the client-side app. (default = "0.0.0")
 		 */
 		constructor(props)
 		{
@@ -2200,6 +2201,7 @@ NewgroundsIO.components.App.getCurrentVersion = getCurrentVersion;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The host domain to check (ei, somesite.com).
 		 */
 		constructor(props)
 		{
@@ -2254,6 +2256,7 @@ NewgroundsIO.components.App.getHostLicense = getHostLicense;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Examples: "www.somesite.com", "localHost"
 		 */
 		constructor(props)
 		{
@@ -2309,6 +2312,8 @@ NewgroundsIO.components.App.logView = logView;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Boolean} props.force If true, will create a new session even if the user already has an existing one.
+undefined *        Note: Any previous session ids will no longer be valid if this is used.
 		 */
 		constructor(props)
 		{
@@ -2364,6 +2369,7 @@ NewgroundsIO.components.App.startSession = startSession;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The slot number.
 		 */
 		constructor(props)
 		{
@@ -2422,6 +2428,7 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The slot number.
 		 */
 		constructor(props)
 		{
@@ -2511,6 +2518,8 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The slot number.
+		 * @param {String} props.data The data you want to save.
 		 */
 		constructor(props)
 		{
@@ -2586,6 +2595,8 @@ NewgroundsIO.components.CloudSave.setData = setData;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "newgrounds.com", "localHost"
+		 * @param {String} props.event_name The name of your custom event as defined in your Referrals & Events settings.
 		 */
 		constructor(props)
 		{
@@ -2748,6 +2759,9 @@ NewgroundsIO.components.Gateway.ping = ping;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "www.somesite.com", "localHost"
+		 * @param {Boolean} props.redirect Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
+		 * @param {Boolean} props.log_stat Set this to false to skip logging this as a referral event.
 		 */
 		constructor(props)
 		{
@@ -2820,6 +2834,9 @@ NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "www.somesite.com", "localHost"
+		 * @param {Boolean} props.redirect Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
+		 * @param {Boolean} props.log_stat Set this to false to skip logging this as a referral event.
 		 */
 		constructor(props)
 		{
@@ -2892,6 +2909,9 @@ NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "www.somesite.com", "localHost"
+		 * @param {Boolean} props.redirect Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
+		 * @param {Boolean} props.log_stat Set this to false to skip logging this as a referral event.
 		 */
 		constructor(props)
 		{
@@ -2964,6 +2984,9 @@ NewgroundsIO.components.Loader.loadNewgrounds = loadNewgrounds;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "www.somesite.com", "localHost"
+		 * @param {Boolean} props.redirect Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
+		 * @param {Boolean} props.log_stat Set this to false to skip logging this as a referral event.
 		 */
 		constructor(props)
 		{
@@ -3036,6 +3059,10 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "www.somesite.com", "localHost"
+		 * @param {String} props.referral_name The name of the referral (as defined in your "Referrals & Events" settings).
+		 * @param {Boolean} props.redirect Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
+		 * @param {Boolean} props.log_stat Set this to false to skip logging this as a referral event.
 		 */
 		constructor(props)
 		{
@@ -3186,6 +3213,7 @@ NewgroundsIO.components.Medal.getMedalScore = getMedalScore;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the medal to unlock.
 		 */
 		constructor(props)
 		{
@@ -3275,6 +3303,13 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the scoreboard.
+		 * @param {String} props.period The time-frame to pull scores from (see notes for acceptable values).
+		 * @param {String} props.tag A tag to filter results by.
+		 * @param {Boolean} props.social If set to true, only social scores will be loaded (scores by the user and their friends). This param will be ignored if there is no valid session id and the 'user' param is absent.
+		 * @param {mixed} props.user A user's ID or name.  If 'social' is true, this user and their friends will be included. Otherwise, only scores for this user will be loaded. If this param is missing and there is a valid session id, that user will be used by default.
+		 * @param {Number} props.skip An integer indicating the number of scores to skip before starting the list. Default = 0.
+		 * @param {Number} props.limit An integer indicating the number of scores to include in the list. Default = 10.
 		 */
 		constructor(props)
 		{
@@ -3437,6 +3472,9 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the scoreboard.
+		 * @param {Number} props.value The int value of the score.
+		 * @param {String} props.tag An optional tag that can be used to filter scores via ScoreBoard.getScores
 		 */
 		constructor(props)
 		{
@@ -3532,6 +3570,8 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.exec_time The time, in milliseconds, that it took to execute a request.
+		 * @param {NewgroundsIO.objects.Request} props.request A copy of the request object that was posted to the server.
 		 */
 		constructor(props)
 		{
@@ -3606,6 +3646,8 @@ NewgroundsIO.objects.Debug = Debug;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.message Contains details about the error.
+		 * @param {Number} props.code A code indication the error type.
 		 */
 		constructor(props)
 		{
@@ -3682,6 +3724,10 @@ NewgroundsIO.objects.Error = Error;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.component The name of the component you want to call, ie 'App.connect'.
+		 * @param {(Object|Array.<Object>)} props.parameters An object of parameters you want to pass to the component.
+		 * @param {String} props.secure A an encrypted NewgroundsIO.objects.Execute object or array of NewgroundsIO.objects.Execute objects.
+		 * @param {mixed} props.echo An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Result object.
 		 */
 		constructor(props)
 		{
@@ -3859,6 +3905,14 @@ NewgroundsIO.objects.Execute = Execute;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the medal.
+		 * @param {String} props.name The name of the medal.
+		 * @param {String} props.description A short description of the medal.
+		 * @param {String} props.icon The URL for the medal's icon.
+		 * @param {Number} props.value The medal's point value.
+		 * @param {Number} props.difficulty The difficulty id of the medal.
+		 * @param {Boolean} props.secret 
+		 * @param {Boolean} props.unlocked This will only be set if a valid user session exists.
 		 */
 		constructor(props)
 		{
@@ -4056,6 +4110,11 @@ NewgroundsIO.objects.Medal = Medal;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.app_id Your application's unique ID.
+		 * @param {(NewgroundsIO.objects.Execute|Array.<NewgroundsIO.objects.Execute>)} props.execute A NewgroundsIO.objects.Execute object, or array of one-or-more NewgroundsIO.objects.Execute objects.
+		 * @param {String} props.session_id An optional login session id.
+		 * @param {Boolean} props.debug If set to true, calls will be executed in debug mode.
+		 * @param {mixed} props.echo An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Response object.
 		 */
 		constructor(props)
 		{
@@ -4178,6 +4237,14 @@ NewgroundsIO.objects.Request = Request;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.app_id Your application's unique ID
+		 * @param {Boolean} props.success If false, there was a problem with your 'request' object. Details will be in the error property.
+		 * @param {NewgroundsIO.objects.Debug} props.debug Contains extra information you may need when debugging (debug mode only).
+		 * @param {(NewgroundsIO.BaseResult|Array.<NewgroundsIO.BaseResult>)} props.result This will be a NewgroundsIO.results.XXXXXX object, or an array containing one-or-more NewgroundsIO.results.XXXXXX objects.
+		 * @param {NewgroundsIO.objects.Error} props.error This will contain any error info if the success property is false.
+		 * @param {String} props.api_version If there was an error, this will contain the current version number of the API gateway.
+		 * @param {String} props.help_url If there was an error, this will contain the URL for our help docs.
+		 * @param {mixed} props.echo If you passed an 'echo' value in your request object, it will be echoed here.
 		 */
 		constructor(props)
 		{
@@ -4365,6 +4432,11 @@ NewgroundsIO.objects.Response = Response;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The slot number.
+		 * @param {Number} props.size The size of the save data in bytes.
+		 * @param {String} props.datetime A date and time (in ISO 8601 format) representing when this slot was last saved.
+		 * @param {Number} props.timestamp A unix timestamp representing when this slot was last saved.
+		 * @param {String} props.url The URL containing the actual save data for this slot, or null if this slot has no data.
 		 */
 		constructor(props)
 		{
@@ -4570,6 +4642,10 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.User} props.user The user who earned score. If this property is absent, the score belongs to the active user.
+		 * @param {Number} props.value The integer value of the score.
+		 * @param {String} props.formatted_value The score value in the format selected in your scoreboard settings.
+		 * @param {String} props.tag The tag attached to this score (if any).
 		 */
 		constructor(props)
 		{
@@ -4681,6 +4757,8 @@ NewgroundsIO.objects.Score = Score;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the scoreboard.
+		 * @param {String} props.name The name of the scoreboard.
 		 */
 		constructor(props)
 		{
@@ -4807,6 +4885,11 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.id A unique session identifier
+		 * @param {NewgroundsIO.objects.User} props.user If the user has not signed in, or granted access to your app, this will be null
+		 * @param {Boolean} props.expired If true, the session_id is expired. Use App.startSession to get a new one.
+		 * @param {Boolean} props.remember If true, the user would like you to remember their session id.
+		 * @param {String} props.passport_url If the session has no associated user but is not expired, this property will provide a URL that can be used to sign the user in.
 		 */
 		constructor(props)
 		{
@@ -4834,7 +4917,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			this._status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
 
 			/**
-			 * The status from the last time Update() was called.
+			 * The status from the last time update() was called.
 			 * @private
 			 */
 			this._lastStatus = null;
@@ -4846,13 +4929,13 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			this._statusChanged = false;
 
 			/**
-			 * The last time Update() was called. (Start in the past so Update() will work immediately.)
+			 * The last time update() was called. (Start in the past so update() will work immediately.)
 			 * @private
 			 */
 			this._lastUpdate = new Date((new Date()).getTime() - 30000);
 
 			/**
-			 * If false, Update() will end immediately when called.
+			 * If false, update() will end immediately when called.
 			 * @private
 			 */
 			this._canUpdate = true;
@@ -4983,7 +5066,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		}
 
 		/**
-		 * The current state of this session.
+		 * Will be true if the session state changed the last time update() was called.
 		 * @type {boolean}
 		 */
 		get statusChanged()
@@ -4992,7 +5075,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		}
 
 		/**
-		 * The current state of this session.
+		 * Will be true if the current state is one where we are waiting for something to happen.
 		 * @type {boolean}
 		 */
 		get waiting()
@@ -5001,7 +5084,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		}
 
 		/**
-		 * The current state of this session.
+		 * The localStorage key used to save a session id.
 		 * @type {boolean}
 		 */
 		get storageKey()
@@ -5376,6 +5459,10 @@ NewgroundsIO.objects.Session = Session;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The user's numeric ID.
+		 * @param {String} props.name The user's textual name.
+		 * @param {NewgroundsIO.objects.UserIcons} props.icons The user's icon images.
+		 * @param {Boolean} props.supporter Returns true if the user has a Newgrounds Supporter upgrade.
 		 */
 		constructor(props)
 		{
@@ -5487,6 +5574,9 @@ NewgroundsIO.objects.User = User;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.small The URL of the user's small icon
+		 * @param {String} props.medium The URL of the user's medium icon
+		 * @param {String} props.large The URL of the user's large icon
 		 */
 		constructor(props)
 		{
@@ -5578,6 +5668,7 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.Session} props.session 
 		 */
 		constructor(props)
 		{
@@ -5639,6 +5730,8 @@ NewgroundsIO.results.App.checkSession = checkSession;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.current_version The version number of the app as defined in your "Version Control" settings.
+		 * @param {Boolean} props.client_deprecated Notes whether the client-side app is using a lower version number.
 		 */
 		constructor(props)
 		{
@@ -5714,6 +5807,7 @@ NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Boolean} props.host_approved 
 		 */
 		constructor(props)
 		{
@@ -5771,6 +5865,7 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.Session} props.session 
 		 */
 		constructor(props)
 		{
@@ -5832,6 +5927,7 @@ NewgroundsIO.results.App.startSession = startSession;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.SaveSlot} props.slot A NewgroundsIO.objects.SaveSlot object.
 		 */
 		constructor(props)
 		{
@@ -5894,6 +5990,7 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.SaveSlot} props.slot A NewgroundsIO.objects.SaveSlot object.
 		 */
 		constructor(props)
 		{
@@ -5956,6 +6053,7 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Array.<NewgroundsIO.objects.SaveSlot>} props.slots An array of NewgroundsIO.objects.SaveSlot objects.
 		 */
 		constructor(props)
 		{
@@ -6023,6 +6121,7 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.SaveSlot} props.slot 
 		 */
 		constructor(props)
 		{
@@ -6084,6 +6183,7 @@ NewgroundsIO.results.CloudSave.setData = setData;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.event_name 
 		 */
 		constructor(props)
 		{
@@ -6141,6 +6241,8 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.datetime The server's date and time in ISO 8601 format.
+		 * @param {Number} props.timestamp The current UNIX timestamp on the server.
 		 */
 		constructor(props)
 		{
@@ -6218,6 +6320,7 @@ NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.version The version number (in X.Y.Z format).
 		 */
 		constructor(props)
 		{
@@ -6276,6 +6379,7 @@ NewgroundsIO.results.Gateway.getVersion = getVersion;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.pong Will always return a value of 'pong'
 		 */
 		constructor(props)
 		{
@@ -6334,6 +6438,7 @@ NewgroundsIO.results.Gateway.ping = ping;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.url 
 		 */
 		constructor(props)
 		{
@@ -6391,6 +6496,7 @@ NewgroundsIO.results.Loader.loadAuthorUrl = loadAuthorUrl;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.url 
 		 */
 		constructor(props)
 		{
@@ -6448,6 +6554,7 @@ NewgroundsIO.results.Loader.loadMoreGames = loadMoreGames;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.url 
 		 */
 		constructor(props)
 		{
@@ -6505,6 +6612,7 @@ NewgroundsIO.results.Loader.loadNewgrounds = loadNewgrounds;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.url 
 		 */
 		constructor(props)
 		{
@@ -6562,6 +6670,7 @@ NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.url 
 		 */
 		constructor(props)
 		{
@@ -6619,6 +6728,7 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Array.<NewgroundsIO.objects.Medal>} props.medals An array of medal objects.
 		 */
 		constructor(props)
 		{
@@ -6686,6 +6796,7 @@ NewgroundsIO.results.Medal.getList = getList;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.medal_score The user's medal score.
 		 */
 		constructor(props)
 		{
@@ -6746,6 +6857,8 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.Medal} props.medal The NewgroundsIO.objects.Medal that was unlocked.
+		 * @param {Number} props.medal_score The user's new medal score.
 		 */
 		constructor(props)
 		{
@@ -6827,6 +6940,7 @@ NewgroundsIO.results.Medal.unlock = unlock;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Array.<NewgroundsIO.objects.ScoreBoard>} props.scoreboards An array of NewgroundsIO.objects.ScoreBoard objects.
 		 */
 		constructor(props)
 		{
@@ -6894,6 +7008,12 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.period The time-frame the scores belong to. See notes for acceptable values.
+		 * @param {Boolean} props.social Will return true if scores were loaded in social context ('social' set to true and a session or 'user' were provided).
+		 * @param {Number} props.limit The query skip that was used.
+		 * @param {NewgroundsIO.objects.ScoreBoard} props.scoreboard The NewgroundsIO.objects.ScoreBoard being queried.
+		 * @param {Array.<NewgroundsIO.objects.Score>} props.scores An array of NewgroundsIO.objects.Score objects.
+		 * @param {NewgroundsIO.objects.User} props.user The NewgroundsIO.objects.User the score list is associated with (either as defined in the 'user' param, or extracted from the current session when 'social' is set to true)
 		 */
 		constructor(props)
 		{
@@ -7056,6 +7176,8 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.ScoreBoard} props.scoreboard The NewgroundsIO.objects.ScoreBoard that was posted to.
+		 * @param {NewgroundsIO.objects.Score} props.score The NewgroundsIO.objects.Score that was posted to the board.
 		 */
 		constructor(props)
 		{

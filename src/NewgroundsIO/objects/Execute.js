@@ -9,6 +9,10 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.component The name of the component you want to call, ie 'App.connect'.
+		 * @param {(Object|Array.<Object>)} props.parameters An object of parameters you want to pass to the component.
+		 * @param {String} props.secure A an encrypted NewgroundsIO.objects.Execute object or array of NewgroundsIO.objects.Execute objects.
+		 * @param {mixed} props.echo An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Result object.
 		 */
 		constructor(props)
 		{

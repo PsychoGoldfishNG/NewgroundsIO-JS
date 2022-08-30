@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Array.<NewgroundsIO.objects.ScoreBoard>} props.scoreboards An array of NewgroundsIO.objects.ScoreBoard objects.
 		 */
 		constructor(props)
 		{

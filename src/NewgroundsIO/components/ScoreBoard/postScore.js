@@ -9,6 +9,9 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the scoreboard.
+		 * @param {Number} props.value The int value of the score.
+		 * @param {String} props.tag An optional tag that can be used to filter scores via ScoreBoard.getScores
 		 */
 		constructor(props)
 		{

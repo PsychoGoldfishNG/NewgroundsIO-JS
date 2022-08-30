@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.datetime The server's date and time in ISO 8601 format.
+		 * @param {Number} props.timestamp The current UNIX timestamp on the server.
 		 */
 		constructor(props)
 		{

@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.pong Will always return a value of 'pong'
 		 */
 		constructor(props)
 		{

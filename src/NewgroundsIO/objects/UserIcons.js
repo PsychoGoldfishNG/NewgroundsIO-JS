@@ -9,6 +9,9 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.small The URL of the user's small icon
+		 * @param {String} props.medium The URL of the user's medium icon
+		 * @param {String} props.large The URL of the user's large icon
 		 */
 		constructor(props)
 		{

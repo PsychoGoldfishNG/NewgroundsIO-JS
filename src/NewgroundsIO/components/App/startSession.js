@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Boolean} props.force If true, will create a new session even if the user already has an existing one.
+undefined *        Note: Any previous session ids will no longer be valid if this is used.
 		 */
 		constructor(props)
 		{

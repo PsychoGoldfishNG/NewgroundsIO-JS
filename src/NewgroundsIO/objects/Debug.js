@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.exec_time The time, in milliseconds, that it took to execute a request.
+		 * @param {NewgroundsIO.objects.Request} props.request A copy of the request object that was posted to the server.
 		 */
 		constructor(props)
 		{

@@ -9,6 +9,13 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the scoreboard.
+		 * @param {String} props.period The time-frame to pull scores from (see notes for acceptable values).
+		 * @param {String} props.tag A tag to filter results by.
+		 * @param {Boolean} props.social If set to true, only social scores will be loaded (scores by the user and their friends). This param will be ignored if there is no valid session id and the 'user' param is absent.
+		 * @param {mixed} props.user A user's ID or name.  If 'social' is true, this user and their friends will be included. Otherwise, only scores for this user will be loaded. If this param is missing and there is a valid session id, that user will be used by default.
+		 * @param {Number} props.skip An integer indicating the number of scores to skip before starting the list. Default = 0.
+		 * @param {Number} props.limit An integer indicating the number of scores to include in the list. Default = 10.
 		 */
 		constructor(props)
 		{

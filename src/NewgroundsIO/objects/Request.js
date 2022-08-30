@@ -9,6 +9,11 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.app_id Your application's unique ID.
+		 * @param {(NewgroundsIO.objects.Execute|Array.<NewgroundsIO.objects.Execute>)} props.execute A NewgroundsIO.objects.Execute object, or array of one-or-more NewgroundsIO.objects.Execute objects.
+		 * @param {String} props.session_id An optional login session id.
+		 * @param {Boolean} props.debug If set to true, calls will be executed in debug mode.
+		 * @param {mixed} props.echo An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Response object.
 		 */
 		constructor(props)
 		{

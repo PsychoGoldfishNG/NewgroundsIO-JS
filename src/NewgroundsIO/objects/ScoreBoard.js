@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The numeric ID of the scoreboard.
+		 * @param {String} props.name The name of the scoreboard.
 		 */
 		constructor(props)
 		{

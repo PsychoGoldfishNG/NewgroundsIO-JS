@@ -9,6 +9,10 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.id The user's numeric ID.
+		 * @param {String} props.name The user's textual name.
+		 * @param {NewgroundsIO.objects.UserIcons} props.icons The user's icon images.
+		 * @param {Boolean} props.supporter Returns true if the user has a Newgrounds Supporter upgrade.
 		 */
 		constructor(props)
 		{

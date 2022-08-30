@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The domain hosting your app. Example: "newgrounds.com", "localHost"
+		 * @param {String} props.event_name The name of your custom event as defined in your Referrals & Events settings.
 		 */
 		constructor(props)
 		{

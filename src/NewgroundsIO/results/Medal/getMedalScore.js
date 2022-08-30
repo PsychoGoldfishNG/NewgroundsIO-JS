@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Number} props.medal_score The user's medal score.
 		 */
 		constructor(props)
 		{

@@ -9,6 +9,14 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.app_id Your application's unique ID
+		 * @param {Boolean} props.success If false, there was a problem with your 'request' object. Details will be in the error property.
+		 * @param {NewgroundsIO.objects.Debug} props.debug Contains extra information you may need when debugging (debug mode only).
+		 * @param {(NewgroundsIO.BaseResult|Array.<NewgroundsIO.BaseResult>)} props.result This will be a NewgroundsIO.results.XXXXXX object, or an array containing one-or-more NewgroundsIO.results.XXXXXX objects.
+		 * @param {NewgroundsIO.objects.Error} props.error This will contain any error info if the success property is false.
+		 * @param {String} props.api_version If there was an error, this will contain the current version number of the API gateway.
+		 * @param {String} props.help_url If there was an error, this will contain the URL for our help docs.
+		 * @param {mixed} props.echo If you passed an 'echo' value in your request object, it will be echoed here.
 		 */
 		constructor(props)
 		{

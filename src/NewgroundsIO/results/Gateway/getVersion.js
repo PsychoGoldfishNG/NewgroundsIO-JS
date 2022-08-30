@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.version The version number (in X.Y.Z format).
 		 */
 		constructor(props)
 		{

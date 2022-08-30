@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {Array.<NewgroundsIO.objects.Medal>} props.medals An array of medal objects.
 		 */
 		constructor(props)
 		{

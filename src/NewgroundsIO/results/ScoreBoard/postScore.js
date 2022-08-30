@@ -9,6 +9,8 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {NewgroundsIO.objects.ScoreBoard} props.scoreboard The NewgroundsIO.objects.ScoreBoard that was posted to.
+		 * @param {NewgroundsIO.objects.Score} props.score The NewgroundsIO.objects.Score that was posted to the board.
 		 */
 		constructor(props)
 		{

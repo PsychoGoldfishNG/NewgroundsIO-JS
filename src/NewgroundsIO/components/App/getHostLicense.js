@@ -9,6 +9,7 @@
 		/**
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.host The host domain to check (ei, somesite.com).
 		 */
 		constructor(props)
 		{
