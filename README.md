@@ -21,7 +21,7 @@ Download [dist/NewgroundsIO.min.js](https://github.com/PsychoGoldfishNG/Newgroun
 
 Learn how to use the library, and access API docs in the [wiki](https://github.com/PsychoGoldfishNG/NewgroundsIO-JS/wiki)!  
 
-You can also find a working test unit in [dist/test.html](https://github.com/PsychoGoldfishNG/NewgroundsIO-JS/blob/main/dist/test.html)
+You can also find a working test unit in [dist/test.html](https://github.com/PsychoGoldfishNG/NewgroundsIO-JS/blob/main/dist/test.html) and [dist/test.js](https://github.com/PsychoGoldfishNG/NewgroundsIO-JS/blob/main/dist/test.js)
 
 # Join the Discord! #
 
