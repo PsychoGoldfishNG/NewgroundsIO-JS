@@ -181,6 +181,12 @@
 
 
 		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
+
+		/**
 		 * The current state of this session.
 		 * @type {string}
 		 */
@@ -249,7 +255,7 @@
 
 		/**
 		 * Logs the user out of their current session, locally and on the server, then calls a function when complete.
-		 * @param {function} callback The callback function.
+		 * @param {responseCallback} callback The callback function.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		logOut(callback, thisArg)
@@ -280,10 +286,14 @@
 			this._lastUpdate = new Date((new Date()).getTime() - 30000);
 		}
 
+		/**
+		 * @callback updateCallback
+		 * @param {string} status
+		 */
 
 		/**
 		 * Call this to update the session process and call a function if there are any changes.
-		 * @param {function} callback The callback function.
+		 * @param {updateCallback} callback The callback function.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		update(callback, thisArg)
@@ -509,7 +519,7 @@
 
 		/**
 		 * This will end the current session on the server
-		 * @param {function} callback The callback function.
+		 * @param {responseCallback} callback The callback function.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		endSession(callback, thisArg)

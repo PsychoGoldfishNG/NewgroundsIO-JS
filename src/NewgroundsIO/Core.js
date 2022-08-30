@@ -25,6 +25,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 (()=>{
 /** Start Class NewgroundsIO.Core **/
 
+	/**
+	 * @callback responseCallback
+	 * @param {NewgroundsIO.objects.Response} serverResponse
+	 */
+
 	/** Class for communicating with the Newgrounds.io API **/
 	class Core extends EventTarget {
 
@@ -217,7 +222,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 
 		/**
 		 * Executes any components in the queue.
-		 * @param {function} callback A function to fire when the queue has finished executing on the server.
+		 * @param {responseCallback} callback A function to fire when the queue has finished executing on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		executeQueue(callback, thisArg)
@@ -231,7 +236,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		/**
 		 * Executes any components in the queue.
 		 * @param {NewgroundsIO.BaseComponent} component Any NewgroundsIO.components.XXXXX object
-		 * @param {function} callback A function to fire when the queue has finished executing on the server.
+		 * @param {responseCallback} callback A function to fire when the queue has finished executing on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		executeComponent(component, callback, thisArg)

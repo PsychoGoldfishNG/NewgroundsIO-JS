@@ -1357,6 +1357,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 (()=>{
 /** Start Class NewgroundsIO.Core **/
 
+	/**
+	 * @callback responseCallback
+	 * @param {NewgroundsIO.objects.Response} serverResponse
+	 */
+
 	/** Class for communicating with the Newgrounds.io API **/
 	class Core extends EventTarget {
 
@@ -1549,7 +1554,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 
 		/**
 		 * Executes any components in the queue.
-		 * @param {function} callback A function to fire when the queue has finished executing on the server.
+		 * @param {responseCallback} callback A function to fire when the queue has finished executing on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		executeQueue(callback, thisArg)
@@ -1563,7 +1568,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		/**
 		 * Executes any components in the queue.
 		 * @param {NewgroundsIO.BaseComponent} component Any NewgroundsIO.components.XXXXX object
-		 * @param {function} callback A function to fire when the queue has finished executing on the server.
+		 * @param {responseCallback} callback A function to fire when the queue has finished executing on the server.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		executeComponent(component, callback, thisArg)
@@ -5057,6 +5062,12 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 
 		/**
+		 * @callback responseCallback
+		 * @param {NewgroundsIO.objects.Response} serverResponse
+		 */
+
+
+		/**
 		 * The current state of this session.
 		 * @type {string}
 		 */
@@ -5125,7 +5136,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 		/**
 		 * Logs the user out of their current session, locally and on the server, then calls a function when complete.
-		 * @param {function} callback The callback function.
+		 * @param {responseCallback} callback The callback function.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		logOut(callback, thisArg)
@@ -5156,10 +5167,14 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			this._lastUpdate = new Date((new Date()).getTime() - 30000);
 		}
 
+		/**
+		 * @callback updateCallback
+		 * @param {string} status
+		 */
 
 		/**
 		 * Call this to update the session process and call a function if there are any changes.
-		 * @param {function} callback The callback function.
+		 * @param {updateCallback} callback The callback function.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		update(callback, thisArg)
@@ -5385,7 +5400,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 		/**
 		 * This will end the current session on the server
-		 * @param {function} callback The callback function.
+		 * @param {responseCallback} callback The callback function.
 		 * @param {object} thisArg An optional object to use as 'this' in your callback function.
 		 */
 		endSession(callback, thisArg)
