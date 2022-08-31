@@ -1548,7 +1548,9 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 */
 		queueComponent(component)
 		{
-			if (!this._verifyComponent(component)) return;
+			if (!this._verifyComponent(component)) {
+				return;
+			}
 			component.setCore(this);
 			this._componentQueue.push(component);
 		}
@@ -1576,9 +1578,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		{
 			if (Array.isArray(component)) {
 				let valid = true;
+				let _this = this;
 				component.forEach(_c=>{
 					if (!(_c instanceof NewgroundsIO.BaseComponent)) {
-						if (!this._verifyComponent(component)) valid = false;
+						if (!_this._verifyComponent(component)) valid = false;
+						_c.setCore(_this);
 					}
 				});
 				if (!valid) return;
@@ -1596,7 +1600,6 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 				if (xhr.readyState==4) {
 
 					var o_return;
-
 					try { 
 						o_return = (JSON.parse(xhr.responseText));
 					} catch(e) {
@@ -1717,10 +1720,12 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		_getRequest(component)
 		{
 			let execute;
+			let _this = this;
 			if (Array.isArray(component)) {
 				execute = [];
-				component.forEach(c=>{
-					execute.push(this._getExecute(c));
+				component.forEach(_c=>{
+					let _ex = _this._getExecute(_c);
+					execute.push(_ex);
 				});
 			} else {
 				execute = this._getExecute(component);
@@ -2092,6 +2097,7 @@ NewgroundsIO.SessionState.SESSION_WAITING = [
 			super();
 
 			this.__object = "App.checkSession";
+			this.__requireSession = true;
 		}
 
 	}
@@ -2119,6 +2125,7 @@ NewgroundsIO.components.App.checkSession = checkSession;
 			super();
 
 			this.__object = "App.endSession";
+			this.__requireSession = true;
 		}
 
 	}
@@ -2150,7 +2157,7 @@ NewgroundsIO.components.App.endSession = endSession;
 			this.__object = "App.getCurrentVersion";
 			this._version = null;
 			this.__properties = this.__properties.concat(["version"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2202,7 +2209,7 @@ NewgroundsIO.components.App.getCurrentVersion = getCurrentVersion;
 			this.__object = "App.getHostLicense";
 			this._host = null;
 			this.__properties = this.__properties.concat(["host"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2255,7 +2262,7 @@ NewgroundsIO.components.App.getHostLicense = getHostLicense;
 			this._host = null;
 			this.__required = ["host"];
 			this.__properties = this.__properties.concat(["host"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2308,7 +2315,7 @@ undefined *        Note: Any previous session ids will no longer be valid if thi
 			this.__object = "App.startSession";
 			this._force = null;
 			this.__properties = this.__properties.concat(["force"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2361,8 +2368,9 @@ NewgroundsIO.components.App.startSession = startSession;
 			this.__object = "CloudSave.clearSlot";
 			this._id = null;
 			this.__required = ["id"];
+			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2416,8 +2424,9 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 			this.__object = "CloudSave.loadSlot";
 			this._id = null;
 			this.__required = ["id"];
+			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2467,6 +2476,7 @@ NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
 			super();
 
 			this.__object = "CloudSave.loadSlots";
+			this.__requireSession = true;
 		}
 
 	}
@@ -2500,8 +2510,9 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 			this._id = null;
 			this._data = null;
 			this.__required = ["id","data"];
+			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id","data"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2574,7 +2585,7 @@ NewgroundsIO.components.CloudSave.setData = setData;
 			this._event_name = null;
 			this.__required = ["host","event_name"];
 			this.__properties = this.__properties.concat(["host","event_name"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2727,7 +2738,7 @@ NewgroundsIO.components.Gateway.ping = ping;
 			this._log_stat = null;
 			this.__required = ["host"];
 			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2799,7 +2810,7 @@ NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 			this._log_stat = null;
 			this.__required = ["host"];
 			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2871,7 +2882,7 @@ NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 			this._log_stat = null;
 			this.__required = ["host"];
 			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -2943,7 +2954,7 @@ NewgroundsIO.components.Loader.loadNewgrounds = loadNewgrounds;
 			this._log_stat = null;
 			this.__required = ["host"];
 			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3017,7 +3028,7 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 			this._log_stat = null;
 			this.__required = ["host","referral_name"];
 			this.__properties = this.__properties.concat(["host","referral_name","redirect","log_stat"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3124,6 +3135,7 @@ NewgroundsIO.components.Medal.getList = getList;
 			super();
 
 			this.__object = "Medal.getMedalScore";
+			this.__requireSession = true;
 		}
 
 	}
@@ -3155,8 +3167,10 @@ NewgroundsIO.components.Medal.getMedalScore = getMedalScore;
 			this.__object = "Medal.unlock";
 			this._id = null;
 			this.__required = ["id"];
+			this.__isSecure = true;
+			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3250,7 +3264,7 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 			this._limit = null;
 			this.__required = ["id"];
 			this.__properties = this.__properties.concat(["id","period","tag","social","user","skip","limit"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3407,8 +3421,10 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 			this._value = null;
 			this._tag = null;
 			this.__required = ["id","value"];
+			this.__isSecure = true;
+			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id","value","tag"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3498,7 +3514,7 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 			this._exec_time = null;
 			this._request = null;
 			this.__properties = this.__properties.concat(["exec_time","request"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3574,7 +3590,7 @@ NewgroundsIO.objects.Debug = Debug;
 			this._message = null;
 			this._code = null;
 			this.__properties = this.__properties.concat(["message","code"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3650,7 +3666,7 @@ NewgroundsIO.objects.Error = Error;
 			this._secure = null;
 			this.__required = ["component","secure"];
 			this.__properties = this.__properties.concat(["component","parameters","secure"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -3833,7 +3849,7 @@ NewgroundsIO.objects.Execute = Execute;
 			this._secret = null;
 			this._unlocked = null;
 			this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -4029,7 +4045,7 @@ NewgroundsIO.objects.Medal = Medal;
 			this._debug = null;
 			this.__required = ["app_id","execute"];
 			this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -4048,7 +4064,7 @@ NewgroundsIO.objects.Medal = Medal;
 
 		set execute(_execute)
 		{
-			if (!(_execute instanceof NewgroundsIO.objects.Execute) && typeof(_execute) === 'object')
+			if (!Array.isArray(_execute) && !(_execute instanceof NewgroundsIO.objects.Execute) && typeof(_execute) === 'object')
 				_execute = new NewgroundsIO.objects.Execute(_execute);
 
 			if (Array.isArray(_execute)) {
@@ -4164,7 +4180,7 @@ NewgroundsIO.objects.Request = Request;
 			this._api_version = null;
 			this._help_url = null;
 			this.__properties = this.__properties.concat(["app_id","success","debug","result","error","api_version","help_url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -4356,7 +4372,7 @@ NewgroundsIO.objects.Response = Response;
 			this._timestamp = null;
 			this._url = null;
 			this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -4568,7 +4584,7 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 			this._formatted_value = null;
 			this._tag = null;
 			this.__properties = this.__properties.concat(["user","value","formatted_value","tag"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -4678,7 +4694,7 @@ NewgroundsIO.objects.Score = Score;
 			this._id = null;
 			this._name = null;
 			this.__properties = this.__properties.concat(["id","name"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -4818,7 +4834,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			this._remember = null;
 			this._passport_url = null;
 			this.__properties = this.__properties.concat(["id","user","expired","remember","passport_url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5399,7 +5415,7 @@ NewgroundsIO.objects.Session = Session;
 			this._icons = null;
 			this._supporter = null;
 			this.__properties = this.__properties.concat(["id","name","icons","supporter"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5511,7 +5527,7 @@ NewgroundsIO.objects.User = User;
 			this._medium = null;
 			this._large = null;
 			this.__properties = this.__properties.concat(["small","medium","large"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5595,7 +5611,7 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 			this.__object = "App.checkSession";
 			this._session = null;
 			this.__properties = this.__properties.concat(["session"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5654,7 +5670,7 @@ NewgroundsIO.results.App.checkSession = checkSession;
 			this._current_version = null;
 			this._client_deprecated = null;
 			this.__properties = this.__properties.concat(["current_version","client_deprecated"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5722,7 +5738,7 @@ NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 			this.__object = "App.getHostLicense";
 			this._host_approved = null;
 			this.__properties = this.__properties.concat(["host_approved"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5773,7 +5789,7 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 			this.__object = "App.startSession";
 			this._session = null;
 			this.__properties = this.__properties.concat(["session"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5830,7 +5846,7 @@ NewgroundsIO.results.App.startSession = startSession;
 			this.__object = "CloudSave.clearSlot";
 			this._slot = null;
 			this.__properties = this.__properties.concat(["slot"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5888,7 +5904,7 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 			this.__object = "CloudSave.loadSlot";
 			this._slot = null;
 			this.__properties = this.__properties.concat(["slot"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -5946,7 +5962,7 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 			this.__object = "CloudSave.loadSlots";
 			this._slots = null;
 			this.__properties = this.__properties.concat(["slots"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6009,7 +6025,7 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 			this.__object = "CloudSave.setData";
 			this._slot = null;
 			this.__properties = this.__properties.concat(["slot"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6066,7 +6082,7 @@ NewgroundsIO.results.CloudSave.setData = setData;
 			this.__object = "Event.logEvent";
 			this._event_name = null;
 			this.__properties = this.__properties.concat(["event_name"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6119,7 +6135,7 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 			this._datetime = null;
 			this._timestamp = null;
 			this.__properties = this.__properties.concat(["datetime","timestamp"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6189,7 +6205,7 @@ NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 			this.__object = "Gateway.getVersion";
 			this._version = null;
 			this.__properties = this.__properties.concat(["version"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6241,7 +6257,7 @@ NewgroundsIO.results.Gateway.getVersion = getVersion;
 			this.__object = "Gateway.ping";
 			this._pong = null;
 			this.__properties = this.__properties.concat(["pong"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6293,7 +6309,7 @@ NewgroundsIO.results.Gateway.ping = ping;
 			this.__object = "Loader.loadAuthorUrl";
 			this._url = null;
 			this.__properties = this.__properties.concat(["url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6344,7 +6360,7 @@ NewgroundsIO.results.Loader.loadAuthorUrl = loadAuthorUrl;
 			this.__object = "Loader.loadMoreGames";
 			this._url = null;
 			this.__properties = this.__properties.concat(["url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6395,7 +6411,7 @@ NewgroundsIO.results.Loader.loadMoreGames = loadMoreGames;
 			this.__object = "Loader.loadNewgrounds";
 			this._url = null;
 			this.__properties = this.__properties.concat(["url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6446,7 +6462,7 @@ NewgroundsIO.results.Loader.loadNewgrounds = loadNewgrounds;
 			this.__object = "Loader.loadOfficialUrl";
 			this._url = null;
 			this.__properties = this.__properties.concat(["url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6497,7 +6513,7 @@ NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 			this.__object = "Loader.loadReferral";
 			this._url = null;
 			this.__properties = this.__properties.concat(["url"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6548,7 +6564,7 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 			this.__object = "Medal.getList";
 			this._medals = null;
 			this.__properties = this.__properties.concat(["medals"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6611,7 +6627,7 @@ NewgroundsIO.results.Medal.getList = getList;
 			this.__object = "Medal.getMedalScore";
 			this._medal_score = null;
 			this.__properties = this.__properties.concat(["medal_score"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6667,7 +6683,7 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 			this._medal = null;
 			this._medal_score = null;
 			this.__properties = this.__properties.concat(["medal","medal_score"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6743,7 +6759,7 @@ NewgroundsIO.results.Medal.unlock = unlock;
 			this.__object = "ScoreBoard.getBoards";
 			this._scoreboards = null;
 			this.__properties = this.__properties.concat(["scoreboards"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6816,7 +6832,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 			this._scores = null;
 			this._user = null;
 			this.__properties = this.__properties.concat(["period","social","limit","scoreboard","scores","user"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -6973,7 +6989,7 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 			this._scoreboard = null;
 			this._score = null;
 			this.__properties = this.__properties.concat(["scoreboard","score"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}

@@ -11,6 +11,7 @@
 			super();
 
 			this.__object = "App.endSession";
+			this.__requireSession = true;
 		}
 
 	}

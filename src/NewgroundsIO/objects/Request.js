@@ -21,7 +21,7 @@
 			this._debug = null;
 			this.__required = ["app_id","execute"];
 			this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
@@ -40,7 +40,7 @@
 
 		set execute(_execute)
 		{
-			if (!(_execute instanceof NewgroundsIO.objects.Execute) && typeof(_execute) === 'object')
+			if (!Array.isArray(_execute) && !(_execute instanceof NewgroundsIO.objects.Execute) && typeof(_execute) === 'object')
 				_execute = new NewgroundsIO.objects.Execute(_execute);
 
 			if (Array.isArray(_execute)) {

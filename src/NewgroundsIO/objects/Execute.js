@@ -21,7 +21,7 @@
 			this._secure = null;
 			this.__required = ["component","secure"];
 			this.__properties = this.__properties.concat(["component","parameters","secure"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}

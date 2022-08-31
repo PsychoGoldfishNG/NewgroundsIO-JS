@@ -15,8 +15,10 @@
 			this.__object = "Medal.unlock";
 			this._id = null;
 			this.__required = ["id"];
+			this.__isSecure = true;
+			this.__requireSession = true;
 			this.__properties = this.__properties.concat(["id"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}

@@ -18,7 +18,7 @@
 			this._event_name = null;
 			this.__required = ["host","event_name"];
 			this.__properties = this.__properties.concat(["host","event_name"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}

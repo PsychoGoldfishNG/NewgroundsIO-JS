@@ -17,7 +17,7 @@
 			this._current_version = null;
 			this._client_deprecated = null;
 			this.__properties = this.__properties.concat(["current_version","client_deprecated"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}

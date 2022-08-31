@@ -15,7 +15,7 @@
 			this.__object = "CloudSave.loadSlots";
 			this._slots = null;
 			this.__properties = this.__properties.concat(["slots"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}

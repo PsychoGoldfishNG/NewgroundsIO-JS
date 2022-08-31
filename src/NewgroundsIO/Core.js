@@ -215,7 +215,9 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 */
 		queueComponent(component)
 		{
-			if (!this._verifyComponent(component)) return;
+			if (!this._verifyComponent(component)) {
+				return;
+			}
 			component.setCore(this);
 			this._componentQueue.push(component);
 		}
@@ -243,9 +245,11 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		{
 			if (Array.isArray(component)) {
 				let valid = true;
+				let _this = this;
 				component.forEach(_c=>{
 					if (!(_c instanceof NewgroundsIO.BaseComponent)) {
-						if (!this._verifyComponent(component)) valid = false;
+						if (!_this._verifyComponent(component)) valid = false;
+						_c.setCore(_this);
 					}
 				});
 				if (!valid) return;
@@ -263,7 +267,6 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 				if (xhr.readyState==4) {
 
 					var o_return;
-
 					try { 
 						o_return = (JSON.parse(xhr.responseText));
 					} catch(e) {
@@ -384,10 +387,12 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		_getRequest(component)
 		{
 			let execute;
+			let _this = this;
 			if (Array.isArray(component)) {
 				execute = [];
-				component.forEach(c=>{
-					execute.push(this._getExecute(c));
+				component.forEach(_c=>{
+					let _ex = _this._getExecute(_c);
+					execute.push(_ex);
 				});
 			} else {
 				execute = this._getExecute(component);

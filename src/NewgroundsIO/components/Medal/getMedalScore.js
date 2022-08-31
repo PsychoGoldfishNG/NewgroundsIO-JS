@@ -11,6 +11,7 @@
 			super();
 
 			this.__object = "Medal.getMedalScore";
+			this.__requireSession = true;
 		}
 
 	}

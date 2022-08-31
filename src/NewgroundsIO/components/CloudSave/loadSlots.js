@@ -11,6 +11,7 @@
 			super();
 
 			this.__object = "CloudSave.loadSlots";
+			this.__requireSession = true;
 		}
 
 	}

@@ -16,7 +16,7 @@ undefined *        Note: Any previous session ids will no longer be valid if thi
 			this.__object = "App.startSession";
 			this._force = null;
 			this.__properties = this.__properties.concat(["force"]);
-			if (typeof(props) === 'object') {
+			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
