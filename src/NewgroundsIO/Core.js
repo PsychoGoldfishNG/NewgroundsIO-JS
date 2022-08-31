@@ -628,15 +628,11 @@ NewgroundsIO.Core = Core;
 		 */
 		__doToJSON() 
 		{
-			console.log(this.__object, this.__properties);
 			if (typeof(this.__properties) === 'undefined') return {};
 
 			let json = {};
 
 			this.__properties.forEach(function(prop) {
-				
-				console.log("    ",prop,this[prop]);
-
 				if (this[prop] !== null) {
 					json[prop] = typeof(this[prop].toJSON) === "function" ? this[prop].toJSON() : this[prop];
 				}

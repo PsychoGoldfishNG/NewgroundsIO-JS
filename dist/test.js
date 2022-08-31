@@ -283,54 +283,51 @@
 		if (gameLoop) clearInterval(gameLoop);
 		gameLoop = setInterval(()=> {
 
-			// note: the callback function only fires if there's a change in status
+	// note: the callback function only fires if there's a change in status
+	NGIO.getConnectionStatus(function(status) {
 
-			NGIO.getConnectionStatus(function(status) {
+		hideUI();
 
-				console.log("?"+status,NGIO.isWaitingStatus);
+		if (NGIO.isWaitingStatus) {
+			$please_wait.show();
+		}
 
-				hideUI();
+		switch (status) {
 
-				if (NGIO.isWaitingStatus) {
-					$please_wait.show();
-				}
+			// we have version and license info
+			case NGIO.STATUS_LOCAL_VERSION_CHECKED:
 
-				switch (status) {
+				// this is an out-of-date (or possibly a development) version
+				if (NGIO.isDeprecated) $new_version.show();
 
-					// we have version and license info
-					case NGIO.STATUS_LOCAL_VERSION_CHECKED:
+				// the site hosting this copy has been blocked
+				if (!NGIO.legalHost) $illegal_version_overlay.show();
 
-						// this is an out-of-date (or possibly a development) version
-						if (NGIO.isDeprecated) $new_version.show();
+				break;
 
-						// the site hosting this copy has been blocked
-						if (!NGIO.legalHost) $illegal_version_overlay.show();
+			// user needs to log in
+			case NGIO.STATUS_LOGIN_REQUIRED:
 
-						break;
+				userNotLoggedIn();
 
-					// user needs to log in
-					case NGIO.STATUS_LOGIN_REQUIRED:
+				break;
 
-						userNotLoggedIn();
+			// user needs to log in
+			case NGIO.STATUS_READY:
 
-						break;
+				ngioReady();
+				
+				break;
 
-					// user needs to log in
-					case NGIO.STATUS_READY:
+			// user needs to log in
+			case NGIO.STATUS_WAITING_FOR_USER:
 
-						ngioReady();
-						
-						break;
+				waitingForUser();
+				
+				break;
+		}
 
-					// user needs to log in
-					case NGIO.STATUS_WAITING_FOR_USER:
-
-						waitingForUser();
-						
-						break;
-				}
-
-			});
+	});
 
 		},16);
 	}
@@ -401,8 +398,7 @@
 			$scoreboard_inner.append($message);
 			$("em", $message).text("Loading...");
 
-			NGIO.getScores(board_id, {period:period, social:social}, function(scores, board, options) {
-
+			NGIO.getScores(board_id, {period:period, social:social}, function(board, scores, options) {
 				if (!scores || scores.length < 1) {
 					$("em", $message).text("No scores available.");
 				} else {
@@ -446,7 +442,6 @@
 			$medals.html("");
 
 			NGIO.medals.forEach(medal=>{
-				console.log(medal);
 				let $medal = $(medal_template);
 
 				$('strong', $medal).text(medal.name);

@@ -667,13 +667,17 @@ class NGIO
 	 */
 	static getScores(boardID, options, callback, thisArg)
 	{
-		let period = typeof(options['period']) === "undefined" ? "D" : options.period;
-		let tag = typeof(options['tag']) === "undefined" ? "" : options.tag;
-		let social = typeof(options['social']) === "undefined" ? false : options.social;
-		
+		let _options = {
+			period: typeof(options['period']) === 'undefined' ? NGIO.PERIOD_TODAY : options['period'],
+			tag: typeof(options['tag']) !== 'string' ? '' : options['tag'],
+			social: typeof(options['social']) === 'undefined' ? false : options['social'] ? true:false,
+			skip: typeof(options['skip']) !== 'number' ? 0 : options['skip'],
+			limit: typeof(options['limit']) !== 'number' ? 10 : options['limit']
+		};
+
 		if (this.scoreBoards == null) {
 			console.error("NGIO Error - getScores called without any preloaded scoreboards.");
-			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, options) : callback(null, null, options);
+			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, _options) : callback(null, null, _options);
 			return;
 		}
 
@@ -681,12 +685,12 @@ class NGIO
 
 		if (board == null) {
 			console.error("NGIO Error - ScoreBoard #"+boardID+" does not exist.");
-			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, options) : callback(null, null, options);
+			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, null, null, _options) : callback(null, null, _options);
 			return;
 		}
 		
-		board.getScores({period:period, tag:tag, social:social}, function() {
-			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, this.lastGetScoresResult.scores, board, options) : callback(this.lastGetScoresResult.scores, board, options);
+		board.getScores(_options, function() {
+			if (typeof(callback) === "function") thisArg ? callback.call(thisArg, board, this.lastGetScoresResult.scores, _options) : callback(board, this.lastGetScoresResult.scores, _options);
 		}, this);
 
 	}
@@ -1085,7 +1089,6 @@ class NGIO
 
 			case "App.getHostLicense":
 
-console.log('result',result);
 				if (!result.success) return;
 				// Make a note of whether this game is being hosted legally or not
 				this.#legalHost = result.host_approved;
@@ -1961,15 +1964,11 @@ NewgroundsIO.Core = Core;
 		 */
 		__doToJSON() 
 		{
-			console.log(this.__object, this.__properties);
 			if (typeof(this.__properties) === 'undefined') return {};
 
 			let json = {};
 
 			this.__properties.forEach(function(prop) {
-				
-				console.log("    ",prop,this[prop]);
-
 				if (this[prop] !== null) {
 					json[prop] = typeof(this[prop].toJSON) === "function" ? this[prop].toJSON() : this[prop];
 				}
