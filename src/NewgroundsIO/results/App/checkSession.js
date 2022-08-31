@@ -11,10 +11,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.checkSession";
-			this._session = null;
-			this.__properties = this.__properties.concat(["session"]);
+			["session"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -23,11 +25,16 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#session = null;
+
+		/**
 		 * @type {NewgroundsIO.objects.Session}
 		 */
 		get session()
 		{
-			return this._session;
+			return this.#session;
 		}
 
 		set session(_session)
@@ -38,7 +45,7 @@
 				if (_session !== null && !(_session instanceof NewgroundsIO.objects.Session))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Session, got ",_session);
 
-			this._session = _session;
+			this.#session = _session;
 		}
 
 		objectMap = {"session":"Session"};

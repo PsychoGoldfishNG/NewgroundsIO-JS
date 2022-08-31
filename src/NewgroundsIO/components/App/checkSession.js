@@ -9,6 +9,7 @@
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.checkSession";
 			this.__requireSession = true;

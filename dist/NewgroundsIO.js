@@ -1085,8 +1085,8 @@ class NGIO
 
 			case "App.getHostLicense":
 
+console.log('result',result);
 				if (!result.success) return;
-
 				// Make a note of whether this game is being hosted legally or not
 				this.#legalHost = result.host_approved;
 				
@@ -1366,21 +1366,71 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 	/** Class for communicating with the Newgrounds.io API **/
 	class Core extends EventTarget {
 
-		/** The URI to v3 of the Newgrounds.io gateway. **/
-		GATEWAY_URI = "https://www.newgrounds.io/gateway_v3.php";
+		/**
+		 * @private
+		 */
+		#GATEWAY_URI = "https://www.newgrounds.io/gateway_v3.php";
+
+		/**
+		 * @private
+		 */
+		#debug = false;
+
+		/**
+		 * @private
+		 */
+		#appID = null;
+
+		/**
+		 * @private
+		 */
+		#aesKey = null;
+
+		/**
+		 * @private
+		 */
+		#componentQueue = [];
+
+		/**
+		 * @private
+		 */
+		#host = null;
+
+		/**
+		 * @private
+		 */
+		#session = null;
+
+		/**
+		 * @private
+		 */
+		#uriParams = {};
+
+		/** 
+		 * The URI to v3 of the Newgrounds.io gateway. 
+		 * @type {string}
+		 */
+		get GATEWAY_URI() {
+			return this.#GATEWAY_URI;
+		} 
 
 		/**
 		 * Set to true to enable debug mode.
 		 * @type {boolean}
 		 */
-		 debug = false;
+		get debug() {
+			return this.#debug;
+		}
+		set debug(d) {
+			this.#debug = d ? true:false;
+		}
 
 		/**
 		 * The App ID from your App Settings page.
 		 * @type {string}
 		 */
 		get appID() {
-			return this._appID;
+			return this.#appID;
 		}
 
 		/**
@@ -1388,7 +1438,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {array} An array of NewgroundsIO.components.XXXX objects
 		 */
 		get componentQueue() {
-			return this._componentQueue;
+			return this.#componentQueue;
 		}
 
 		/**
@@ -1396,7 +1446,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {boolean}
 		 */
 		get hasQueue() {
-			return this._componentQueue.length > 0;
+			return this.#componentQueue.length > 0;
 		}
 
 		/**
@@ -1404,7 +1454,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {boolean}
 		 */
 		get host() {
-			return this._host;
+			return this.#host;
 		}
 
 		/**
@@ -1412,7 +1462,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {NewgroundsIO.objects.Session}
 		 */
 		get session() {
-			return this._session;
+			return this.#session;
 		}
 
 		/**
@@ -1420,7 +1470,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {NewgroundsIO.objects.User}
 		 */
 		get user() {
-			return this._session ? this._session.user : null;
+			return this.#session ? this.#session.user : null;
 		}
 
 		/**
@@ -1428,7 +1478,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {object}
 		 */
 		get uriParams() {
-			return this._uriParams;
+			return this.#uriParams;
 		}
 
 		/**
@@ -1442,29 +1492,29 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 			if (typeof(appID) === 'undefined') throw("Missing required appID!");
 			if (typeof(aesKey) === 'undefined') throw("Missing required aesKey!");
 
-			this._appID = appID;
-			this._aesKey = CryptoJS.enc.Base64.parse(aesKey);
+			this.#appID = appID;
+			this.#aesKey = CryptoJS.enc.Base64.parse(aesKey);
 			
-			this._componentQueue = [];
+			this.#componentQueue = [];
 
 			// look for query string in any URL hosting this app
-			this._uriParams = {};
+			this.#uriParams = {};
 
 			if (window && window.location && window.location.href)
 			{
 				if (window.location.hostname) {
-					this._host = window.location.hostname.toLowerCase();
+					this.#host = window.location.hostname.toLowerCase();
 
 				} else if (window.location.href.toLowerCase().substr(0,5) == "file:") {
-					this._host = "<LocalHost>";
+					this.#host = "<LocalHost>";
 
 				} else {
-					this._host = "<Unknown>";
+					this.#host = "<Unknown>";
 
 				}
 
 			} else {
-				this._host = "<AppView>";
+				this.#host = "<AppView>";
 			}
 
 			if (typeof(window) !== 'undefined' && window.location) {	
@@ -1476,13 +1526,13 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 					var key_value;
 					for(var i=0; i<pairs.length; i++) {
 						key_value = pairs[i].split("=");
-						this._uriParams[key_value[0]] = key_value[1];
+						this.#uriParams[key_value[0]] = key_value[1];
 					}
 				}
 			}
 
-			this._session = this.getObject("Session");
-			this._session._uri_id = this.getUriParam("ngio_session_id",null);
+			this.#session = this.getObject("Session");
+			this.#session._uri_id = this.getUriParam("ngio_session_id",null);
 		}
 
 		/**
@@ -1493,7 +1543,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 */
 		getUriParam(param,defaultValue)
 		{
-			return typeof(this._uriParams[param]) === 'undefined' ? defaultValue : this._uriParams[param];
+			return typeof(this.#uriParams[param]) === 'undefined' ? defaultValue : this.#uriParams[param];
 		}
 
 		/**
@@ -1504,7 +1554,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		encrypt(jsonString)
 		{
 			let iv  = CryptoJS.lib.WordArray.random(16);
-			let encrypted = CryptoJS.AES.encrypt(jsonString, this._aesKey, { iv: iv });
+			let encrypted = CryptoJS.AES.encrypt(jsonString, this.#aesKey, { iv: iv });
 			return CryptoJS.enc.Base64.stringify(iv.concat(encrypted.ciphertext));
 		}
 
@@ -1552,7 +1602,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 				return;
 			}
 			component.setCore(this);
-			this._componentQueue.push(component);
+			this.#componentQueue.push(component);
 		}
 
 		/**
@@ -1562,10 +1612,10 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 */
 		executeQueue(callback, thisArg)
 		{
-			if (this._componentQueue.length < 1) return;
+			if (this.#componentQueue.length < 1) return;
 
-			this.executeComponent(this._componentQueue, callback, thisArg);
-			this._componentQueue = [];
+			this.executeComponent(this.#componentQueue, callback, thisArg);
+			this.#componentQueue = [];
 		}
 
 		/**
@@ -1773,15 +1823,30 @@ NewgroundsIO.Core = Core;
 			return this.__type;
 		}
 
-		/** Creates a new BaseObject **/
-		constructor() {
-			this.__type = "object";
-			this.__object = "BaseObject";
-			this.__properties = [];
-			this.__required = [];
-			this.__ngioCore = null;
-		}
+		/**
+		 * @private
+		 */
+		__type = "object";
 
+		/**
+		 * @private
+		 */
+		__object = "BaseObject";
+
+		/**
+		 * @private
+		 */
+		__properties = [];
+
+		/**
+		 * @private
+		 */
+		__required = [];
+
+		/**
+		 * @private
+		 */
+		__ngioCore = null;
 
 
 		/**
@@ -1845,7 +1910,7 @@ NewgroundsIO.Core = Core;
 						newobj[prop].fromJSON(obj[prop],core);
 					}
 
-					this["_"+prop] = newobj[prop];
+					this[prop] = newobj[prop];
 				}
 			}
 		}
@@ -1896,11 +1961,15 @@ NewgroundsIO.Core = Core;
 		 */
 		__doToJSON() 
 		{
+			console.log(this.__object, this.__properties);
 			if (typeof(this.__properties) === 'undefined') return {};
 
 			let json = {};
 
 			this.__properties.forEach(function(prop) {
+				
+				console.log("    ",prop,this[prop]);
+
 				if (this[prop] !== null) {
 					json[prop] = typeof(this[prop].toJSON) === "function" ? this[prop].toJSON() : this[prop];
 				}
@@ -2095,6 +2164,7 @@ NewgroundsIO.SessionState.SESSION_WAITING = [
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.checkSession";
 			this.__requireSession = true;
@@ -2123,6 +2193,7 @@ NewgroundsIO.components.App.checkSession = checkSession;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.endSession";
 			this.__requireSession = true;
@@ -2153,10 +2224,12 @@ NewgroundsIO.components.App.endSession = endSession;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.getCurrentVersion";
-			this._version = null;
-			this.__properties = this.__properties.concat(["version"]);
+			["version"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2165,18 +2238,23 @@ NewgroundsIO.components.App.endSession = endSession;
 		}
 
 		/**
+		 * @private
+		 */
+		#version = null;
+
+		/**
 		 * The version number (in "X.Y.Z" format) of the client-side app. (default = "0.0.0")
 		 * @type {String}
 		 */
 		get version()
 		{
-			return this._version;
+			return this.#version;
 		}
 
 		set version(_version)
 		{
 			if (typeof(_version) !== 'string' && _version !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _version);
-			this._version = String(_version);
+			this.#version = String(_version);
 
 		}
 
@@ -2205,31 +2283,17 @@ NewgroundsIO.components.App.getCurrentVersion = getCurrentVersion;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.getHostLicense";
-			this._host = null;
-			this.__properties = this.__properties.concat(["host"]);
+			["host"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
 			}
-		}
-
-		/**
-		 * The host domain to check (ei, somesite.com).
-		 * @type {String}
-		 */
-		get host()
-		{
-			return this._host;
-		}
-
-		set host(_host)
-		{
-			if (typeof(_host) !== 'string' && _host !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _host);
-			this._host = String(_host);
-
 		}
 
 	}
@@ -2257,32 +2321,17 @@ NewgroundsIO.components.App.getHostLicense = getHostLicense;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.logView";
-			this._host = null;
-			this.__required = ["host"];
-			this.__properties = this.__properties.concat(["host"]);
+			["host"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
 			}
-		}
-
-		/**
-		 * The domain hosting your app. Examples: "www.somesite.com", "localHost"
-		 * @type {String}
-		 */
-		get host()
-		{
-			return this._host;
-		}
-
-		set host(_host)
-		{
-			if (typeof(_host) !== 'string' && _host !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _host);
-			this._host = String(_host);
-
 		}
 
 	}
@@ -2311,10 +2360,12 @@ undefined *        Note: Any previous session ids will no longer be valid if thi
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.startSession";
-			this._force = null;
-			this.__properties = this.__properties.concat(["force"]);
+			["force"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2323,19 +2374,24 @@ undefined *        Note: Any previous session ids will no longer be valid if thi
 		}
 
 		/**
+		 * @private
+		 */
+		#force = null;
+
+		/**
 		 * If true, will create a new session even if the user already has an existing one.
 		 *        Note: Any previous session ids will no longer be valid if this is used.
 		 * @type {Boolean}
 		 */
 		get force()
 		{
-			return this._force;
+			return this.#force;
 		}
 
 		set force(_force)
 		{
 			if (typeof(_force) !== 'boolean' && typeof(_force) !== 'number' && _force !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _force);
-			this._force = _force ? true:false;
+			this.#force = _force ? true:false;
 
 		}
 
@@ -2364,12 +2420,13 @@ NewgroundsIO.components.App.startSession = startSession;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.clearSlot";
-			this._id = null;
-			this.__required = ["id"];
 			this.__requireSession = true;
-			this.__properties = this.__properties.concat(["id"]);
+			["id"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2378,20 +2435,25 @@ NewgroundsIO.components.App.startSession = startSession;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The slot number.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
 
@@ -2420,12 +2482,13 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.loadSlot";
-			this._id = null;
-			this.__required = ["id"];
 			this.__requireSession = true;
-			this.__properties = this.__properties.concat(["id"]);
+			["id"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2434,20 +2497,25 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The slot number.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
 
@@ -2474,6 +2542,7 @@ NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.loadSlots";
 			this.__requireSession = true;
@@ -2505,13 +2574,13 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.setData";
-			this._id = null;
-			this._data = null;
-			this.__required = ["id","data"];
 			this.__requireSession = true;
-			this.__properties = this.__properties.concat(["id","data"]);
+			["id","data"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2520,22 +2589,32 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The slot number.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#data = null;
 
 		/**
 		 * The data you want to save.
@@ -2543,13 +2622,13 @@ NewgroundsIO.components.CloudSave.loadSlots = loadSlots;
 		 */
 		get data()
 		{
-			return this._data;
+			return this.#data;
 		}
 
 		set data(_data)
 		{
 			if (typeof(_data) !== 'string' && _data !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _data);
-			this._data = String(_data);
+			this.#data = String(_data);
 
 		}
 
@@ -2579,12 +2658,12 @@ NewgroundsIO.components.CloudSave.setData = setData;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Event.logEvent";
-			this._host = null;
-			this._event_name = null;
-			this.__required = ["host","event_name"];
-			this.__properties = this.__properties.concat(["host","event_name"]);
+			["host","event_name"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2593,20 +2672,9 @@ NewgroundsIO.components.CloudSave.setData = setData;
 		}
 
 		/**
-		 * The domain hosting your app. Example: "newgrounds.com", "localHost"
-		 * @type {String}
+		 * @private
 		 */
-		get host()
-		{
-			return this._host;
-		}
-
-		set host(_host)
-		{
-			if (typeof(_host) !== 'string' && _host !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _host);
-			this._host = String(_host);
-
-		}
+		#event_name = null;
 
 		/**
 		 * The name of your custom event as defined in your Referrals & Events settings.
@@ -2614,13 +2682,13 @@ NewgroundsIO.components.CloudSave.setData = setData;
 		 */
 		get event_name()
 		{
-			return this._event_name;
+			return this.#event_name;
 		}
 
 		set event_name(_event_name)
 		{
 			if (typeof(_event_name) !== 'string' && _event_name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _event_name);
-			this._event_name = String(_event_name);
+			this.#event_name = String(_event_name);
 
 		}
 
@@ -2647,6 +2715,7 @@ NewgroundsIO.components.Event.logEvent = logEvent;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.getDatetime";
 		}
@@ -2674,6 +2743,7 @@ NewgroundsIO.components.Gateway.getDatetime = getDatetime;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.getVersion";
 		}
@@ -2701,6 +2771,7 @@ NewgroundsIO.components.Gateway.getVersion = getVersion;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.ping";
 		}
@@ -2732,12 +2803,12 @@ NewgroundsIO.components.Gateway.ping = ping;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadAuthorUrl";
-			this._redirect = null;
-			this._log_stat = null;
-			this.__required = ["host"];
-			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
+			["host","redirect","log_stat"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2746,20 +2817,30 @@ NewgroundsIO.components.Gateway.ping = ping;
 		}
 
 		/**
+		 * @private
+		 */
+		#redirect = null;
+
+		/**
 		 * Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
 		 * @type {Boolean}
 		 */
 		get redirect()
 		{
-			return this._redirect;
+			return this.#redirect;
 		}
 
 		set redirect(_redirect)
 		{
 			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
-			this._redirect = _redirect ? true:false;
+			this.#redirect = _redirect ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#log_stat = null;
 
 		/**
 		 * Set this to false to skip logging this as a referral event.
@@ -2767,13 +2848,13 @@ NewgroundsIO.components.Gateway.ping = ping;
 		 */
 		get log_stat()
 		{
-			return this._log_stat;
+			return this.#log_stat;
 		}
 
 		set log_stat(_log_stat)
 		{
 			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
-			this._log_stat = _log_stat ? true:false;
+			this.#log_stat = _log_stat ? true:false;
 
 		}
 
@@ -2804,12 +2885,12 @@ NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadMoreGames";
-			this._redirect = null;
-			this._log_stat = null;
-			this.__required = ["host"];
-			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
+			["host","redirect","log_stat"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2818,20 +2899,30 @@ NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 		}
 
 		/**
+		 * @private
+		 */
+		#redirect = null;
+
+		/**
 		 * Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
 		 * @type {Boolean}
 		 */
 		get redirect()
 		{
-			return this._redirect;
+			return this.#redirect;
 		}
 
 		set redirect(_redirect)
 		{
 			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
-			this._redirect = _redirect ? true:false;
+			this.#redirect = _redirect ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#log_stat = null;
 
 		/**
 		 * Set this to false to skip logging this as a referral event.
@@ -2839,13 +2930,13 @@ NewgroundsIO.components.Loader.loadAuthorUrl = loadAuthorUrl;
 		 */
 		get log_stat()
 		{
-			return this._log_stat;
+			return this.#log_stat;
 		}
 
 		set log_stat(_log_stat)
 		{
 			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
-			this._log_stat = _log_stat ? true:false;
+			this.#log_stat = _log_stat ? true:false;
 
 		}
 
@@ -2876,12 +2967,12 @@ NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadNewgrounds";
-			this._redirect = null;
-			this._log_stat = null;
-			this.__required = ["host"];
-			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
+			["host","redirect","log_stat"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2890,20 +2981,30 @@ NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 		}
 
 		/**
+		 * @private
+		 */
+		#redirect = null;
+
+		/**
 		 * Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
 		 * @type {Boolean}
 		 */
 		get redirect()
 		{
-			return this._redirect;
+			return this.#redirect;
 		}
 
 		set redirect(_redirect)
 		{
 			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
-			this._redirect = _redirect ? true:false;
+			this.#redirect = _redirect ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#log_stat = null;
 
 		/**
 		 * Set this to false to skip logging this as a referral event.
@@ -2911,13 +3012,13 @@ NewgroundsIO.components.Loader.loadMoreGames = loadMoreGames;
 		 */
 		get log_stat()
 		{
-			return this._log_stat;
+			return this.#log_stat;
 		}
 
 		set log_stat(_log_stat)
 		{
 			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
-			this._log_stat = _log_stat ? true:false;
+			this.#log_stat = _log_stat ? true:false;
 
 		}
 
@@ -2948,12 +3049,12 @@ NewgroundsIO.components.Loader.loadNewgrounds = loadNewgrounds;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadOfficialUrl";
-			this._redirect = null;
-			this._log_stat = null;
-			this.__required = ["host"];
-			this.__properties = this.__properties.concat(["host","redirect","log_stat"]);
+			["host","redirect","log_stat"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -2962,20 +3063,30 @@ NewgroundsIO.components.Loader.loadNewgrounds = loadNewgrounds;
 		}
 
 		/**
+		 * @private
+		 */
+		#redirect = null;
+
+		/**
 		 * Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
 		 * @type {Boolean}
 		 */
 		get redirect()
 		{
-			return this._redirect;
+			return this.#redirect;
 		}
 
 		set redirect(_redirect)
 		{
 			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
-			this._redirect = _redirect ? true:false;
+			this.#redirect = _redirect ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#log_stat = null;
 
 		/**
 		 * Set this to false to skip logging this as a referral event.
@@ -2983,13 +3094,13 @@ NewgroundsIO.components.Loader.loadNewgrounds = loadNewgrounds;
 		 */
 		get log_stat()
 		{
-			return this._log_stat;
+			return this.#log_stat;
 		}
 
 		set log_stat(_log_stat)
 		{
 			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
-			this._log_stat = _log_stat ? true:false;
+			this.#log_stat = _log_stat ? true:false;
 
 		}
 
@@ -3021,13 +3132,12 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadReferral";
-			this._referral_name = null;
-			this._redirect = null;
-			this._log_stat = null;
-			this.__required = ["host","referral_name"];
-			this.__properties = this.__properties.concat(["host","referral_name","redirect","log_stat"]);
+			["host","referral_name","redirect","log_stat"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3036,20 +3146,30 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 		}
 
 		/**
+		 * @private
+		 */
+		#referral_name = null;
+
+		/**
 		 * The name of the referral (as defined in your "Referrals & Events" settings).
 		 * @type {String}
 		 */
 		get referral_name()
 		{
-			return this._referral_name;
+			return this.#referral_name;
 		}
 
 		set referral_name(_referral_name)
 		{
 			if (typeof(_referral_name) !== 'string' && _referral_name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _referral_name);
-			this._referral_name = String(_referral_name);
+			this.#referral_name = String(_referral_name);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#redirect = null;
 
 		/**
 		 * Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
@@ -3057,15 +3177,20 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 		 */
 		get redirect()
 		{
-			return this._redirect;
+			return this.#redirect;
 		}
 
 		set redirect(_redirect)
 		{
 			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
-			this._redirect = _redirect ? true:false;
+			this.#redirect = _redirect ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#log_stat = null;
 
 		/**
 		 * Set this to false to skip logging this as a referral event.
@@ -3073,13 +3198,13 @@ NewgroundsIO.components.Loader.loadOfficialUrl = loadOfficialUrl;
 		 */
 		get log_stat()
 		{
-			return this._log_stat;
+			return this.#log_stat;
 		}
 
 		set log_stat(_log_stat)
 		{
 			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
-			this._log_stat = _log_stat ? true:false;
+			this.#log_stat = _log_stat ? true:false;
 
 		}
 
@@ -3106,6 +3231,7 @@ NewgroundsIO.components.Loader.loadReferral = loadReferral;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.getList";
 		}
@@ -3133,6 +3259,7 @@ NewgroundsIO.components.Medal.getList = getList;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.getMedalScore";
 			this.__requireSession = true;
@@ -3163,13 +3290,14 @@ NewgroundsIO.components.Medal.getMedalScore = getMedalScore;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.unlock";
-			this._id = null;
-			this.__required = ["id"];
 			this.__isSecure = true;
 			this.__requireSession = true;
-			this.__properties = this.__properties.concat(["id"]);
+			["id"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3178,20 +3306,25 @@ NewgroundsIO.components.Medal.getMedalScore = getMedalScore;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the medal to unlock.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
 
@@ -3218,6 +3351,7 @@ NewgroundsIO.components.Medal.unlock = unlock;
 		constructor()
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.getBoards";
 		}
@@ -3253,17 +3387,12 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			this._id = null;
-			this._period = null;
-			this._tag = null;
-			this._social = null;
-			this._user = null;
-			this._skip = null;
-			this._limit = null;
-			this.__required = ["id"];
-			this.__properties = this.__properties.concat(["id","period","tag","social","user","skip","limit"]);
+			["id","period","tag","social","user","skip","limit"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3272,22 +3401,32 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the scoreboard.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#period = null;
 
 		/**
 		 * The time-frame to pull scores from (see notes for acceptable values).
@@ -3295,15 +3434,20 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 */
 		get period()
 		{
-			return this._period;
+			return this.#period;
 		}
 
 		set period(_period)
 		{
 			if (typeof(_period) !== 'string' && _period !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _period);
-			this._period = String(_period);
+			this.#period = String(_period);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#tag = null;
 
 		/**
 		 * A tag to filter results by.
@@ -3311,15 +3455,20 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 */
 		get tag()
 		{
-			return this._tag;
+			return this.#tag;
 		}
 
 		set tag(_tag)
 		{
 			if (typeof(_tag) !== 'string' && _tag !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _tag);
-			this._tag = String(_tag);
+			this.#tag = String(_tag);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#social = null;
 
 		/**
 		 * If set to true, only social scores will be loaded (scores by the user and their friends). This param will be ignored if there is no valid session id and the 'user' param is absent.
@@ -3327,15 +3476,20 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 */
 		get social()
 		{
-			return this._social;
+			return this.#social;
 		}
 
 		set social(_social)
 		{
 			if (typeof(_social) !== 'boolean' && typeof(_social) !== 'number' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
-			this._social = _social ? true:false;
+			this.#social = _social ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#user = null;
 
 		/**
 		 * A user's ID or name.  If 'social' is true, this user and their friends will be included. Otherwise, only scores for this user will be loaded. If this param is missing and there is a valid session id, that user will be used by default.
@@ -3343,14 +3497,19 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 */
 		get user()
 		{
-			return this._user;
+			return this.#user;
 		}
 
 		set user(_user)
 		{
-			this._user = _user; // mixed
+			this.#user = _user; // mixed
 
 		}
+
+		/**
+		 * @private
+		 */
+		#skip = null;
 
 		/**
 		 * An integer indicating the number of scores to skip before starting the list. Default = 0.
@@ -3358,17 +3517,22 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 */
 		get skip()
 		{
-			return this._skip;
+			return this.#skip;
 		}
 
 		set skip(_skip)
 		{
 			if (typeof(_skip) !== 'number' && _skip !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _skip);
 			else if (!Number.isInteger(_skip) && _skip !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._skip = Number(_skip);
-			if (isNaN(this._skip)) this._skip = null;
+			this.#skip = Number(_skip);
+			if (isNaN(this.#skip)) this.#skip = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#limit = null;
 
 		/**
 		 * An integer indicating the number of scores to include in the list. Default = 10.
@@ -3376,15 +3540,15 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 */
 		get limit()
 		{
-			return this._limit;
+			return this.#limit;
 		}
 
 		set limit(_limit)
 		{
 			if (typeof(_limit) !== 'number' && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _limit);
 			else if (!Number.isInteger(_limit) && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._limit = Number(_limit);
-			if (isNaN(this._limit)) this._limit = null;
+			this.#limit = Number(_limit);
+			if (isNaN(this.#limit)) this.#limit = null;
 
 		}
 
@@ -3415,15 +3579,14 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.postScore";
-			this._id = null;
-			this._value = null;
-			this._tag = null;
-			this.__required = ["id","value"];
 			this.__isSecure = true;
 			this.__requireSession = true;
-			this.__properties = this.__properties.concat(["id","value","tag"]);
+			["id","value","tag"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3432,22 +3595,32 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the scoreboard.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#value = null;
 
 		/**
 		 * The int value of the score.
@@ -3455,17 +3628,22 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 		 */
 		get value()
 		{
-			return this._value;
+			return this.#value;
 		}
 
 		set value(_value)
 		{
 			if (typeof(_value) !== 'number' && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _value);
 			else if (!Number.isInteger(_value) && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._value = Number(_value);
-			if (isNaN(this._value)) this._value = null;
+			this.#value = Number(_value);
+			if (isNaN(this.#value)) this.#value = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#tag = null;
 
 		/**
 		 * An optional tag that can be used to filter scores via ScoreBoard.getScores
@@ -3473,13 +3651,13 @@ NewgroundsIO.components.ScoreBoard.getScores = getScores;
 		 */
 		get tag()
 		{
-			return this._tag;
+			return this.#tag;
 		}
 
 		set tag(_tag)
 		{
 			if (typeof(_tag) !== 'string' && _tag !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _tag);
-			this._tag = String(_tag);
+			this.#tag = String(_tag);
 
 		}
 
@@ -3509,11 +3687,12 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Debug";
-			this._exec_time = null;
-			this._request = null;
-			this.__properties = this.__properties.concat(["exec_time","request"]);
+			["exec_time","request"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3522,20 +3701,30 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 		}
 
 		/**
+		 * @private
+		 */
+		#exec_time = null;
+
+		/**
 		 * The time, in milliseconds, that it took to execute a request.
 		 * @type {String}
 		 */
 		get exec_time()
 		{
-			return this._exec_time;
+			return this.#exec_time;
 		}
 
 		set exec_time(_exec_time)
 		{
 			if (typeof(_exec_time) !== 'string' && _exec_time !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _exec_time);
-			this._exec_time = String(_exec_time);
+			this.#exec_time = String(_exec_time);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#request = null;
 
 		/**
 		 * A copy of the request object that was posted to the server.
@@ -3543,7 +3732,7 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 		 */
 		get request()
 		{
-			return this._request;
+			return this.#request;
 		}
 
 		set request(_request)
@@ -3554,7 +3743,7 @@ NewgroundsIO.components.ScoreBoard.postScore = postScore;
 				if (_request !== null && !(_request instanceof NewgroundsIO.objects.Request))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Request, got ",_request);
 
-			this._request = _request;
+			this.#request = _request;
 		}
 
 		objectMap = {"request":"Request"};
@@ -3585,11 +3774,12 @@ NewgroundsIO.objects.Debug = Debug;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Error";
-			this._message = null;
-			this._code = null;
-			this.__properties = this.__properties.concat(["message","code"]);
+			["message","code"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3598,20 +3788,30 @@ NewgroundsIO.objects.Debug = Debug;
 		}
 
 		/**
+		 * @private
+		 */
+		#message = null;
+
+		/**
 		 * Contains details about the error.
 		 * @type {String}
 		 */
 		get message()
 		{
-			return this._message;
+			return this.#message;
 		}
 
 		set message(_message)
 		{
 			if (typeof(_message) !== 'string' && _message !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _message);
-			this._message = String(_message);
+			this.#message = String(_message);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#code = null;
 
 		/**
 		 * A code indication the error type.
@@ -3619,15 +3819,15 @@ NewgroundsIO.objects.Debug = Debug;
 		 */
 		get code()
 		{
-			return this._code;
+			return this.#code;
 		}
 
 		set code(_code)
 		{
 			if (typeof(_code) !== 'number' && _code !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _code);
 			else if (!Number.isInteger(_code) && _code !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._code = Number(_code);
-			if (isNaN(this._code)) this._code = null;
+			this.#code = Number(_code);
+			if (isNaN(this.#code)) this.#code = null;
 
 		}
 
@@ -3659,21 +3859,23 @@ NewgroundsIO.objects.Error = Error;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Execute";
-			this._component = null;
-			this._parameters = null;
-			this._secure = null;
-			this.__required = ["component","secure"];
-			this.__properties = this.__properties.concat(["component","parameters","secure"]);
+			["component","parameters","secure"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
 			}
-
-			this.__componentObject = null;
 		}
+
+		/**
+		 * @private
+		 */
+		#component = null;
 
 		/**
 		 * The name of the component you want to call, ie 'App.connect'.
@@ -3681,15 +3883,20 @@ NewgroundsIO.objects.Error = Error;
 		 */
 		get component()
 		{
-			return this._component;
+			return this.#component;
 		}
 
 		set component(_component)
 		{
 			if (typeof(_component) !== 'string' && _component !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _component);
-			this._component = String(_component);
+			this.#component = String(_component);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#parameters = null;
 
 		/**
 		 * An object of parameters you want to pass to the component.
@@ -3697,7 +3904,7 @@ NewgroundsIO.objects.Error = Error;
 		 */
 		get parameters()
 		{
-			return this._parameters;
+			return this.#parameters;
 		}
 
 		set parameters(_parameters)
@@ -3709,14 +3916,19 @@ NewgroundsIO.objects.Error = Error;
 					newArr[index] = val
 
 				});
-				this._parameters = newArr;
+				this.#parameters = newArr;
 				return;
 			}
 
 			if (typeof(_parameters) !== 'object' && _parameters !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a object, got', _parameters);
-			this._parameters = _parameters
+			this.#parameters = _parameters
 
 		}
+
+		/**
+		 * @private
+		 */
+		#secure = null;
 
 		/**
 		 * A an encrypted NewgroundsIO.objects.Execute object or array of NewgroundsIO.objects.Execute objects.
@@ -3724,30 +3936,22 @@ NewgroundsIO.objects.Error = Error;
 		 */
 		get secure()
 		{
-			return this._secure;
+			return this.#secure;
 		}
 
 		set secure(_secure)
 		{
 			if (typeof(_secure) !== 'string' && _secure !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _secure);
-			this._secure = String(_secure);
+			this.#secure = String(_secure);
 
 		}
+
+
 
 		/**
-		 * An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Result object.
-		 * @type {mixed}
+		 * @private
 		 */
-		get echo()
-		{
-			return this._echo;
-		}
-
-		set echo(_echo)
-		{
-			this._echo = _echo; // mixed
-
-		}
+		#componentObject = null;
 
 		/**
 		 * Set a component object to execute
@@ -3758,11 +3962,12 @@ NewgroundsIO.objects.Error = Error;
 			if (!(component instanceof NewgroundsIO.BaseComponent))
 				console.error('NewgroundsIO Error: Expecting NewgroundsIO component, got '+typeof(component));
 
-			this.__componentObject = component;
+			this.#componentObject = component;
 
 			// set the string name of the component;
 			this.component = component.__object;
 			this.parameters = component.toJSON();
+
 		}
 
 		/**
@@ -3783,14 +3988,14 @@ NewgroundsIO.objects.Error = Error;
 			}
 
 			// SHOULD have an actual component object. Validate that as well, if it exists
-			if (this.__componentObject) {
-				if (this.__componentObject.__requireSession && !this.__ngioCore.session.isActive()) {
+			if (this.#componentObject) {
+				if (this.#componentObject.__requireSession && !this.__ngioCore.session.isActive()) {
 					console.warn('NewgroundsIO Warning: '+this.component+' can only be used with a valid user session.');
 					this.__ngioCore.session.logProblems();
 					return false;
 				}
 
-				return (this.__componentObject instanceof NewgroundsIO.BaseComponent) && this.__componentObject.isValid();
+				return (this.#componentObject instanceof NewgroundsIO.BaseComponent) && this.#componentObject.isValid();
 			}
 
 			return true;
@@ -3802,7 +4007,7 @@ NewgroundsIO.objects.Error = Error;
 		 */
 		toJSON()
 		{
-			if (this.__componentObject && this.__componentObject.__isSecure) return this.toSecureJSON();
+			if (this.#componentObject && this.#componentObject.__isSecure) return this.toSecureJSON();
 			return super.toJSON();
 		}
 
@@ -3838,17 +4043,12 @@ NewgroundsIO.objects.Execute = Execute;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal";
-			this._id = null;
-			this._name = null;
-			this._description = null;
-			this._icon = null;
-			this._value = null;
-			this._difficulty = null;
-			this._secret = null;
-			this._unlocked = null;
-			this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
+			["id","name","description","icon","value","difficulty","secret","unlocked"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -3857,22 +4057,32 @@ NewgroundsIO.objects.Execute = Execute;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the medal.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#name = null;
 
 		/**
 		 * The name of the medal.
@@ -3880,15 +4090,20 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		get name()
 		{
-			return this._name;
+			return this.#name;
 		}
 
 		set name(_name)
 		{
 			if (typeof(_name) !== 'string' && _name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _name);
-			this._name = String(_name);
+			this.#name = String(_name);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#description = null;
 
 		/**
 		 * A short description of the medal.
@@ -3896,15 +4111,20 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		get description()
 		{
-			return this._description;
+			return this.#description;
 		}
 
 		set description(_description)
 		{
 			if (typeof(_description) !== 'string' && _description !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _description);
-			this._description = String(_description);
+			this.#description = String(_description);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#icon = null;
 
 		/**
 		 * The URL for the medal's icon.
@@ -3912,15 +4132,20 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		get icon()
 		{
-			return this._icon;
+			return this.#icon;
 		}
 
 		set icon(_icon)
 		{
 			if (typeof(_icon) !== 'string' && _icon !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _icon);
-			this._icon = String(_icon);
+			this.#icon = String(_icon);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#value = null;
 
 		/**
 		 * The medal's point value.
@@ -3928,17 +4153,22 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		get value()
 		{
-			return this._value;
+			return this.#value;
 		}
 
 		set value(_value)
 		{
 			if (typeof(_value) !== 'number' && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _value);
 			else if (!Number.isInteger(_value) && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._value = Number(_value);
-			if (isNaN(this._value)) this._value = null;
+			this.#value = Number(_value);
+			if (isNaN(this.#value)) this.#value = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#difficulty = null;
 
 		/**
 		 * The difficulty id of the medal.
@@ -3946,32 +4176,42 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		get difficulty()
 		{
-			return this._difficulty;
+			return this.#difficulty;
 		}
 
 		set difficulty(_difficulty)
 		{
 			if (typeof(_difficulty) !== 'number' && _difficulty !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _difficulty);
 			else if (!Number.isInteger(_difficulty) && _difficulty !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._difficulty = Number(_difficulty);
-			if (isNaN(this._difficulty)) this._difficulty = null;
+			this.#difficulty = Number(_difficulty);
+			if (isNaN(this.#difficulty)) this.#difficulty = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#secret = null;
 
 		/**
 		 * @type {Boolean}
 		 */
 		get secret()
 		{
-			return this._secret;
+			return this.#secret;
 		}
 
 		set secret(_secret)
 		{
 			if (typeof(_secret) !== 'boolean' && typeof(_secret) !== 'number' && _secret !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _secret);
-			this._secret = _secret ? true:false;
+			this.#secret = _secret ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#unlocked = null;
 
 		/**
 		 * This will only be set if a valid user session exists.
@@ -3979,13 +4219,13 @@ NewgroundsIO.objects.Execute = Execute;
 		 */
 		get unlocked()
 		{
-			return this._unlocked;
+			return this.#unlocked;
 		}
 
 		set unlocked(_unlocked)
 		{
 			if (typeof(_unlocked) !== 'boolean' && typeof(_unlocked) !== 'number' && _unlocked !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _unlocked);
-			this._unlocked = _unlocked ? true:false;
+			this.#unlocked = _unlocked ? true:false;
 
 		}
 
@@ -4010,7 +4250,8 @@ NewgroundsIO.objects.Execute = Execute;
 			var component = this.__ngioCore.getComponent('Medal.unlock', {id:this.id});
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
-			}
+
+	}
 
 /** End Class NewgroundsIO.objects.Medal **/
 if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
@@ -4039,19 +4280,23 @@ NewgroundsIO.objects.Medal = Medal;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Request";
-			this._execute = null;
-			this._debug = null;
-			this.__required = ["app_id","execute"];
-			this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
+			["app_id","execute","session_id","debug"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
 			}
-
 		}
+
+		/**
+		 * @private
+		 */
+		#execute = null;
 
 		/**
 		 * A NewgroundsIO.objects.Execute object, or array of one-or-more NewgroundsIO.objects.Execute objects.
@@ -4059,7 +4304,7 @@ NewgroundsIO.objects.Medal = Medal;
 		 */
 		get execute()
 		{
-			return this._execute;
+			return this.#execute;
 		}
 
 		set execute(_execute)
@@ -4075,15 +4320,20 @@ NewgroundsIO.objects.Medal = Medal;
 
 					newArr[index] = val;
 				});
-				this._execute = newArr;
+				this.#execute = newArr;
 				return;
 			}
 
 				if (_execute !== null && !(_execute instanceof NewgroundsIO.objects.Execute))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Execute, got ",_execute);
 
-			this._execute = _execute;
+			this.#execute = _execute;
 		}
+
+		/**
+		 * @private
+		 */
+		#debug = null;
 
 		/**
 		 * If set to true, calls will be executed in debug mode.
@@ -4091,34 +4341,20 @@ NewgroundsIO.objects.Medal = Medal;
 		 */
 		get debug()
 		{
-			return this._debug;
+			return this.#debug;
 		}
 
 		set debug(_debug)
 		{
 			if (typeof(_debug) !== 'boolean' && typeof(_debug) !== 'number' && _debug !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _debug);
-			this._debug = _debug ? true:false;
-
-		}
-
-		/**
-		 * An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Response object.
-		 * @type {mixed}
-		 */
-		get echo()
-		{
-			return this._echo;
-		}
-
-		set echo(_echo)
-		{
-			this._echo = _echo; // mixed
+			this.#debug = _debug ? true:false;
 
 		}
 
 		objectMap = {"execute":"Execute"};
 
 		arrayMap = {"execute":"Execute"};
+
 
 		/**
 		 * Gets the appID from a core object
@@ -4137,7 +4373,7 @@ NewgroundsIO.objects.Medal = Medal;
 		{
 			return this.__ngioCore && this.__ngioCore.session ? this.__ngioCore.session.id : null;
 		}
-
+		
 	}
 
 /** End Class NewgroundsIO.objects.Request **/
@@ -4170,16 +4406,12 @@ NewgroundsIO.objects.Request = Request;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Response";
-			this._app_id = null;
-			this._success = null;
-			this._debug = null;
-			this._result = null;
-			this._error = null;
-			this._api_version = null;
-			this._help_url = null;
-			this.__properties = this.__properties.concat(["app_id","success","debug","result","error","api_version","help_url"]);
+			["app_id","success","debug","result","error","api_version","help_url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -4188,20 +4420,30 @@ NewgroundsIO.objects.Request = Request;
 		}
 
 		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
 		 * Your application's unique ID
 		 * @type {String}
 		 */
 		get app_id()
 		{
-			return this._app_id;
+			return this.#app_id;
 		}
 
 		set app_id(_app_id)
 		{
 			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
-			this._app_id = String(_app_id);
+			this.#app_id = String(_app_id);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#success = null;
 
 		/**
 		 * If false, there was a problem with your 'request' object. Details will be in the error property.
@@ -4209,15 +4451,20 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		get success()
 		{
-			return this._success;
+			return this.#success;
 		}
 
 		set success(_success)
 		{
 			if (typeof(_success) !== 'boolean' && typeof(_success) !== 'number' && _success !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _success);
-			this._success = _success ? true:false;
+			this.#success = _success ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#debug = null;
 
 		/**
 		 * Contains extra information you may need when debugging (debug mode only).
@@ -4225,7 +4472,7 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		get debug()
 		{
-			return this._debug;
+			return this.#debug;
 		}
 
 		set debug(_debug)
@@ -4236,8 +4483,13 @@ NewgroundsIO.objects.Request = Request;
 				if (_debug !== null && !(_debug instanceof NewgroundsIO.objects.Debug))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Debug, got ",_debug);
 
-			this._debug = _debug;
+			this.#debug = _debug;
 		}
+
+		/**
+		 * @private
+		 */
+		#result = null;
 
 		/**
 		 * This will be a NewgroundsIO.results.XXXXXX object, or an array containing one-or-more NewgroundsIO.results.XXXXXX objects.
@@ -4245,7 +4497,7 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		get result()
 		{
-			return this._result;
+			return this.#result;
 		}
 
 		set result(_result)
@@ -4257,14 +4509,19 @@ NewgroundsIO.objects.Request = Request;
 					newArr[index] = val
 
 				});
-				this._result = newArr;
+				this.#result = newArr;
 				return;
 			}
 
 			if (!(_result instanceof NewgroundsIO.BaseResult) && _result !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a NewgroundsIO.results.XXXX instance, got', _result);
-			this._result = _result
+			this.#result = _result
 
 		}
+
+		/**
+		 * @private
+		 */
+		#error = null;
 
 		/**
 		 * This will contain any error info if the success property is false.
@@ -4272,7 +4529,7 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		get error()
 		{
-			return this._error;
+			return this.#error;
 		}
 
 		set error(_error)
@@ -4283,8 +4540,13 @@ NewgroundsIO.objects.Request = Request;
 				if (_error !== null && !(_error instanceof NewgroundsIO.objects.Error))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Error, got ",_error);
 
-			this._error = _error;
+			this.#error = _error;
 		}
+
+		/**
+		 * @private
+		 */
+		#api_version = null;
 
 		/**
 		 * If there was an error, this will contain the current version number of the API gateway.
@@ -4292,15 +4554,20 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		get api_version()
 		{
-			return this._api_version;
+			return this.#api_version;
 		}
 
 		set api_version(_api_version)
 		{
 			if (typeof(_api_version) !== 'string' && _api_version !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _api_version);
-			this._api_version = String(_api_version);
+			this.#api_version = String(_api_version);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#help_url = null;
 
 		/**
 		 * If there was an error, this will contain the URL for our help docs.
@@ -4308,28 +4575,13 @@ NewgroundsIO.objects.Request = Request;
 		 */
 		get help_url()
 		{
-			return this._help_url;
+			return this.#help_url;
 		}
 
 		set help_url(_help_url)
 		{
 			if (typeof(_help_url) !== 'string' && _help_url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _help_url);
-			this._help_url = String(_help_url);
-
-		}
-
-		/**
-		 * If you passed an 'echo' value in your request object, it will be echoed here.
-		 * @type {mixed}
-		 */
-		get echo()
-		{
-			return this._echo;
-		}
-
-		set echo(_echo)
-		{
-			this._echo = _echo; // mixed
+			this.#help_url = String(_help_url);
 
 		}
 
@@ -4364,14 +4616,12 @@ NewgroundsIO.objects.Response = Response;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "SaveSlot";
-			this._id = null;
-			this._size = null;
-			this._datetime = null;
-			this._timestamp = null;
-			this._url = null;
-			this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
+			["id","size","datetime","timestamp","url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -4380,22 +4630,32 @@ NewgroundsIO.objects.Response = Response;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The slot number.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#size = null;
 
 		/**
 		 * The size of the save data in bytes.
@@ -4403,17 +4663,22 @@ NewgroundsIO.objects.Response = Response;
 		 */
 		get size()
 		{
-			return this._size;
+			return this.#size;
 		}
 
 		set size(_size)
 		{
 			if (typeof(_size) !== 'number' && _size !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _size);
 			else if (!Number.isInteger(_size) && _size !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._size = Number(_size);
-			if (isNaN(this._size)) this._size = null;
+			this.#size = Number(_size);
+			if (isNaN(this.#size)) this.#size = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#datetime = null;
 
 		/**
 		 * A date and time (in ISO 8601 format) representing when this slot was last saved.
@@ -4421,15 +4686,20 @@ NewgroundsIO.objects.Response = Response;
 		 */
 		get datetime()
 		{
-			return this._datetime;
+			return this.#datetime;
 		}
 
 		set datetime(_datetime)
 		{
 			if (typeof(_datetime) !== 'string' && _datetime !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _datetime);
-			this._datetime = String(_datetime);
+			this.#datetime = String(_datetime);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#timestamp = null;
 
 		/**
 		 * A unix timestamp representing when this slot was last saved.
@@ -4437,17 +4707,22 @@ NewgroundsIO.objects.Response = Response;
 		 */
 		get timestamp()
 		{
-			return this._timestamp;
+			return this.#timestamp;
 		}
 
 		set timestamp(_timestamp)
 		{
 			if (typeof(_timestamp) !== 'number' && _timestamp !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _timestamp);
 			else if (!Number.isInteger(_timestamp) && _timestamp !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._timestamp = Number(_timestamp);
-			if (isNaN(this._timestamp)) this._timestamp = null;
+			this.#timestamp = Number(_timestamp);
+			if (isNaN(this.#timestamp)) this.#timestamp = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#url = null;
 
 		/**
 		 * The URL containing the actual save data for this slot, or null if this slot has no data.
@@ -4455,13 +4730,13 @@ NewgroundsIO.objects.Response = Response;
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -4535,7 +4810,7 @@ NewgroundsIO.objects.Response = Response;
 				console.error("NewgroundsIO - Can not clear data without attaching a NewgroundsIO.Core instance.");
 				return;
 			}
-			this._url = null;
+			this.#url = null;
 			var component = this.__ngioCore.getComponent('CloudSave.clearSlot', {id:this.id});
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
@@ -4577,13 +4852,12 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Score";
-			this._user = null;
-			this._value = null;
-			this._formatted_value = null;
-			this._tag = null;
-			this.__properties = this.__properties.concat(["user","value","formatted_value","tag"]);
+			["user","value","formatted_value","tag"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -4592,12 +4866,17 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		}
 
 		/**
+		 * @private
+		 */
+		#user = null;
+
+		/**
 		 * The user who earned score. If this property is absent, the score belongs to the active user.
 		 * @type {NewgroundsIO.objects.User}
 		 */
 		get user()
 		{
-			return this._user;
+			return this.#user;
 		}
 
 		set user(_user)
@@ -4608,8 +4887,13 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
-			this._user = _user;
+			this.#user = _user;
 		}
+
+		/**
+		 * @private
+		 */
+		#value = null;
 
 		/**
 		 * The integer value of the score.
@@ -4617,17 +4901,22 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		 */
 		get value()
 		{
-			return this._value;
+			return this.#value;
 		}
 
 		set value(_value)
 		{
 			if (typeof(_value) !== 'number' && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _value);
 			else if (!Number.isInteger(_value) && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._value = Number(_value);
-			if (isNaN(this._value)) this._value = null;
+			this.#value = Number(_value);
+			if (isNaN(this.#value)) this.#value = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#formatted_value = null;
 
 		/**
 		 * The score value in the format selected in your scoreboard settings.
@@ -4635,15 +4924,20 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		 */
 		get formatted_value()
 		{
-			return this._formatted_value;
+			return this.#formatted_value;
 		}
 
 		set formatted_value(_formatted_value)
 		{
 			if (typeof(_formatted_value) !== 'string' && _formatted_value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _formatted_value);
-			this._formatted_value = String(_formatted_value);
+			this.#formatted_value = String(_formatted_value);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#tag = null;
 
 		/**
 		 * The tag attached to this score (if any).
@@ -4651,13 +4945,13 @@ NewgroundsIO.objects.SaveSlot = SaveSlot;
 		 */
 		get tag()
 		{
-			return this._tag;
+			return this.#tag;
 		}
 
 		set tag(_tag)
 		{
 			if (typeof(_tag) !== 'string' && _tag !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _tag);
-			this._tag = String(_tag);
+			this.#tag = String(_tag);
 
 		}
 
@@ -4689,11 +4983,12 @@ NewgroundsIO.objects.Score = Score;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard";
-			this._id = null;
-			this._name = null;
-			this.__properties = this.__properties.concat(["id","name"]);
+			["id","name"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -4702,22 +4997,32 @@ NewgroundsIO.objects.Score = Score;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the scoreboard.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#name = null;
 
 		/**
 		 * The name of the scoreboard.
@@ -4725,13 +5030,13 @@ NewgroundsIO.objects.Score = Score;
 		 */
 		get name()
 		{
-			return this._name;
+			return this.#name;
 		}
 
 		set name(_name)
 		{
 			if (typeof(_name) !== 'string' && _name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _name);
-			this._name = String(_name);
+			this.#name = String(_name);
 
 		}
 
@@ -4797,7 +5102,8 @@ NewgroundsIO.objects.Score = Score;
 			var component = this.__ngioCore.getComponent('ScoreBoard.postScore', {id:this.id,value:value,tag:tag});
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
-			}
+		
+	}
 
 /** End Class NewgroundsIO.objects.ScoreBoard **/
 if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
@@ -4826,81 +5132,23 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Session";
-			this._id = null;
-			this._user = null;
-			this._expired = null;
-			this._remember = null;
-			this._passport_url = null;
-			this.__properties = this.__properties.concat(["id","user","expired","remember","passport_url"]);
+			["id","user","expired","remember","passport_url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
 			}
-
-			/**
-			 * The current state of this session.
-			 * @private
-			 */
-			this._status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
-
-			/**
-			 * The status from the last time update() was called.
-			 * @private
-			 */
-			this._lastStatus = null;
-
-			/**
-			 * Will be true if the status was changed on an update call.
-			 * @private
-			 */
-			this._statusChanged = false;
-
-			/**
-			 * The last time update() was called. (Start in the past so update() will work immediately.)
-			 * @private
-			 */
-			this._lastUpdate = new Date((new Date()).getTime() - 30000);
-
-			/**
-			 * If false, update() will end immediately when called.
-			 * @private
-			 */
-			this._canUpdate = true;
-
-			/**
-			 * The mode we'll use to check the status of this session.
-			 * @private
-			 */
-			this._mode = "expired";
-
-			/**
-			 * The total number of attempts we've tried to contact the server without success.
-			 * @private
-			 */
-			this._totalAttempts = 0;
-
-			/**
-			 * TThe max number of attempts we can make to the server without success before we give up.
-			 * @private
-			 */
-			this._maxAttempts = 5;
-
-			/**
-			 * Stores a session ID from the game's URI if hosted on Newgrounds.
-			 * @private
-			 */
-			this._uri_id = null;
-
-			/**
-			 * Stores a session ID that was saved from a Passport login.
-			 * @private
-			 */
-			this._saved_id = null;
-
 		}
+
+		/**
+		 * @private
+		 */
+		#id = null;
 
 		/**
 		 * A unique session identifier
@@ -4908,15 +5156,20 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'string' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _id);
-			this._id = String(_id);
+			this.#id = String(_id);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#user = null;
 
 		/**
 		 * If the user has not signed in, or granted access to your app, this will be null
@@ -4924,7 +5177,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get user()
 		{
-			return this._user;
+			return this.#user;
 		}
 
 		set user(_user)
@@ -4935,8 +5188,13 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
-			this._user = _user;
+			this.#user = _user;
 		}
+
+		/**
+		 * @private
+		 */
+		#expired = null;
 
 		/**
 		 * If true, the session_id is expired. Use App.startSession to get a new one.
@@ -4944,15 +5202,20 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get expired()
 		{
-			return this._expired;
+			return this.#expired;
 		}
 
 		set expired(_expired)
 		{
 			if (typeof(_expired) !== 'boolean' && typeof(_expired) !== 'number' && _expired !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _expired);
-			this._expired = _expired ? true:false;
+			this.#expired = _expired ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#remember = null;
 
 		/**
 		 * If true, the user would like you to remember their session id.
@@ -4960,15 +5223,20 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get remember()
 		{
-			return this._remember;
+			return this.#remember;
 		}
 
 		set remember(_remember)
 		{
 			if (typeof(_remember) !== 'boolean' && typeof(_remember) !== 'number' && _remember !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _remember);
-			this._remember = _remember ? true:false;
+			this.#remember = _remember ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#passport_url = null;
 
 		/**
 		 * If the session has no associated user but is not expired, this property will provide a URL that can be used to sign the user in.
@@ -4976,13 +5244,13 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get passport_url()
 		{
-			return this._passport_url;
+			return this.#passport_url;
 		}
 
 		set passport_url(_passport_url)
 		{
 			if (typeof(_passport_url) !== 'string' && _passport_url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _passport_url);
-			this._passport_url = String(_passport_url);
+			this.#passport_url = String(_passport_url);
 
 		}
 
@@ -4990,10 +5258,69 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 
 		/**
+		 * The current state of this session.
+		 * @private
+		 */
+		#status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
+
+		/**
+		 * The status from the last time update() was called.
+		 * @private
+		 */
+		#lastStatus = null;
+
+		/**
+		 * Will be true if the status was changed on an update call.
+		 * @private
+		 */
+		#statusChanged = false;
+
+		/**
+		 * The last time update() was called. (Start in the past so update() will work immediately.)
+		 * @private
+		 */
+		#lastUpdate = new Date((new Date()).getTime() - 30000);
+
+		/**
+		 * If false, update() will end immediately when called.
+		 * @private
+		 */
+		#canUpdate = true;
+
+		/**
+		 * The mode we'll use to check the status of this session.
+		 * @private
+		 */
+		#mode = "expired";
+
+		/**
+		 * The total number of attempts we've tried to contact the server without success.
+		 * @private
+		 */
+		#totalAttempts = 0;
+
+		/**
+		 * TThe max number of attempts we can make to the server without success before we give up.
+		 * @private
+		 */
+		#maxAttempts = 5;
+
+		/**
+		 * Stores a session ID from the game's URI if hosted on Newgrounds.
+		 * @private
+		 */
+		#uri_id = null;
+
+		/**
+		 * Stores a session ID that was saved from a Passport login.
+		 * @private
+		 */
+		#saved_id = null;
+
+		/**
 		 * @callback responseCallback
 		 * @param {NewgroundsIO.objects.Response} serverResponse
 		 */
-
 
 		/**
 		 * The current state of this session.
@@ -5001,7 +5328,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get status()
 		{
-			return this._status;
+			return this.#status;
 		}
 
 		/**
@@ -5010,7 +5337,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get statusChanged()
 		{
-			return this._statusChanged;
+			return this.#statusChanged;
 		}
 
 		/**
@@ -5019,7 +5346,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		get waiting()
 		{
-			return this._lastStatus != this.status;
+			return this.#lastStatus != this.status;
 		}
 
 		/**
@@ -5037,8 +5364,8 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		resetSession()
 		{
-			this._uri_id = null;
-			this._saved_id = null;
+			this.#uri_id = null;
+			this.#saved_id = null;
 			this.remember = false;
 			this.user = null;
 			this.expired = false;
@@ -5056,7 +5383,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 				return;
 			}
 
-			this._status = NewgroundsIO.SessionState.WAITING_FOR_USER;
+			this.#status = NewgroundsIO.SessionState.WAITING_FOR_USER;
 			this.mode = "check";
 
 			window.open(this.passport_url, "_blank");
@@ -5085,14 +5412,14 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			// clear the current session data, and set the appropriate cancel status
 			this.resetSession();
 			this.id = null;
-			this._status = newStatus;
+			this.#status = newStatus;
 
 			// this was a manual cancel, so we can reset the retry counter
-			this._totalAttempts = 0;
+			this.#totalAttempts = 0;
 
 			// this was a manual cancel, so we can reset the retry counter
-			this._mode = "new";
-			this._lastUpdate = new Date((new Date()).getTime() - 30000);
+			this.#mode = "new";
+			this.#lastUpdate = new Date((new Date()).getTime() - 30000);
 		}
 
 		/**
@@ -5107,11 +5434,11 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		 */
 		update(callback, thisArg)
 		{
-			this._statusChanged = false;
+			this.#statusChanged = false;
 
-			if (this._lastStatus != this.status) {
-				this._statusChanged = true;
-				this._lastStatus = this.status;
+			if (this.#lastStatus != this.status) {
+				this.#statusChanged = true;
+				this.#lastStatus = this.status;
 				if (typeof(callback) === "function") {
 					if (thisArg) callback.call(thisArg, this);
 					else callback(this);
@@ -5119,10 +5446,10 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			}
 
 			// we can skip this whole routine if we're in the middle of checking things
-			if (!this._canUpdate || this.mode == "wait") return;
+			if (!this.#canUpdate || this.mode == "wait") return;
 			if (!this.__ngioCore) {
 				console.error("NewgroundsIO - Can't update session without attaching a NewgroundsIO.Core instance.");
-				this._canUpdate = false;
+				this.#canUpdate = false;
 				return;
 			}
 
@@ -5130,13 +5457,13 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			if (this.status == NewgroundsIO.SessionState.SERVER_UNAVAILABLE) {
 				
 				// we've had too many failed attempts, time to stop retrying
-				if (this._totalAttempts >= this._maxAttempts) {
-					this._status = NewgroundsIO.SessionState.EXCEEDED_MAX_ATTEMPTS;
+				if (this.#totalAttempts >= this.#maxAttempts) {
+					this.#status = NewgroundsIO.SessionState.EXCEEDED_MAX_ATTEMPTS;
 
 				// next time our delay time has passed, we'll reset this, and try our sessions again
 				} else {
-					this._status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
-					this._totalAttempts++;
+					this.#status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
+					this.#totalAttempts++;
 
 				}
 			}
@@ -5144,15 +5471,15 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			// first time getting here (probably).  We need to see if we have any existing session data to try...
 			if (this.status == NewgroundsIO.SessionState.SESSION_UNINITIALIZED) {
 
-				this._saved_id = localStorage.getItem(this.storageKey);
+				this.#saved_id = localStorage.getItem(this.storageKey);
 
 				// check if we have a session id from our URL params (hosted on Newgrounds)
-				if (this._uri_id) {
-					this.id = this._uri_id;
+				if (this.#uri_id) {
+					this.id = this.#uri_id;
 
 				// check if we have a saved session (hosted elsewhere or standalone app)
-				} else if (this._saved_id) {
-					this.id = this._saved_id;
+				} else if (this.#saved_id) {
+					this.id = this.#saved_id;
 
 				}
 
@@ -5163,10 +5490,10 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 
 			// make sure at least 5 seconds pass between each API call so we don't get blocked by DDOS protection.
 			var _now = new Date();
-			var wait = _now - this._lastUpdate;
+			var wait = _now - this.#lastUpdate;
 			if (wait < 5000) return;
 
-			this._lastUpdate = _now;
+			this.#lastUpdate = _now;
 			
 			switch (this.mode) {
 
@@ -5199,12 +5526,12 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		startSession()
 		{
 			// don't check for any new updates while we're starting the new session
-			this._canUpdate = false;
+			this.#canUpdate = false;
 			
 			// clear out any pre-existing session data
 			this.resetSession();
 
-			this._status = NewgroundsIO.SessionState.WAITING_FOR_SERVER;
+			this.#status = NewgroundsIO.SessionState.WAITING_FOR_SERVER;
 
 			var startSession = this.__ngioCore.getComponent('App.startSession');
 			this.__ngioCore.executeComponent(startSession, this._onStartSession, this);
@@ -5236,18 +5563,18 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 				this.passport_url = result.session.passport_url;
 
 				// update our session status. This will trigger the callback in our update loop.
-				this._status = NewgroundsIO.SessionState.LOGIN_REQUIRED;
+				this.#status = NewgroundsIO.SessionState.LOGIN_REQUIRED;
 
 				// The update loop needs to wait until the user clicks a login button
 				this.mode = "wait";
 				
 			// Something went wrong!  (Good chance the servers are down)
 			} else {
-				this._status = NewgroundsIO.SessionState.SERVER_UNAVAILABLE;
+				this.#status = NewgroundsIO.SessionState.SERVER_UNAVAILABLE;
 			}
 
 			// Let our update loop know it can actually do stuff again
-			this._canUpdate = true;
+			this.#canUpdate = true;
 		}
 
 
@@ -5259,7 +5586,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		checkSession()
 		{
 			// don't check for any new updates while we're checking session
-			this._canUpdate = false;
+			this.#canUpdate = false;
 
 			var checkSession = this.__ngioCore.getComponent('App.checkSession');
 			this.__ngioCore.executeComponent(checkSession, this._onCheckSession, this);
@@ -5289,19 +5616,19 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 						// reset the session so it's like we never had one
 						this.resetSession();
 						this.id = null;
-						this._status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
+						this.#status = NewgroundsIO.SessionState.SESSION_UNINITIALIZED;
 
 					// we have a valid user login attached!
 					} else if (response.result.session.user !== null) {
 
 						// store the user info, and update status
 						this.user = response.result.session.user;
-						this._status = NewgroundsIO.SessionState.LOGIN_SUCCESSFUL;
+						this.#status = NewgroundsIO.SessionState.LOGIN_SUCCESSFUL;
 						this.mode = "valid";
 
 						// if the user selected to remember the login, save it now!
 						if (response.result.session.remember) {
-							this._saved_id = this.id;
+							this.#saved_id = this.id;
 							this.remember = true;
 							localStorage.setItem(this.storageKey, this.id);
 						}
@@ -5315,12 +5642,12 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			} else {
 
 				// Something went wrong!  Servers may be down, or you got blocked for sending too many requests
-				this._status = NewgroundsIO.SessionState.SERVER_UNAVAILABLE;
+				this.#status = NewgroundsIO.SessionState.SERVER_UNAVAILABLE;
 
 			}
 
 			// Let our update loop know it can actually do stuff again
-			this._canUpdate = true;
+			this.#canUpdate = true;
 		}
 
 
@@ -5334,7 +5661,7 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		endSession(callback, thisArg)
 		{
 			// don't check for any new updates while we're ending session
-			this._canUpdate = false;
+			this.#canUpdate = false;
 
 			var endSession = this.__ngioCore.getComponent('App.endSession');
 			var startSession = this.__ngioCore.getComponent('App.startSession');
@@ -5374,13 +5701,13 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 			this.user = null;
 			this.passport_url = null;
 			this.mode = "new";
-			this._status = NewgroundsIO.SessionState.USER_LOGGED_OUT;
+			this.#status = NewgroundsIO.SessionState.USER_LOGGED_OUT;
 
 			// Let our update loop know it can actually do stuff again
-			this._canUpdate = true;
+			this.#canUpdate = true;
 		}
 
-			}
+	}
 
 /** End Class NewgroundsIO.objects.Session **/
 if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};
@@ -5408,13 +5735,12 @@ NewgroundsIO.objects.Session = Session;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "User";
-			this._id = null;
-			this._name = null;
-			this._icons = null;
-			this._supporter = null;
-			this.__properties = this.__properties.concat(["id","name","icons","supporter"]);
+			["id","name","icons","supporter"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5423,22 +5749,32 @@ NewgroundsIO.objects.Session = Session;
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The user's numeric ID.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#name = null;
 
 		/**
 		 * The user's textual name.
@@ -5446,15 +5782,20 @@ NewgroundsIO.objects.Session = Session;
 		 */
 		get name()
 		{
-			return this._name;
+			return this.#name;
 		}
 
 		set name(_name)
 		{
 			if (typeof(_name) !== 'string' && _name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _name);
-			this._name = String(_name);
+			this.#name = String(_name);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#icons = null;
 
 		/**
 		 * The user's icon images.
@@ -5462,7 +5803,7 @@ NewgroundsIO.objects.Session = Session;
 		 */
 		get icons()
 		{
-			return this._icons;
+			return this.#icons;
 		}
 
 		set icons(_icons)
@@ -5473,8 +5814,13 @@ NewgroundsIO.objects.Session = Session;
 				if (_icons !== null && !(_icons instanceof NewgroundsIO.objects.UserIcons))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.UserIcons, got ",_icons);
 
-			this._icons = _icons;
+			this.#icons = _icons;
 		}
+
+		/**
+		 * @private
+		 */
+		#supporter = null;
 
 		/**
 		 * Returns true if the user has a Newgrounds Supporter upgrade.
@@ -5482,13 +5828,13 @@ NewgroundsIO.objects.Session = Session;
 		 */
 		get supporter()
 		{
-			return this._supporter;
+			return this.#supporter;
 		}
 
 		set supporter(_supporter)
 		{
 			if (typeof(_supporter) !== 'boolean' && typeof(_supporter) !== 'number' && _supporter !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _supporter);
-			this._supporter = _supporter ? true:false;
+			this.#supporter = _supporter ? true:false;
 
 		}
 
@@ -5521,12 +5867,12 @@ NewgroundsIO.objects.User = User;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "UserIcons";
-			this._small = null;
-			this._medium = null;
-			this._large = null;
-			this.__properties = this.__properties.concat(["small","medium","large"]);
+			["small","medium","large"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5535,20 +5881,30 @@ NewgroundsIO.objects.User = User;
 		}
 
 		/**
+		 * @private
+		 */
+		#small = null;
+
+		/**
 		 * The URL of the user's small icon
 		 * @type {String}
 		 */
 		get small()
 		{
-			return this._small;
+			return this.#small;
 		}
 
 		set small(_small)
 		{
 			if (typeof(_small) !== 'string' && _small !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _small);
-			this._small = String(_small);
+			this.#small = String(_small);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#medium = null;
 
 		/**
 		 * The URL of the user's medium icon
@@ -5556,15 +5912,20 @@ NewgroundsIO.objects.User = User;
 		 */
 		get medium()
 		{
-			return this._medium;
+			return this.#medium;
 		}
 
 		set medium(_medium)
 		{
 			if (typeof(_medium) !== 'string' && _medium !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _medium);
-			this._medium = String(_medium);
+			this.#medium = String(_medium);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#large = null;
 
 		/**
 		 * The URL of the user's large icon
@@ -5572,13 +5933,13 @@ NewgroundsIO.objects.User = User;
 		 */
 		get large()
 		{
-			return this._large;
+			return this.#large;
 		}
 
 		set large(_large)
 		{
 			if (typeof(_large) !== 'string' && _large !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _large);
-			this._large = String(_large);
+			this.#large = String(_large);
 
 		}
 
@@ -5607,10 +5968,12 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.checkSession";
-			this._session = null;
-			this.__properties = this.__properties.concat(["session"]);
+			["session"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5619,11 +5982,16 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 		}
 
 		/**
+		 * @private
+		 */
+		#session = null;
+
+		/**
 		 * @type {NewgroundsIO.objects.Session}
 		 */
 		get session()
 		{
-			return this._session;
+			return this.#session;
 		}
 
 		set session(_session)
@@ -5634,7 +6002,7 @@ NewgroundsIO.objects.UserIcons = UserIcons;
 				if (_session !== null && !(_session instanceof NewgroundsIO.objects.Session))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Session, got ",_session);
 
-			this._session = _session;
+			this.#session = _session;
 		}
 
 		objectMap = {"session":"Session"};
@@ -5665,11 +6033,12 @@ NewgroundsIO.results.App.checkSession = checkSession;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.getCurrentVersion";
-			this._current_version = null;
-			this._client_deprecated = null;
-			this.__properties = this.__properties.concat(["current_version","client_deprecated"]);
+			["current_version","client_deprecated"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5678,20 +6047,30 @@ NewgroundsIO.results.App.checkSession = checkSession;
 		}
 
 		/**
+		 * @private
+		 */
+		#current_version = null;
+
+		/**
 		 * The version number of the app as defined in your "Version Control" settings.
 		 * @type {String}
 		 */
 		get current_version()
 		{
-			return this._current_version;
+			return this.#current_version;
 		}
 
 		set current_version(_current_version)
 		{
 			if (typeof(_current_version) !== 'string' && _current_version !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _current_version);
-			this._current_version = String(_current_version);
+			this.#current_version = String(_current_version);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#client_deprecated = null;
 
 		/**
 		 * Notes whether the client-side app is using a lower version number.
@@ -5699,13 +6078,13 @@ NewgroundsIO.results.App.checkSession = checkSession;
 		 */
 		get client_deprecated()
 		{
-			return this._client_deprecated;
+			return this.#client_deprecated;
 		}
 
 		set client_deprecated(_client_deprecated)
 		{
 			if (typeof(_client_deprecated) !== 'boolean' && typeof(_client_deprecated) !== 'number' && _client_deprecated !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _client_deprecated);
-			this._client_deprecated = _client_deprecated ? true:false;
+			this.#client_deprecated = _client_deprecated ? true:false;
 
 		}
 
@@ -5734,10 +6113,12 @@ NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.getHostLicense";
-			this._host_approved = null;
-			this.__properties = this.__properties.concat(["host_approved"]);
+			["host_approved"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5746,17 +6127,22 @@ NewgroundsIO.results.App.getCurrentVersion = getCurrentVersion;
 		}
 
 		/**
+		 * @private
+		 */
+		#host_approved = null;
+
+		/**
 		 * @type {Boolean}
 		 */
 		get host_approved()
 		{
-			return this._host_approved;
+			return this.#host_approved;
 		}
 
 		set host_approved(_host_approved)
 		{
 			if (typeof(_host_approved) !== 'boolean' && typeof(_host_approved) !== 'number' && _host_approved !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _host_approved);
-			this._host_approved = _host_approved ? true:false;
+			this.#host_approved = _host_approved ? true:false;
 
 		}
 
@@ -5785,10 +6171,12 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "App.startSession";
-			this._session = null;
-			this.__properties = this.__properties.concat(["session"]);
+			["session"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5797,11 +6185,16 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 		}
 
 		/**
+		 * @private
+		 */
+		#session = null;
+
+		/**
 		 * @type {NewgroundsIO.objects.Session}
 		 */
 		get session()
 		{
-			return this._session;
+			return this.#session;
 		}
 
 		set session(_session)
@@ -5812,7 +6205,7 @@ NewgroundsIO.results.App.getHostLicense = getHostLicense;
 				if (_session !== null && !(_session instanceof NewgroundsIO.objects.Session))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Session, got ",_session);
 
-			this._session = _session;
+			this.#session = _session;
 		}
 
 		objectMap = {"session":"Session"};
@@ -5842,10 +6235,12 @@ NewgroundsIO.results.App.startSession = startSession;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.clearSlot";
-			this._slot = null;
-			this.__properties = this.__properties.concat(["slot"]);
+			["slot"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5854,12 +6249,17 @@ NewgroundsIO.results.App.startSession = startSession;
 		}
 
 		/**
+		 * @private
+		 */
+		#slot = null;
+
+		/**
 		 * A NewgroundsIO.objects.SaveSlot object.
 		 * @type {NewgroundsIO.objects.SaveSlot}
 		 */
 		get slot()
 		{
-			return this._slot;
+			return this.#slot;
 		}
 
 		set slot(_slot)
@@ -5870,7 +6270,7 @@ NewgroundsIO.results.App.startSession = startSession;
 				if (_slot !== null && !(_slot instanceof NewgroundsIO.objects.SaveSlot))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.SaveSlot, got ",_slot);
 
-			this._slot = _slot;
+			this.#slot = _slot;
 		}
 
 		objectMap = {"slot":"SaveSlot"};
@@ -5900,10 +6300,12 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.loadSlot";
-			this._slot = null;
-			this.__properties = this.__properties.concat(["slot"]);
+			["slot"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5912,12 +6314,17 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 		}
 
 		/**
+		 * @private
+		 */
+		#slot = null;
+
+		/**
 		 * A NewgroundsIO.objects.SaveSlot object.
 		 * @type {NewgroundsIO.objects.SaveSlot}
 		 */
 		get slot()
 		{
-			return this._slot;
+			return this.#slot;
 		}
 
 		set slot(_slot)
@@ -5928,7 +6335,7 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 				if (_slot !== null && !(_slot instanceof NewgroundsIO.objects.SaveSlot))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.SaveSlot, got ",_slot);
 
-			this._slot = _slot;
+			this.#slot = _slot;
 		}
 
 		objectMap = {"slot":"SaveSlot"};
@@ -5958,10 +6365,12 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.loadSlots";
-			this._slots = null;
-			this.__properties = this.__properties.concat(["slots"]);
+			["slots"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -5970,12 +6379,17 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 		}
 
 		/**
+		 * @private
+		 */
+		#slots = null;
+
+		/**
 		 * An array of NewgroundsIO.objects.SaveSlot objects.
 		 * @type {Array.<NewgroundsIO.objects.SaveSlot>}
 		 */
 		get slots()
 		{
-			return this._slots;
+			return this.#slots;
 		}
 
 		set slots(_slots)
@@ -5988,7 +6402,7 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 
 					newArr[index] = val;
 				});
-				this._slots = newArr;
+				this.#slots = newArr;
 				return;
 			}
 
@@ -6021,10 +6435,12 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.setData";
-			this._slot = null;
-			this.__properties = this.__properties.concat(["slot"]);
+			["slot"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6033,11 +6449,16 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 		}
 
 		/**
+		 * @private
+		 */
+		#slot = null;
+
+		/**
 		 * @type {NewgroundsIO.objects.SaveSlot}
 		 */
 		get slot()
 		{
-			return this._slot;
+			return this.#slot;
 		}
 
 		set slot(_slot)
@@ -6048,7 +6469,7 @@ NewgroundsIO.results.CloudSave.loadSlots = loadSlots;
 				if (_slot !== null && !(_slot instanceof NewgroundsIO.objects.SaveSlot))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.SaveSlot, got ",_slot);
 
-			this._slot = _slot;
+			this.#slot = _slot;
 		}
 
 		objectMap = {"slot":"SaveSlot"};
@@ -6078,10 +6499,12 @@ NewgroundsIO.results.CloudSave.setData = setData;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Event.logEvent";
-			this._event_name = null;
-			this.__properties = this.__properties.concat(["event_name"]);
+			["event_name"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6090,17 +6513,22 @@ NewgroundsIO.results.CloudSave.setData = setData;
 		}
 
 		/**
+		 * @private
+		 */
+		#event_name = null;
+
+		/**
 		 * @type {String}
 		 */
 		get event_name()
 		{
-			return this._event_name;
+			return this.#event_name;
 		}
 
 		set event_name(_event_name)
 		{
 			if (typeof(_event_name) !== 'string' && _event_name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _event_name);
-			this._event_name = String(_event_name);
+			this.#event_name = String(_event_name);
 
 		}
 
@@ -6130,11 +6558,12 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.getDatetime";
-			this._datetime = null;
-			this._timestamp = null;
-			this.__properties = this.__properties.concat(["datetime","timestamp"]);
+			["datetime","timestamp"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6143,20 +6572,30 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 		}
 
 		/**
+		 * @private
+		 */
+		#datetime = null;
+
+		/**
 		 * The server's date and time in ISO 8601 format.
 		 * @type {String}
 		 */
 		get datetime()
 		{
-			return this._datetime;
+			return this.#datetime;
 		}
 
 		set datetime(_datetime)
 		{
 			if (typeof(_datetime) !== 'string' && _datetime !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _datetime);
-			this._datetime = String(_datetime);
+			this.#datetime = String(_datetime);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#timestamp = null;
 
 		/**
 		 * The current UNIX timestamp on the server.
@@ -6164,15 +6603,15 @@ NewgroundsIO.results.Event.logEvent = logEvent;
 		 */
 		get timestamp()
 		{
-			return this._timestamp;
+			return this.#timestamp;
 		}
 
 		set timestamp(_timestamp)
 		{
 			if (typeof(_timestamp) !== 'number' && _timestamp !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _timestamp);
 			else if (!Number.isInteger(_timestamp) && _timestamp !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._timestamp = Number(_timestamp);
-			if (isNaN(this._timestamp)) this._timestamp = null;
+			this.#timestamp = Number(_timestamp);
+			if (isNaN(this.#timestamp)) this.#timestamp = null;
 
 		}
 
@@ -6201,10 +6640,12 @@ NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.getVersion";
-			this._version = null;
-			this.__properties = this.__properties.concat(["version"]);
+			["version"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6213,18 +6654,23 @@ NewgroundsIO.results.Gateway.getDatetime = getDatetime;
 		}
 
 		/**
+		 * @private
+		 */
+		#version = null;
+
+		/**
 		 * The version number (in X.Y.Z format).
 		 * @type {String}
 		 */
 		get version()
 		{
-			return this._version;
+			return this.#version;
 		}
 
 		set version(_version)
 		{
 			if (typeof(_version) !== 'string' && _version !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _version);
-			this._version = String(_version);
+			this.#version = String(_version);
 
 		}
 
@@ -6253,10 +6699,12 @@ NewgroundsIO.results.Gateway.getVersion = getVersion;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.ping";
-			this._pong = null;
-			this.__properties = this.__properties.concat(["pong"]);
+			["pong"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6265,18 +6713,23 @@ NewgroundsIO.results.Gateway.getVersion = getVersion;
 		}
 
 		/**
+		 * @private
+		 */
+		#pong = null;
+
+		/**
 		 * Will always return a value of 'pong'
 		 * @type {String}
 		 */
 		get pong()
 		{
-			return this._pong;
+			return this.#pong;
 		}
 
 		set pong(_pong)
 		{
 			if (typeof(_pong) !== 'string' && _pong !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _pong);
-			this._pong = String(_pong);
+			this.#pong = String(_pong);
 
 		}
 
@@ -6305,10 +6758,12 @@ NewgroundsIO.results.Gateway.ping = ping;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadAuthorUrl";
-			this._url = null;
-			this.__properties = this.__properties.concat(["url"]);
+			["url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6317,17 +6772,22 @@ NewgroundsIO.results.Gateway.ping = ping;
 		}
 
 		/**
+		 * @private
+		 */
+		#url = null;
+
+		/**
 		 * @type {String}
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -6356,10 +6816,12 @@ NewgroundsIO.results.Loader.loadAuthorUrl = loadAuthorUrl;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadMoreGames";
-			this._url = null;
-			this.__properties = this.__properties.concat(["url"]);
+			["url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6368,17 +6830,22 @@ NewgroundsIO.results.Loader.loadAuthorUrl = loadAuthorUrl;
 		}
 
 		/**
+		 * @private
+		 */
+		#url = null;
+
+		/**
 		 * @type {String}
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -6407,10 +6874,12 @@ NewgroundsIO.results.Loader.loadMoreGames = loadMoreGames;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadNewgrounds";
-			this._url = null;
-			this.__properties = this.__properties.concat(["url"]);
+			["url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6419,17 +6888,22 @@ NewgroundsIO.results.Loader.loadMoreGames = loadMoreGames;
 		}
 
 		/**
+		 * @private
+		 */
+		#url = null;
+
+		/**
 		 * @type {String}
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -6458,10 +6932,12 @@ NewgroundsIO.results.Loader.loadNewgrounds = loadNewgrounds;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadOfficialUrl";
-			this._url = null;
-			this.__properties = this.__properties.concat(["url"]);
+			["url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6470,17 +6946,22 @@ NewgroundsIO.results.Loader.loadNewgrounds = loadNewgrounds;
 		}
 
 		/**
+		 * @private
+		 */
+		#url = null;
+
+		/**
 		 * @type {String}
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -6509,10 +6990,12 @@ NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadReferral";
-			this._url = null;
-			this.__properties = this.__properties.concat(["url"]);
+			["url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6521,17 +7004,22 @@ NewgroundsIO.results.Loader.loadOfficialUrl = loadOfficialUrl;
 		}
 
 		/**
+		 * @private
+		 */
+		#url = null;
+
+		/**
 		 * @type {String}
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -6560,10 +7048,12 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.getList";
-			this._medals = null;
-			this.__properties = this.__properties.concat(["medals"]);
+			["medals"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6572,12 +7062,17 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 		}
 
 		/**
+		 * @private
+		 */
+		#medals = null;
+
+		/**
 		 * An array of medal objects.
 		 * @type {Array.<NewgroundsIO.objects.Medal>}
 		 */
 		get medals()
 		{
-			return this._medals;
+			return this.#medals;
 		}
 
 		set medals(_medals)
@@ -6590,7 +7085,7 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 
 					newArr[index] = val;
 				});
-				this._medals = newArr;
+				this.#medals = newArr;
 				return;
 			}
 
@@ -6623,10 +7118,12 @@ NewgroundsIO.results.Medal.getList = getList;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.getMedalScore";
-			this._medal_score = null;
-			this.__properties = this.__properties.concat(["medal_score"]);
+			["medal_score"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6635,20 +7132,25 @@ NewgroundsIO.results.Medal.getList = getList;
 		}
 
 		/**
+		 * @private
+		 */
+		#medal_score = null;
+
+		/**
 		 * The user's medal score.
 		 * @type {Number}
 		 */
 		get medal_score()
 		{
-			return this._medal_score;
+			return this.#medal_score;
 		}
 
 		set medal_score(_medal_score)
 		{
 			if (typeof(_medal_score) !== 'number' && _medal_score !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _medal_score);
 			else if (!Number.isInteger(_medal_score) && _medal_score !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._medal_score = Number(_medal_score);
-			if (isNaN(this._medal_score)) this._medal_score = null;
+			this.#medal_score = Number(_medal_score);
+			if (isNaN(this.#medal_score)) this.#medal_score = null;
 
 		}
 
@@ -6678,11 +7180,12 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.unlock";
-			this._medal = null;
-			this._medal_score = null;
-			this.__properties = this.__properties.concat(["medal","medal_score"]);
+			["medal","medal_score"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6691,12 +7194,17 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 		}
 
 		/**
+		 * @private
+		 */
+		#medal = null;
+
+		/**
 		 * The NewgroundsIO.objects.Medal that was unlocked.
 		 * @type {NewgroundsIO.objects.Medal}
 		 */
 		get medal()
 		{
-			return this._medal;
+			return this.#medal;
 		}
 
 		set medal(_medal)
@@ -6707,8 +7215,13 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 				if (_medal !== null && !(_medal instanceof NewgroundsIO.objects.Medal))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Medal, got ",_medal);
 
-			this._medal = _medal;
+			this.#medal = _medal;
 		}
+
+		/**
+		 * @private
+		 */
+		#medal_score = null;
 
 		/**
 		 * The user's new medal score.
@@ -6716,15 +7229,15 @@ NewgroundsIO.results.Medal.getMedalScore = getMedalScore;
 		 */
 		get medal_score()
 		{
-			return this._medal_score;
+			return this.#medal_score;
 		}
 
 		set medal_score(_medal_score)
 		{
 			if (typeof(_medal_score) !== 'number' && _medal_score !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _medal_score);
 			else if (!Number.isInteger(_medal_score) && _medal_score !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._medal_score = Number(_medal_score);
-			if (isNaN(this._medal_score)) this._medal_score = null;
+			this.#medal_score = Number(_medal_score);
+			if (isNaN(this.#medal_score)) this.#medal_score = null;
 
 		}
 
@@ -6755,10 +7268,12 @@ NewgroundsIO.results.Medal.unlock = unlock;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.getBoards";
-			this._scoreboards = null;
-			this.__properties = this.__properties.concat(["scoreboards"]);
+			["scoreboards"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6767,12 +7282,17 @@ NewgroundsIO.results.Medal.unlock = unlock;
 		}
 
 		/**
+		 * @private
+		 */
+		#scoreboards = null;
+
+		/**
 		 * An array of NewgroundsIO.objects.ScoreBoard objects.
 		 * @type {Array.<NewgroundsIO.objects.ScoreBoard>}
 		 */
 		get scoreboards()
 		{
-			return this._scoreboards;
+			return this.#scoreboards;
 		}
 
 		set scoreboards(_scoreboards)
@@ -6785,7 +7305,7 @@ NewgroundsIO.results.Medal.unlock = unlock;
 
 					newArr[index] = val;
 				});
-				this._scoreboards = newArr;
+				this.#scoreboards = newArr;
 				return;
 			}
 
@@ -6823,15 +7343,12 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			this._period = null;
-			this._social = null;
-			this._limit = null;
-			this._scoreboard = null;
-			this._scores = null;
-			this._user = null;
-			this.__properties = this.__properties.concat(["period","social","limit","scoreboard","scores","user"]);
+			["period","social","limit","scoreboard","scores","user"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6840,20 +7357,30 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		}
 
 		/**
+		 * @private
+		 */
+		#period = null;
+
+		/**
 		 * The time-frame the scores belong to. See notes for acceptable values.
 		 * @type {String}
 		 */
 		get period()
 		{
-			return this._period;
+			return this.#period;
 		}
 
 		set period(_period)
 		{
 			if (typeof(_period) !== 'string' && _period !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _period);
-			this._period = String(_period);
+			this.#period = String(_period);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#social = null;
 
 		/**
 		 * Will return true if scores were loaded in social context ('social' set to true and a session or 'user' were provided).
@@ -6861,15 +7388,20 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		 */
 		get social()
 		{
-			return this._social;
+			return this.#social;
 		}
 
 		set social(_social)
 		{
 			if (typeof(_social) !== 'boolean' && typeof(_social) !== 'number' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
-			this._social = _social ? true:false;
+			this.#social = _social ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#limit = null;
 
 		/**
 		 * The query skip that was used.
@@ -6877,17 +7409,22 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		 */
 		get limit()
 		{
-			return this._limit;
+			return this.#limit;
 		}
 
 		set limit(_limit)
 		{
 			if (typeof(_limit) !== 'number' && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _limit);
 			else if (!Number.isInteger(_limit) && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._limit = Number(_limit);
-			if (isNaN(this._limit)) this._limit = null;
+			this.#limit = Number(_limit);
+			if (isNaN(this.#limit)) this.#limit = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#scoreboard = null;
 
 		/**
 		 * The NewgroundsIO.objects.ScoreBoard being queried.
@@ -6895,7 +7432,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		 */
 		get scoreboard()
 		{
-			return this._scoreboard;
+			return this.#scoreboard;
 		}
 
 		set scoreboard(_scoreboard)
@@ -6906,8 +7443,13 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 				if (_scoreboard !== null && !(_scoreboard instanceof NewgroundsIO.objects.ScoreBoard))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.ScoreBoard, got ",_scoreboard);
 
-			this._scoreboard = _scoreboard;
+			this.#scoreboard = _scoreboard;
 		}
+
+		/**
+		 * @private
+		 */
+		#scores = null;
 
 		/**
 		 * An array of NewgroundsIO.objects.Score objects.
@@ -6915,7 +7457,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		 */
 		get scores()
 		{
-			return this._scores;
+			return this.#scores;
 		}
 
 		set scores(_scores)
@@ -6928,11 +7470,16 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 
 					newArr[index] = val;
 				});
-				this._scores = newArr;
+				this.#scores = newArr;
 				return;
 			}
 
 		}
+
+		/**
+		 * @private
+		 */
+		#user = null;
 
 		/**
 		 * The NewgroundsIO.objects.User the score list is associated with (either as defined in the 'user' param, or extracted from the current session when 'social' is set to true)
@@ -6940,7 +7487,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		 */
 		get user()
 		{
-			return this._user;
+			return this.#user;
 		}
 
 		set user(_user)
@@ -6951,7 +7498,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
-			this._user = _user;
+			this.#user = _user;
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","user":"User"};
@@ -6984,11 +7531,12 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.postScore";
-			this._scoreboard = null;
-			this._score = null;
-			this.__properties = this.__properties.concat(["scoreboard","score"]);
+			["scoreboard","score"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -6997,12 +7545,17 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 		}
 
 		/**
+		 * @private
+		 */
+		#scoreboard = null;
+
+		/**
 		 * The NewgroundsIO.objects.ScoreBoard that was posted to.
 		 * @type {NewgroundsIO.objects.ScoreBoard}
 		 */
 		get scoreboard()
 		{
-			return this._scoreboard;
+			return this.#scoreboard;
 		}
 
 		set scoreboard(_scoreboard)
@@ -7013,8 +7566,13 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 				if (_scoreboard !== null && !(_scoreboard instanceof NewgroundsIO.objects.ScoreBoard))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.ScoreBoard, got ",_scoreboard);
 
-			this._scoreboard = _scoreboard;
+			this.#scoreboard = _scoreboard;
 		}
+
+		/**
+		 * @private
+		 */
+		#score = null;
 
 		/**
 		 * The NewgroundsIO.objects.Score that was posted to the board.
@@ -7022,7 +7580,7 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 		 */
 		get score()
 		{
-			return this._score;
+			return this.#score;
 		}
 
 		set score(_score)
@@ -7033,7 +7591,7 @@ NewgroundsIO.results.ScoreBoard.getScores = getScores;
 				if (_score !== null && !(_score instanceof NewgroundsIO.objects.Score))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Score, got ",_score);
 
-			this._score = _score;
+			this.#score = _score;
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","score":"Score"};

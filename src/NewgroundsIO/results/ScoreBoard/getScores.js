@@ -16,15 +16,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			this._period = null;
-			this._social = null;
-			this._limit = null;
-			this._scoreboard = null;
-			this._scores = null;
-			this._user = null;
-			this.__properties = this.__properties.concat(["period","social","limit","scoreboard","scores","user"]);
+			["period","social","limit","scoreboard","scores","user"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -33,20 +30,30 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#period = null;
+
+		/**
 		 * The time-frame the scores belong to. See notes for acceptable values.
 		 * @type {String}
 		 */
 		get period()
 		{
-			return this._period;
+			return this.#period;
 		}
 
 		set period(_period)
 		{
 			if (typeof(_period) !== 'string' && _period !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _period);
-			this._period = String(_period);
+			this.#period = String(_period);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#social = null;
 
 		/**
 		 * Will return true if scores were loaded in social context ('social' set to true and a session or 'user' were provided).
@@ -54,15 +61,20 @@
 		 */
 		get social()
 		{
-			return this._social;
+			return this.#social;
 		}
 
 		set social(_social)
 		{
 			if (typeof(_social) !== 'boolean' && typeof(_social) !== 'number' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
-			this._social = _social ? true:false;
+			this.#social = _social ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#limit = null;
 
 		/**
 		 * The query skip that was used.
@@ -70,17 +82,22 @@
 		 */
 		get limit()
 		{
-			return this._limit;
+			return this.#limit;
 		}
 
 		set limit(_limit)
 		{
 			if (typeof(_limit) !== 'number' && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _limit);
 			else if (!Number.isInteger(_limit) && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._limit = Number(_limit);
-			if (isNaN(this._limit)) this._limit = null;
+			this.#limit = Number(_limit);
+			if (isNaN(this.#limit)) this.#limit = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#scoreboard = null;
 
 		/**
 		 * The NewgroundsIO.objects.ScoreBoard being queried.
@@ -88,7 +105,7 @@
 		 */
 		get scoreboard()
 		{
-			return this._scoreboard;
+			return this.#scoreboard;
 		}
 
 		set scoreboard(_scoreboard)
@@ -99,8 +116,13 @@
 				if (_scoreboard !== null && !(_scoreboard instanceof NewgroundsIO.objects.ScoreBoard))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.ScoreBoard, got ",_scoreboard);
 
-			this._scoreboard = _scoreboard;
+			this.#scoreboard = _scoreboard;
 		}
+
+		/**
+		 * @private
+		 */
+		#scores = null;
 
 		/**
 		 * An array of NewgroundsIO.objects.Score objects.
@@ -108,7 +130,7 @@
 		 */
 		get scores()
 		{
-			return this._scores;
+			return this.#scores;
 		}
 
 		set scores(_scores)
@@ -121,11 +143,16 @@
 
 					newArr[index] = val;
 				});
-				this._scores = newArr;
+				this.#scores = newArr;
 				return;
 			}
 
 		}
+
+		/**
+		 * @private
+		 */
+		#user = null;
 
 		/**
 		 * The NewgroundsIO.objects.User the score list is associated with (either as defined in the 'user' param, or extracted from the current session when 'social' is set to true)
@@ -133,7 +160,7 @@
 		 */
 		get user()
 		{
-			return this._user;
+			return this.#user;
 		}
 
 		set user(_user)
@@ -144,7 +171,7 @@
 				if (_user !== null && !(_user instanceof NewgroundsIO.objects.User))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
-			this._user = _user;
+			this.#user = _user;
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","user":"User"};

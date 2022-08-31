@@ -11,10 +11,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.loadSlots";
-			this._slots = null;
-			this.__properties = this.__properties.concat(["slots"]);
+			["slots"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -23,12 +25,17 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#slots = null;
+
+		/**
 		 * An array of NewgroundsIO.objects.SaveSlot objects.
 		 * @type {Array.<NewgroundsIO.objects.SaveSlot>}
 		 */
 		get slots()
 		{
-			return this._slots;
+			return this.#slots;
 		}
 
 		set slots(_slots)
@@ -41,7 +48,7 @@
 
 					newArr[index] = val;
 				});
-				this._slots = newArr;
+				this.#slots = newArr;
 				return;
 			}
 

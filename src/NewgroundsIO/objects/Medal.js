@@ -18,17 +18,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal";
-			this._id = null;
-			this._name = null;
-			this._description = null;
-			this._icon = null;
-			this._value = null;
-			this._difficulty = null;
-			this._secret = null;
-			this._unlocked = null;
-			this.__properties = this.__properties.concat(["id","name","description","icon","value","difficulty","secret","unlocked"]);
+			["id","name","description","icon","value","difficulty","secret","unlocked"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -37,22 +32,32 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the medal.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#name = null;
 
 		/**
 		 * The name of the medal.
@@ -60,15 +65,20 @@
 		 */
 		get name()
 		{
-			return this._name;
+			return this.#name;
 		}
 
 		set name(_name)
 		{
 			if (typeof(_name) !== 'string' && _name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _name);
-			this._name = String(_name);
+			this.#name = String(_name);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#description = null;
 
 		/**
 		 * A short description of the medal.
@@ -76,15 +86,20 @@
 		 */
 		get description()
 		{
-			return this._description;
+			return this.#description;
 		}
 
 		set description(_description)
 		{
 			if (typeof(_description) !== 'string' && _description !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _description);
-			this._description = String(_description);
+			this.#description = String(_description);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#icon = null;
 
 		/**
 		 * The URL for the medal's icon.
@@ -92,15 +107,20 @@
 		 */
 		get icon()
 		{
-			return this._icon;
+			return this.#icon;
 		}
 
 		set icon(_icon)
 		{
 			if (typeof(_icon) !== 'string' && _icon !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _icon);
-			this._icon = String(_icon);
+			this.#icon = String(_icon);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#value = null;
 
 		/**
 		 * The medal's point value.
@@ -108,17 +128,22 @@
 		 */
 		get value()
 		{
-			return this._value;
+			return this.#value;
 		}
 
 		set value(_value)
 		{
 			if (typeof(_value) !== 'number' && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _value);
 			else if (!Number.isInteger(_value) && _value !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._value = Number(_value);
-			if (isNaN(this._value)) this._value = null;
+			this.#value = Number(_value);
+			if (isNaN(this.#value)) this.#value = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#difficulty = null;
 
 		/**
 		 * The difficulty id of the medal.
@@ -126,32 +151,42 @@
 		 */
 		get difficulty()
 		{
-			return this._difficulty;
+			return this.#difficulty;
 		}
 
 		set difficulty(_difficulty)
 		{
 			if (typeof(_difficulty) !== 'number' && _difficulty !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _difficulty);
 			else if (!Number.isInteger(_difficulty) && _difficulty !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._difficulty = Number(_difficulty);
-			if (isNaN(this._difficulty)) this._difficulty = null;
+			this.#difficulty = Number(_difficulty);
+			if (isNaN(this.#difficulty)) this.#difficulty = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#secret = null;
 
 		/**
 		 * @type {Boolean}
 		 */
 		get secret()
 		{
-			return this._secret;
+			return this.#secret;
 		}
 
 		set secret(_secret)
 		{
 			if (typeof(_secret) !== 'boolean' && typeof(_secret) !== 'number' && _secret !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _secret);
-			this._secret = _secret ? true:false;
+			this.#secret = _secret ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#unlocked = null;
 
 		/**
 		 * This will only be set if a valid user session exists.
@@ -159,13 +194,13 @@
 		 */
 		get unlocked()
 		{
-			return this._unlocked;
+			return this.#unlocked;
 		}
 
 		set unlocked(_unlocked)
 		{
 			if (typeof(_unlocked) !== 'boolean' && typeof(_unlocked) !== 'number' && _unlocked !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _unlocked);
-			this._unlocked = _unlocked ? true:false;
+			this.#unlocked = _unlocked ? true:false;
 
 		}
 
@@ -190,7 +225,8 @@
 			var component = this.__ngioCore.getComponent('Medal.unlock', {id:this.id});
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}
-			}
+
+	}
 
 /** End Class NewgroundsIO.objects.Medal **/
 if (typeof(NewgroundsIO.objects) === 'undefined') NewgroundsIO.objects = {};

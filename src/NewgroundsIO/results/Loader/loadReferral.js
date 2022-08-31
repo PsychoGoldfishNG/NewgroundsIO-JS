@@ -11,10 +11,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadReferral";
-			this._url = null;
-			this.__properties = this.__properties.concat(["url"]);
+			["url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -23,17 +25,22 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#url = null;
+
+		/**
 		 * @type {String}
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 

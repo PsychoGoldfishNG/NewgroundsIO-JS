@@ -11,10 +11,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Gateway.ping";
-			this._pong = null;
-			this.__properties = this.__properties.concat(["pong"]);
+			["pong"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -23,18 +25,23 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#pong = null;
+
+		/**
 		 * Will always return a value of 'pong'
 		 * @type {String}
 		 */
 		get pong()
 		{
-			return this._pong;
+			return this.#pong;
 		}
 
 		set pong(_pong)
 		{
 			if (typeof(_pong) !== 'string' && _pong !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _pong);
-			this._pong = String(_pong);
+			this.#pong = String(_pong);
 
 		}
 

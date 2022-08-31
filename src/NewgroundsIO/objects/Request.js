@@ -15,19 +15,23 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Request";
-			this._execute = null;
-			this._debug = null;
-			this.__required = ["app_id","execute"];
-			this.__properties = this.__properties.concat(["app_id","execute","session_id","debug"]);
+			["app_id","execute","session_id","debug"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
 				}
 			}
-
 		}
+
+		/**
+		 * @private
+		 */
+		#execute = null;
 
 		/**
 		 * A NewgroundsIO.objects.Execute object, or array of one-or-more NewgroundsIO.objects.Execute objects.
@@ -35,7 +39,7 @@
 		 */
 		get execute()
 		{
-			return this._execute;
+			return this.#execute;
 		}
 
 		set execute(_execute)
@@ -51,15 +55,20 @@
 
 					newArr[index] = val;
 				});
-				this._execute = newArr;
+				this.#execute = newArr;
 				return;
 			}
 
 				if (_execute !== null && !(_execute instanceof NewgroundsIO.objects.Execute))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Execute, got ",_execute);
 
-			this._execute = _execute;
+			this.#execute = _execute;
 		}
+
+		/**
+		 * @private
+		 */
+		#debug = null;
 
 		/**
 		 * If set to true, calls will be executed in debug mode.
@@ -67,34 +76,20 @@
 		 */
 		get debug()
 		{
-			return this._debug;
+			return this.#debug;
 		}
 
 		set debug(_debug)
 		{
 			if (typeof(_debug) !== 'boolean' && typeof(_debug) !== 'number' && _debug !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _debug);
-			this._debug = _debug ? true:false;
-
-		}
-
-		/**
-		 * An optional value that will be returned, verbatim, in the NewgroundsIO.objects.Response object.
-		 * @type {mixed}
-		 */
-		get echo()
-		{
-			return this._echo;
-		}
-
-		set echo(_echo)
-		{
-			this._echo = _echo; // mixed
+			this.#debug = _debug ? true:false;
 
 		}
 
 		objectMap = {"execute":"Execute"};
 
 		arrayMap = {"execute":"Execute"};
+
 
 		/**
 		 * Gets the appID from a core object
@@ -113,7 +108,7 @@
 		{
 			return this.__ngioCore && this.__ngioCore.session ? this.__ngioCore.session.id : null;
 		}
-
+		
 	}
 
 /** End Class NewgroundsIO.objects.Request **/

@@ -33,21 +33,71 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 	/** Class for communicating with the Newgrounds.io API **/
 	class Core extends EventTarget {
 
-		/** The URI to v3 of the Newgrounds.io gateway. **/
-		GATEWAY_URI = "https://www.newgrounds.io/gateway_v3.php";
+		/**
+		 * @private
+		 */
+		#GATEWAY_URI = "https://www.newgrounds.io/gateway_v3.php";
+
+		/**
+		 * @private
+		 */
+		#debug = false;
+
+		/**
+		 * @private
+		 */
+		#appID = null;
+
+		/**
+		 * @private
+		 */
+		#aesKey = null;
+
+		/**
+		 * @private
+		 */
+		#componentQueue = [];
+
+		/**
+		 * @private
+		 */
+		#host = null;
+
+		/**
+		 * @private
+		 */
+		#session = null;
+
+		/**
+		 * @private
+		 */
+		#uriParams = {};
+
+		/** 
+		 * The URI to v3 of the Newgrounds.io gateway. 
+		 * @type {string}
+		 */
+		get GATEWAY_URI() {
+			return this.#GATEWAY_URI;
+		} 
 
 		/**
 		 * Set to true to enable debug mode.
 		 * @type {boolean}
 		 */
-		 debug = false;
+		get debug() {
+			return this.#debug;
+		}
+		set debug(d) {
+			this.#debug = d ? true:false;
+		}
 
 		/**
 		 * The App ID from your App Settings page.
 		 * @type {string}
 		 */
 		get appID() {
-			return this._appID;
+			return this.#appID;
 		}
 
 		/**
@@ -55,7 +105,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {array} An array of NewgroundsIO.components.XXXX objects
 		 */
 		get componentQueue() {
-			return this._componentQueue;
+			return this.#componentQueue;
 		}
 
 		/**
@@ -63,7 +113,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {boolean}
 		 */
 		get hasQueue() {
-			return this._componentQueue.length > 0;
+			return this.#componentQueue.length > 0;
 		}
 
 		/**
@@ -71,7 +121,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {boolean}
 		 */
 		get host() {
-			return this._host;
+			return this.#host;
 		}
 
 		/**
@@ -79,7 +129,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {NewgroundsIO.objects.Session}
 		 */
 		get session() {
-			return this._session;
+			return this.#session;
 		}
 
 		/**
@@ -87,7 +137,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {NewgroundsIO.objects.User}
 		 */
 		get user() {
-			return this._session ? this._session.user : null;
+			return this.#session ? this.#session.user : null;
 		}
 
 		/**
@@ -95,7 +145,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 * @type {object}
 		 */
 		get uriParams() {
-			return this._uriParams;
+			return this.#uriParams;
 		}
 
 		/**
@@ -109,29 +159,29 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 			if (typeof(appID) === 'undefined') throw("Missing required appID!");
 			if (typeof(aesKey) === 'undefined') throw("Missing required aesKey!");
 
-			this._appID = appID;
-			this._aesKey = CryptoJS.enc.Base64.parse(aesKey);
+			this.#appID = appID;
+			this.#aesKey = CryptoJS.enc.Base64.parse(aesKey);
 			
-			this._componentQueue = [];
+			this.#componentQueue = [];
 
 			// look for query string in any URL hosting this app
-			this._uriParams = {};
+			this.#uriParams = {};
 
 			if (window && window.location && window.location.href)
 			{
 				if (window.location.hostname) {
-					this._host = window.location.hostname.toLowerCase();
+					this.#host = window.location.hostname.toLowerCase();
 
 				} else if (window.location.href.toLowerCase().substr(0,5) == "file:") {
-					this._host = "<LocalHost>";
+					this.#host = "<LocalHost>";
 
 				} else {
-					this._host = "<Unknown>";
+					this.#host = "<Unknown>";
 
 				}
 
 			} else {
-				this._host = "<AppView>";
+				this.#host = "<AppView>";
 			}
 
 			if (typeof(window) !== 'undefined' && window.location) {	
@@ -143,13 +193,13 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 					var key_value;
 					for(var i=0; i<pairs.length; i++) {
 						key_value = pairs[i].split("=");
-						this._uriParams[key_value[0]] = key_value[1];
+						this.#uriParams[key_value[0]] = key_value[1];
 					}
 				}
 			}
 
-			this._session = this.getObject("Session");
-			this._session._uri_id = this.getUriParam("ngio_session_id",null);
+			this.#session = this.getObject("Session");
+			this.#session._uri_id = this.getUriParam("ngio_session_id",null);
 		}
 
 		/**
@@ -160,7 +210,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 */
 		getUriParam(param,defaultValue)
 		{
-			return typeof(this._uriParams[param]) === 'undefined' ? defaultValue : this._uriParams[param];
+			return typeof(this.#uriParams[param]) === 'undefined' ? defaultValue : this.#uriParams[param];
 		}
 
 		/**
@@ -171,7 +221,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		encrypt(jsonString)
 		{
 			let iv  = CryptoJS.lib.WordArray.random(16);
-			let encrypted = CryptoJS.AES.encrypt(jsonString, this._aesKey, { iv: iv });
+			let encrypted = CryptoJS.AES.encrypt(jsonString, this.#aesKey, { iv: iv });
 			return CryptoJS.enc.Base64.stringify(iv.concat(encrypted.ciphertext));
 		}
 
@@ -219,7 +269,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 				return;
 			}
 			component.setCore(this);
-			this._componentQueue.push(component);
+			this.#componentQueue.push(component);
 		}
 
 		/**
@@ -229,10 +279,10 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 		 */
 		executeQueue(callback, thisArg)
 		{
-			if (this._componentQueue.length < 1) return;
+			if (this.#componentQueue.length < 1) return;
 
-			this.executeComponent(this._componentQueue, callback, thisArg);
-			this._componentQueue = [];
+			this.executeComponent(this.#componentQueue, callback, thisArg);
+			this.#componentQueue = [];
 		}
 
 		/**
@@ -440,15 +490,30 @@ NewgroundsIO.Core = Core;
 			return this.__type;
 		}
 
-		/** Creates a new BaseObject **/
-		constructor() {
-			this.__type = "object";
-			this.__object = "BaseObject";
-			this.__properties = [];
-			this.__required = [];
-			this.__ngioCore = null;
-		}
+		/**
+		 * @private
+		 */
+		__type = "object";
 
+		/**
+		 * @private
+		 */
+		__object = "BaseObject";
+
+		/**
+		 * @private
+		 */
+		__properties = [];
+
+		/**
+		 * @private
+		 */
+		__required = [];
+
+		/**
+		 * @private
+		 */
+		__ngioCore = null;
 
 
 		/**
@@ -512,7 +577,7 @@ NewgroundsIO.Core = Core;
 						newobj[prop].fromJSON(obj[prop],core);
 					}
 
-					this["_"+prop] = newobj[prop];
+					this[prop] = newobj[prop];
 				}
 			}
 		}
@@ -563,11 +628,15 @@ NewgroundsIO.Core = Core;
 		 */
 		__doToJSON() 
 		{
+			console.log(this.__object, this.__properties);
 			if (typeof(this.__properties) === 'undefined') return {};
 
 			let json = {};
 
 			this.__properties.forEach(function(prop) {
+				
+				console.log("    ",prop,this[prop]);
+
 				if (this[prop] !== null) {
 					json[prop] = typeof(this[prop].toJSON) === "function" ? this[prop].toJSON() : this[prop];
 				}

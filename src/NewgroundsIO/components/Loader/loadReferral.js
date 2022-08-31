@@ -14,13 +14,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Loader.loadReferral";
-			this._referral_name = null;
-			this._redirect = null;
-			this._log_stat = null;
-			this.__required = ["host","referral_name"];
-			this.__properties = this.__properties.concat(["host","referral_name","redirect","log_stat"]);
+			["host","referral_name","redirect","log_stat"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -29,20 +28,30 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#referral_name = null;
+
+		/**
 		 * The name of the referral (as defined in your "Referrals & Events" settings).
 		 * @type {String}
 		 */
 		get referral_name()
 		{
-			return this._referral_name;
+			return this.#referral_name;
 		}
 
 		set referral_name(_referral_name)
 		{
 			if (typeof(_referral_name) !== 'string' && _referral_name !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _referral_name);
-			this._referral_name = String(_referral_name);
+			this.#referral_name = String(_referral_name);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#redirect = null;
 
 		/**
 		 * Set this to false to get a JSON response containing the URL instead of doing an actual redirect.
@@ -50,15 +59,20 @@
 		 */
 		get redirect()
 		{
-			return this._redirect;
+			return this.#redirect;
 		}
 
 		set redirect(_redirect)
 		{
 			if (typeof(_redirect) !== 'boolean' && typeof(_redirect) !== 'number' && _redirect !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _redirect);
-			this._redirect = _redirect ? true:false;
+			this.#redirect = _redirect ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#log_stat = null;
 
 		/**
 		 * Set this to false to skip logging this as a referral event.
@@ -66,13 +80,13 @@
 		 */
 		get log_stat()
 		{
-			return this._log_stat;
+			return this.#log_stat;
 		}
 
 		set log_stat(_log_stat)
 		{
 			if (typeof(_log_stat) !== 'boolean' && typeof(_log_stat) !== 'number' && _log_stat !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _log_stat);
-			this._log_stat = _log_stat ? true:false;
+			this.#log_stat = _log_stat ? true:false;
 
 		}
 

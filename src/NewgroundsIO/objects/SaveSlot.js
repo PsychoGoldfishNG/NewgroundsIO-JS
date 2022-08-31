@@ -15,14 +15,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "SaveSlot";
-			this._id = null;
-			this._size = null;
-			this._datetime = null;
-			this._timestamp = null;
-			this._url = null;
-			this.__properties = this.__properties.concat(["id","size","datetime","timestamp","url"]);
+			["id","size","datetime","timestamp","url"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -31,22 +29,32 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The slot number.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#size = null;
 
 		/**
 		 * The size of the save data in bytes.
@@ -54,17 +62,22 @@
 		 */
 		get size()
 		{
-			return this._size;
+			return this.#size;
 		}
 
 		set size(_size)
 		{
 			if (typeof(_size) !== 'number' && _size !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _size);
 			else if (!Number.isInteger(_size) && _size !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._size = Number(_size);
-			if (isNaN(this._size)) this._size = null;
+			this.#size = Number(_size);
+			if (isNaN(this.#size)) this.#size = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#datetime = null;
 
 		/**
 		 * A date and time (in ISO 8601 format) representing when this slot was last saved.
@@ -72,15 +85,20 @@
 		 */
 		get datetime()
 		{
-			return this._datetime;
+			return this.#datetime;
 		}
 
 		set datetime(_datetime)
 		{
 			if (typeof(_datetime) !== 'string' && _datetime !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _datetime);
-			this._datetime = String(_datetime);
+			this.#datetime = String(_datetime);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#timestamp = null;
 
 		/**
 		 * A unix timestamp representing when this slot was last saved.
@@ -88,17 +106,22 @@
 		 */
 		get timestamp()
 		{
-			return this._timestamp;
+			return this.#timestamp;
 		}
 
 		set timestamp(_timestamp)
 		{
 			if (typeof(_timestamp) !== 'number' && _timestamp !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _timestamp);
 			else if (!Number.isInteger(_timestamp) && _timestamp !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._timestamp = Number(_timestamp);
-			if (isNaN(this._timestamp)) this._timestamp = null;
+			this.#timestamp = Number(_timestamp);
+			if (isNaN(this.#timestamp)) this.#timestamp = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#url = null;
 
 		/**
 		 * The URL containing the actual save data for this slot, or null if this slot has no data.
@@ -106,13 +129,13 @@
 		 */
 		get url()
 		{
-			return this._url;
+			return this.#url;
 		}
 
 		set url(_url)
 		{
 			if (typeof(_url) !== 'string' && _url !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _url);
-			this._url = String(_url);
+			this.#url = String(_url);
 
 		}
 
@@ -186,7 +209,7 @@
 				console.error("NewgroundsIO - Can not clear data without attaching a NewgroundsIO.Core instance.");
 				return;
 			}
-			this._url = null;
+			this.#url = null;
 			var component = this.__ngioCore.getComponent('CloudSave.clearSlot', {id:this.id});
 			this.__ngioCore.executeComponent(component, callback, thisArg);
 		}

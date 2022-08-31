@@ -12,11 +12,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.postScore";
-			this._scoreboard = null;
-			this._score = null;
-			this.__properties = this.__properties.concat(["scoreboard","score"]);
+			["scoreboard","score"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -25,12 +26,17 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#scoreboard = null;
+
+		/**
 		 * The NewgroundsIO.objects.ScoreBoard that was posted to.
 		 * @type {NewgroundsIO.objects.ScoreBoard}
 		 */
 		get scoreboard()
 		{
-			return this._scoreboard;
+			return this.#scoreboard;
 		}
 
 		set scoreboard(_scoreboard)
@@ -41,8 +47,13 @@
 				if (_scoreboard !== null && !(_scoreboard instanceof NewgroundsIO.objects.ScoreBoard))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.ScoreBoard, got ",_scoreboard);
 
-			this._scoreboard = _scoreboard;
+			this.#scoreboard = _scoreboard;
 		}
+
+		/**
+		 * @private
+		 */
+		#score = null;
 
 		/**
 		 * The NewgroundsIO.objects.Score that was posted to the board.
@@ -50,7 +61,7 @@
 		 */
 		get score()
 		{
-			return this._score;
+			return this.#score;
 		}
 
 		set score(_score)
@@ -61,7 +72,7 @@
 				if (_score !== null && !(_score instanceof NewgroundsIO.objects.Score))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Score, got ",_score);
 
-			this._score = _score;
+			this.#score = _score;
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","score":"Score"};

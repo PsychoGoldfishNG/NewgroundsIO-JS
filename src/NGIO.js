@@ -1081,8 +1081,8 @@ class NGIO
 
 			case "App.getHostLicense":
 
+console.log('result',result);
 				if (!result.success) return;
-
 				// Make a note of whether this game is being hosted legally or not
 				this.#legalHost = result.host_approved;
 				

@@ -12,13 +12,13 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "CloudSave.setData";
-			this._id = null;
-			this._data = null;
-			this.__required = ["id","data"];
 			this.__requireSession = true;
-			this.__properties = this.__properties.concat(["id","data"]);
+			["id","data"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -27,22 +27,32 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The slot number.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#data = null;
 
 		/**
 		 * The data you want to save.
@@ -50,13 +60,13 @@
 		 */
 		get data()
 		{
-			return this._data;
+			return this.#data;
 		}
 
 		set data(_data)
 		{
 			if (typeof(_data) !== 'string' && _data !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _data);
-			this._data = String(_data);
+			this.#data = String(_data);
 
 		}
 

@@ -12,11 +12,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.unlock";
-			this._medal = null;
-			this._medal_score = null;
-			this.__properties = this.__properties.concat(["medal","medal_score"]);
+			["medal","medal_score"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -25,12 +26,17 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#medal = null;
+
+		/**
 		 * The NewgroundsIO.objects.Medal that was unlocked.
 		 * @type {NewgroundsIO.objects.Medal}
 		 */
 		get medal()
 		{
-			return this._medal;
+			return this.#medal;
 		}
 
 		set medal(_medal)
@@ -41,8 +47,13 @@
 				if (_medal !== null && !(_medal instanceof NewgroundsIO.objects.Medal))
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.Medal, got ",_medal);
 
-			this._medal = _medal;
+			this.#medal = _medal;
 		}
+
+		/**
+		 * @private
+		 */
+		#medal_score = null;
 
 		/**
 		 * The user's new medal score.
@@ -50,15 +61,15 @@
 		 */
 		get medal_score()
 		{
-			return this._medal_score;
+			return this.#medal_score;
 		}
 
 		set medal_score(_medal_score)
 		{
 			if (typeof(_medal_score) !== 'number' && _medal_score !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _medal_score);
 			else if (!Number.isInteger(_medal_score) && _medal_score !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._medal_score = Number(_medal_score);
-			if (isNaN(this._medal_score)) this._medal_score = null;
+			this.#medal_score = Number(_medal_score);
+			if (isNaN(this.#medal_score)) this.#medal_score = null;
 
 		}
 

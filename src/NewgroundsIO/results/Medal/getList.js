@@ -11,10 +11,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "Medal.getList";
-			this._medals = null;
-			this.__properties = this.__properties.concat(["medals"]);
+			["medals"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -23,12 +25,17 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#medals = null;
+
+		/**
 		 * An array of medal objects.
 		 * @type {Array.<NewgroundsIO.objects.Medal>}
 		 */
 		get medals()
 		{
-			return this._medals;
+			return this.#medals;
 		}
 
 		set medals(_medals)
@@ -41,7 +48,7 @@
 
 					newArr[index] = val;
 				});
-				this._medals = newArr;
+				this.#medals = newArr;
 				return;
 			}
 

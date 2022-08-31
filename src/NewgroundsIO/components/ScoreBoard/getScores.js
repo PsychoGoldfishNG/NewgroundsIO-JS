@@ -17,17 +17,12 @@
 		constructor(props)
 		{
 			super();
+			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			this._id = null;
-			this._period = null;
-			this._tag = null;
-			this._social = null;
-			this._user = null;
-			this._skip = null;
-			this._limit = null;
-			this.__required = ["id"];
-			this.__properties = this.__properties.concat(["id","period","tag","social","user","skip","limit"]);
+			["id","period","tag","social","user","skip","limit"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
 			if (props && typeof(props) === 'object') {
 				for(var i=0; i<this.__properties.length; i++) {
 					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
@@ -36,22 +31,32 @@
 		}
 
 		/**
+		 * @private
+		 */
+		#id = null;
+
+		/**
 		 * The numeric ID of the scoreboard.
 		 * @type {Number}
 		 */
 		get id()
 		{
-			return this._id;
+			return this.#id;
 		}
 
 		set id(_id)
 		{
 			if (typeof(_id) !== 'number' && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _id);
 			else if (!Number.isInteger(_id) && _id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._id = Number(_id);
-			if (isNaN(this._id)) this._id = null;
+			this.#id = Number(_id);
+			if (isNaN(this.#id)) this.#id = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#period = null;
 
 		/**
 		 * The time-frame to pull scores from (see notes for acceptable values).
@@ -59,15 +64,20 @@
 		 */
 		get period()
 		{
-			return this._period;
+			return this.#period;
 		}
 
 		set period(_period)
 		{
 			if (typeof(_period) !== 'string' && _period !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _period);
-			this._period = String(_period);
+			this.#period = String(_period);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#tag = null;
 
 		/**
 		 * A tag to filter results by.
@@ -75,15 +85,20 @@
 		 */
 		get tag()
 		{
-			return this._tag;
+			return this.#tag;
 		}
 
 		set tag(_tag)
 		{
 			if (typeof(_tag) !== 'string' && _tag !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _tag);
-			this._tag = String(_tag);
+			this.#tag = String(_tag);
 
 		}
+
+		/**
+		 * @private
+		 */
+		#social = null;
 
 		/**
 		 * If set to true, only social scores will be loaded (scores by the user and their friends). This param will be ignored if there is no valid session id and the 'user' param is absent.
@@ -91,15 +106,20 @@
 		 */
 		get social()
 		{
-			return this._social;
+			return this.#social;
 		}
 
 		set social(_social)
 		{
 			if (typeof(_social) !== 'boolean' && typeof(_social) !== 'number' && _social !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a boolean, got', _social);
-			this._social = _social ? true:false;
+			this.#social = _social ? true:false;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#user = null;
 
 		/**
 		 * A user's ID or name.  If 'social' is true, this user and their friends will be included. Otherwise, only scores for this user will be loaded. If this param is missing and there is a valid session id, that user will be used by default.
@@ -107,14 +127,19 @@
 		 */
 		get user()
 		{
-			return this._user;
+			return this.#user;
 		}
 
 		set user(_user)
 		{
-			this._user = _user; // mixed
+			this.#user = _user; // mixed
 
 		}
+
+		/**
+		 * @private
+		 */
+		#skip = null;
 
 		/**
 		 * An integer indicating the number of scores to skip before starting the list. Default = 0.
@@ -122,17 +147,22 @@
 		 */
 		get skip()
 		{
-			return this._skip;
+			return this.#skip;
 		}
 
 		set skip(_skip)
 		{
 			if (typeof(_skip) !== 'number' && _skip !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _skip);
 			else if (!Number.isInteger(_skip) && _skip !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._skip = Number(_skip);
-			if (isNaN(this._skip)) this._skip = null;
+			this.#skip = Number(_skip);
+			if (isNaN(this.#skip)) this.#skip = null;
 
 		}
+
+		/**
+		 * @private
+		 */
+		#limit = null;
 
 		/**
 		 * An integer indicating the number of scores to include in the list. Default = 10.
@@ -140,15 +170,15 @@
 		 */
 		get limit()
 		{
-			return this._limit;
+			return this.#limit;
 		}
 
 		set limit(_limit)
 		{
 			if (typeof(_limit) !== 'number' && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a number, got', _limit);
 			else if (!Number.isInteger(_limit) && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
-			this._limit = Number(_limit);
-			if (isNaN(this._limit)) this._limit = null;
+			this.#limit = Number(_limit);
+			if (isNaN(this.#limit)) this.#limit = null;
 
 		}
 
