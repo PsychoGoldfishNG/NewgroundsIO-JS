@@ -380,14 +380,14 @@ class NGIO
 	 * Initializes the NGIO wrapper. You must call this BEFORE using any other methods!
 	 * @param {string} appID The App ID from your Newgrounds Project's "API Tools" page.
 	 * @param {string} aesKey The AES-128 encryption key from your Newgrounds Project's "API Tools" page.
-	 * @param {object} options An object of options to set up the API wrapper.
-	 * @param {boolean} options.debugMode Set to true to run in debug mode.
-	 * @param {string} options.version A string in "X.X.X" format indicating the current version of this game.
-	 * @param {boolean} options.checkHostLicense Set to true to check if the site hosting your game has been blocked.
-	 * @param {boolean} options.preloadMedals Set to true to preload medals (will show if the player has any unlocked, and get their current medal score).
-	 * @param {boolean} options.preloadeScoreBoards Set to true to preload Score Board information.
-	 * @param {boolean} options.preloadeSaveSlots Set to true to preload Save Slot information.
-	 * @param {boolean} options.autoLogNewView Set to true to automatcally log a new view to your stats.
+	 * @param {object} [options] An object of options to set up the API wrapper.
+	 * @param {string} [options.version] A string in "X.X.X" format indicating the current version of this game.
+	 * @param {boolean} [options.checkHostLicense] Set to true to check if the site hosting your game has been blocked.
+	 * @param {boolean} [options.preloadMedals] Set to true to preload medals (will show if the player has any unlocked, and get their current medal score).
+	 * @param {boolean} [options.preloadeScoreBoards] Set to true to preload Score Board information.
+	 * @param {boolean} [options.preloadeSaveSlots] Set to true to preload Save Slot information.
+	 * @param {boolean} [options.autoLogNewView] Set to true to automatcally log a new view to your stats.
+	 * @param {boolean} [options.debugMode] Set to true to run in debug mode.
 	 */
 	static init(appID, aesKey, options)
 	{
@@ -554,8 +554,8 @@ class NGIO
 	/**
 	 * Attempts to unlock a medal and returns the medal to an optional callback function when complete.
 	 * @param {number} medalID The id of the medal you are unlocking.
-	 * @param {unlockMedalCallback} callback A function to run when the medal has unlocked.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {unlockMedalCallback} [callback] A function to run when the medal has unlocked.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static unlockMedal(medalID, callback, thisArg)
 	{
@@ -607,9 +607,9 @@ class NGIO
 	 * Posts a score and returns the score and scoreboard to an optional callback function when complete.
 	 * @param {number} boardID The id of the scoreboard you are posting to.
 	 * @param {number} value The integer value of your score.
-	 * @param {string} tag An optional tag to attach to the score (use null for no tag).
-	 * @param {postScoreCallback} callback A function to run when the score has posted.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {string} [tag] An optional tag to attach to the score (use null for no tag).
+	 * @param {postScoreCallback} [callback] A function to run when the score has posted.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static postScore(boardID, value, tag, callback, thisArg)
 	{
@@ -656,14 +656,15 @@ class NGIO
 	/**
 	 * Gets the best scores for a board and returns the board, score list, period, tag and social bool to an optional callback.
 	 * @param {number} boardID The id of the scoreboard you loading from.
-	 * @param {object} options Any lookup options you want to use.
-	 * @param {string} options.period The time period to get scores from. Will match one of the PERIOD_XXXX constants.
-	 * @param {string} options.tag An optional tag to filter results by (use null for no tag).
-	 * @param {boolean} options.social Set to true to only get scores from the user's friends.
-	 * @param {Number} options.skip The number of scores to skip.
-	 * @param {Number} options.limit The total number of scores to load.
-	 * @param {getScoresCallback} callback A function to run when the scores have been loaded.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {object} [options] Any optional lookup options you want to use.
+	 * @param {string} [options.period=NGIO.PERIOD_TODAY] The time period to get scores from. Will match one of the PERIOD_XXXX constants.
+	 * @param {string} [options.tag=""] An optional tag to filter results by (use null for no tag).
+	 * @param {boolean} [options.social=false] Set to true to only get scores from the user's friends.
+	 * @param {Number} [options.skip=0] The number of scores to skip.
+	 * @param {Number} [options.limit=10] The total number of scores to load.
+	 * @param {Number} [options.app_id] The App ID of another game to load scores from.
+	 * @param {getScoresCallback} [callback] A function to run when the scores have been loaded.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static getScores(boardID, options, callback, thisArg)
 	{
@@ -734,8 +735,8 @@ class NGIO
 	/**
 	 * Loads the actual save file from a save slot, and passes the string result to a callback function.
 	 * @param {number} slotID The slot number to load from
-	 * @param {getSaveSlotDataCallback} callback A function to run when the file has been loaded
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {getSaveSlotDataCallback} [callback] A function to run when the file has been loaded
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static getSaveSlotData(slotID, callback, thisArg)
 	{
@@ -758,8 +759,8 @@ class NGIO
 	 * Loads the actual save file from a save slot and returns the save slot to an optional callback function when complete.
 	 * @param {number} slotID The slot number to save to.
 	 * @param {string} data The (serialized) data you want to save.
-	 * @param {setSaveSlotDataCallback} callback An optional function to run when the file finished saving.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {setSaveSlotDataCallback} [callback] An optional function to run when the file finished saving.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static setSaveSlotData(slotID, data, callback, thisArg)
 	{
@@ -791,8 +792,8 @@ class NGIO
 	/**
 	 * Logs a custom event and returns the eventName to an optional callback function when complete.
 	 * @param {string} eventName The name of the event to log.
-	 * @param {logEventCallback} callback A function to run when the event has logged.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {logEventCallback} [callback] A function to run when the event has logged.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static logEvent(eventName, callback, thisArg)
 	{
@@ -811,8 +812,8 @@ class NGIO
 
 	/**
 	 * Loads the current DateTime from the server and returns it to an optional callback function.
-	 * @param {getDateTimeCallback} callback A function to run when the datetime has loaded.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {getDateTimeCallback} [callback] A function to run when the datetime has loaded.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static getDateTime(callback, thisArg)
 	{
@@ -855,8 +856,8 @@ class NGIO
 	 *  * Logs a new view to your stats
 	 * 
 	 * Whenever a new operation begins or ends, the current state will be passed to your callback function.
-	 * @param {getConnectionStatusCallback} callback A function to be called when there's a change of status. Will match one of the STATUS_XXXX constants.
-	 * @param {object} thisArg An optional object to use as 'this' in your callback function.
+	 * @param {getConnectionStatusCallback} [callback] A function to be called when there's a change of status. Will match one of the STATUS_XXXX constants.
+	 * @param {object} [thisArg] An optional object to use as 'this' in your callback function.
 	 */
 	static getConnectionStatus(callback, thisArg)
 	{
