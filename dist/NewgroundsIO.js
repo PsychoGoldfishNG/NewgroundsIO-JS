@@ -2477,6 +2477,7 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
 		 * @param {Number} props.id The slot number.
+		 * @param {String} props.app_id The App ID of another, approved app to load slot data from.
 		 */
 		constructor(props)
 		{
@@ -2485,7 +2486,7 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 
 			this.__object = "CloudSave.loadSlot";
 			this.__requireSession = true;
-			["id"].forEach(prop => {
+			["id","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -2518,6 +2519,27 @@ NewgroundsIO.components.CloudSave.clearSlot = clearSlot;
 
 		}
 
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load slot data from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
+		}
+
 	}
 
 /** End Class NewgroundsIO.components.CloudSave.loadSlot **/
@@ -2537,14 +2559,45 @@ NewgroundsIO.components.CloudSave.loadSlot = loadSlot;
 
 		/**
 		 * Constructor
+		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.app_id The App ID of another, approved app to load slot data from.
 		 */
-		constructor()
+		constructor(props)
 		{
 			super();
 			let _this = this;
 
 			this.__object = "CloudSave.loadSlots";
 			this.__requireSession = true;
+			["app_id"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
+			if (props && typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load slot data from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
 		}
 
 	}
@@ -3226,13 +3279,44 @@ NewgroundsIO.components.Loader.loadReferral = loadReferral;
 
 		/**
 		 * Constructor
+		 * @param {object} props An object of initial properties for this instance
+		 * @param {String} props.app_id The App ID of another, approved app to load medals from.
 		 */
-		constructor()
+		constructor(props)
 		{
 			super();
 			let _this = this;
 
 			this.__object = "Medal.getList";
+			["app_id"].forEach(prop => {
+			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
+			});
+			if (props && typeof(props) === 'object') {
+				for(var i=0; i<this.__properties.length; i++) {
+					if (typeof(props[this.__properties[i]]) !== 'undefined') this[this.__properties[i]] = props[this.__properties[i]];
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load medals from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
 		}
 
 	}
@@ -3382,6 +3466,7 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 		 * @param {mixed} props.user A user's ID or name.  If 'social' is true, this user and their friends will be included. Otherwise, only scores for this user will be loaded. If this param is missing and there is a valid session id, that user will be used by default.
 		 * @param {Number} props.skip An integer indicating the number of scores to skip before starting the list. Default = 0.
 		 * @param {Number} props.limit An integer indicating the number of scores to include in the list. Default = 10.
+		 * @param {String} props.app_id The App ID of another, approved app to load scores from.
 		 */
 		constructor(props)
 		{
@@ -3389,7 +3474,7 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			["id","period","tag","social","user","skip","limit"].forEach(prop => {
+			["id","period","tag","social","user","skip","limit","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -3548,6 +3633,27 @@ NewgroundsIO.components.ScoreBoard.getBoards = getBoards;
 			else if (!Number.isInteger(_limit) && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
 			this.#limit = Number(_limit);
 			if (isNaN(this.#limit)) this.#limit = null;
+
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load scores from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
 
 		}
 
@@ -6295,6 +6401,7 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
 		 * @param {NewgroundsIO.objects.SaveSlot} props.slot A NewgroundsIO.objects.SaveSlot object.
+		 * @param {String} props.app_id The App ID of another, approved app to load scores from.
 		 */
 		constructor(props)
 		{
@@ -6302,7 +6409,7 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 			let _this = this;
 
 			this.__object = "CloudSave.loadSlot";
-			["slot"].forEach(prop => {
+			["slot","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -6337,6 +6444,27 @@ NewgroundsIO.results.CloudSave.clearSlot = clearSlot;
 			this.#slot = _slot;
 		}
 
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load scores from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
+		}
+
 		objectMap = {"slot":"SaveSlot"};
 
 	}
@@ -6360,6 +6488,7 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
 		 * @param {Array.<NewgroundsIO.objects.SaveSlot>} props.slots An array of NewgroundsIO.objects.SaveSlot objects.
+		 * @param {String} props.app_id The App ID of another, approved app to load scores from.
 		 */
 		constructor(props)
 		{
@@ -6367,7 +6496,7 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 			let _this = this;
 
 			this.__object = "CloudSave.loadSlots";
-			["slots"].forEach(prop => {
+			["slots","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -6404,6 +6533,27 @@ NewgroundsIO.results.CloudSave.loadSlot = loadSlot;
 				this.#slots = newArr;
 				return;
 			}
+
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load scores from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
 
 		}
 
@@ -7043,6 +7193,7 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
 		 * @param {Array.<NewgroundsIO.objects.Medal>} props.medals An array of medal objects.
+		 * @param {String} props.app_id The App ID of any external app these medals were loaded from.
 		 */
 		constructor(props)
 		{
@@ -7050,7 +7201,7 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 			let _this = this;
 
 			this.__object = "Medal.getList";
-			["medals"].forEach(prop => {
+			["medals","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -7087,6 +7238,27 @@ NewgroundsIO.results.Loader.loadReferral = loadReferral;
 				this.#medals = newArr;
 				return;
 			}
+
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of any external app these medals were loaded from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
 
 		}
 
@@ -7338,6 +7510,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 		 * @param {NewgroundsIO.objects.ScoreBoard} props.scoreboard The NewgroundsIO.objects.ScoreBoard being queried.
 		 * @param {Array.<NewgroundsIO.objects.Score>} props.scores An array of NewgroundsIO.objects.Score objects.
 		 * @param {NewgroundsIO.objects.User} props.user The NewgroundsIO.objects.User the score list is associated with (either as defined in the 'user' param, or extracted from the current session when 'social' is set to true)
+		 * @param {String} props.app_id The App ID of any external app these scores were loaded from.
 		 */
 		constructor(props)
 		{
@@ -7345,7 +7518,7 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			["period","social","limit","scoreboard","scores","user"].forEach(prop => {
+			["period","social","limit","scoreboard","scores","user","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -7498,6 +7671,27 @@ NewgroundsIO.results.ScoreBoard.getBoards = getBoards;
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
 			this.#user = _user;
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of any external app these scores were loaded from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","user":"User"};

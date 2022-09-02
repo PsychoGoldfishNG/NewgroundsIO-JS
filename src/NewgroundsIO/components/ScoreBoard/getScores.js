@@ -13,6 +13,7 @@
 		 * @param {mixed} props.user A user's ID or name.  If 'social' is true, this user and their friends will be included. Otherwise, only scores for this user will be loaded. If this param is missing and there is a valid session id, that user will be used by default.
 		 * @param {Number} props.skip An integer indicating the number of scores to skip before starting the list. Default = 0.
 		 * @param {Number} props.limit An integer indicating the number of scores to include in the list. Default = 10.
+		 * @param {String} props.app_id The App ID of another, approved app to load scores from.
 		 */
 		constructor(props)
 		{
@@ -20,7 +21,7 @@
 			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			["id","period","tag","social","user","skip","limit"].forEach(prop => {
+			["id","period","tag","social","user","skip","limit","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -179,6 +180,27 @@
 			else if (!Number.isInteger(_limit) && _limit !== null) console.warn('NewgroundsIO Type Mismatch: Value should be an integer, got a float');
 			this.#limit = Number(_limit);
 			if (isNaN(this.#limit)) this.#limit = null;
+
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load scores from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
 
 		}
 

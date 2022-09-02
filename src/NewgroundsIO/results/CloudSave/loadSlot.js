@@ -7,6 +7,7 @@
 		 * Constructor
 		 * @param {object} props An object of initial properties for this instance
 		 * @param {NewgroundsIO.objects.SaveSlot} props.slot A NewgroundsIO.objects.SaveSlot object.
+		 * @param {String} props.app_id The App ID of another, approved app to load scores from.
 		 */
 		constructor(props)
 		{
@@ -14,7 +15,7 @@
 			let _this = this;
 
 			this.__object = "CloudSave.loadSlot";
-			["slot"].forEach(prop => {
+			["slot","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -47,6 +48,27 @@
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.SaveSlot, got ",_slot);
 
 			this.#slot = _slot;
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of another, approved app to load scores from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
 		}
 
 		objectMap = {"slot":"SaveSlot"};

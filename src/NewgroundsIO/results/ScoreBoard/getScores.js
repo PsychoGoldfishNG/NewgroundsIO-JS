@@ -12,6 +12,7 @@
 		 * @param {NewgroundsIO.objects.ScoreBoard} props.scoreboard The NewgroundsIO.objects.ScoreBoard being queried.
 		 * @param {Array.<NewgroundsIO.objects.Score>} props.scores An array of NewgroundsIO.objects.Score objects.
 		 * @param {NewgroundsIO.objects.User} props.user The NewgroundsIO.objects.User the score list is associated with (either as defined in the 'user' param, or extracted from the current session when 'social' is set to true)
+		 * @param {String} props.app_id The App ID of any external app these scores were loaded from.
 		 */
 		constructor(props)
 		{
@@ -19,7 +20,7 @@
 			let _this = this;
 
 			this.__object = "ScoreBoard.getScores";
-			["period","social","limit","scoreboard","scores","user"].forEach(prop => {
+			["period","social","limit","scoreboard","scores","user","app_id"].forEach(prop => {
 			   if (_this.__properties.indexOf(prop) < 0) _this.__properties.push(prop);
 			});
 			if (props && typeof(props) === 'object') {
@@ -172,6 +173,27 @@
 				console.warn("Type Mismatch: expecting NewgroundsIO.objects.User, got ",_user);
 
 			this.#user = _user;
+		}
+
+		/**
+		 * @private
+		 */
+		#app_id = null;
+
+		/**
+		 * The App ID of any external app these scores were loaded from.
+		 * @type {String}
+		 */
+		get app_id()
+		{
+			return this.#app_id;
+		}
+
+		set app_id(_app_id)
+		{
+			if (typeof(_app_id) !== 'string' && _app_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _app_id);
+			this.#app_id = String(_app_id);
+
 		}
 
 		objectMap = {"scoreboard":"ScoreBoard","user":"User"};
