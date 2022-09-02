@@ -658,7 +658,7 @@ class NGIO
 	 * @param {number} boardID The id of the scoreboard you loading from.
 	 * @param {object} [options] Any optional lookup options you want to use.
 	 * @param {string} [options.period=NGIO.PERIOD_TODAY] The time period to get scores from. Will match one of the PERIOD_XXXX constants.
-	 * @param {string} [options.tag=""] An optional tag to filter results by (use null for no tag).
+	 * @param {string} [options.tag= ] An optional tag to filter results by (use null for no tag).
 	 * @param {boolean} [options.social=false] Set to true to only get scores from the user's friends.
 	 * @param {Number} [options.skip=0] The number of scores to skip.
 	 * @param {Number} [options.limit=10] The total number of scores to load.
