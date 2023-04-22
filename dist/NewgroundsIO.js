@@ -776,7 +776,7 @@ class NGIO
 			return;
 		}
 		
-		slot.SetData(data, function() {
+		slot.setData(data, function() {
 			if (typeof(callback) === 'function') thisArg ? callback(thisArg, this.lastSaveSlotSaved) : callback(this.lastSaveSlotSaved);
 		}, this);
 	}
