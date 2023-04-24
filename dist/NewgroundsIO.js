@@ -763,7 +763,7 @@ class NGIO
 	 */
 	static setSaveSlotData(slotID, data, callback, thisArg)
 	{
-		if (saveSlots == null) {
+		if (this.saveSlots == null) {
 			console.error("setSaveSlotData data called without any preloaded save slots.");
 			if (typeof(callback) === 'function') thisArg ? callback(thisArg, null) : callback(null);
 			return;
@@ -776,7 +776,7 @@ class NGIO
 			return;
 		}
 		
-		slot.SetData(data, function() {
+		slot.setData(data, function() {
 			if (typeof(callback) === 'function') thisArg ? callback(thisArg, this.lastSaveSlotSaved) : callback(this.lastSaveSlotSaved);
 		}, this);
 	}
