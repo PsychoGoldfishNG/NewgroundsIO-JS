@@ -199,7 +199,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 			}
 
 			this.#session = this.getObject("Session");
-			this.#session._uri_id = this.getUriParam("ngio_session_id",null);
+			this.#session.uri_id = this.getUriParam("ngio_session_id",null);
 		}
 
 		/**

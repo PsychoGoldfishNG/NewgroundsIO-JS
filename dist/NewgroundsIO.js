@@ -1535,7 +1535,7 @@ NewgroundsIO.components = NewgroundsIO.components ? NewgroundsIO.components : {}
 			}
 
 			this.#session = this.getObject("Session");
-			this.#session._uri_id = this.getUriParam("ngio_session_id",null);
+			this.#session.uri_id = this.getUriParam("ngio_session_id",null);
 		}
 
 		/**
@@ -5411,10 +5411,24 @@ NewgroundsIO.objects.ScoreBoard = ScoreBoard;
 		#maxAttempts = 5;
 
 		/**
-		 * Stores a session ID from the game's URI if hosted on Newgrounds.
 		 * @private
 		 */
 		#uri_id = null;
+
+		/**
+		 * Stores a session ID from the game's URI if hosted on Newgrounds.
+		 * @type {String}
+		 */
+		get uri_id()
+		{
+			return this.#uri_id;
+		}
+
+		set uri_id(_uri_id)
+		{
+			if (typeof(_uri_id) !== 'string' && _uri_id !== null) console.warn('NewgroundsIO Type Mismatch: Value should be a string, got', _uri_id);
+			this.#uri_id = String(_uri_id);
+		}
 
 		/**
 		 * Stores a session ID that was saved from a Passport login.
