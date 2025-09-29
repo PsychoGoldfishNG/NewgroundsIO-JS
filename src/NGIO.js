@@ -418,7 +418,7 @@ class NGIO
 			this.#lastConnectionStatus = this.STATUS_INITIALIZED;
 
 			// auto-ping the server every 30 seconds once connected
-			setTimeout(function() {
+			setInterval(function() {
 				NGIO.keepSessionAlive();
 			}, 30000)
 		}
